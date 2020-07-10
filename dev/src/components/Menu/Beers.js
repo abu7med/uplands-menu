@@ -157,11 +157,11 @@ function Sorter(sortVariable, array){
         return array
     }
     if (sortVariable == "ibu-descending"){
-        array = array.sort((c1, c2) => c2.rating - c1.rating)
+        array = array.sort((c1, c2) => c2.ibu - c1.ibu)
         return array
     }
     if (sortVariable == "ibu-ascending"){
-        array = array.sort((c1, c2) => c1.rating - c2.rating)
+        array = array.sort((c1, c2) => c1.ibu - c2.ibu)
         return array
     }
 
@@ -200,32 +200,49 @@ export default function Beers() {
 
     const handleFilterChange = (event) => {
         setFilter({ ...filter, [event.target.name]: event.target.checked });
-        let tempRows = [...rows];
+        let tempRows = [];
         let newRows = [];
-
+        console.log(tempRows)
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
         for (var key in temparray) {
             if (key == "checkedAlcoholFree" && temparray[key])
-            tempRows = tempRows.filter(row => row.alcohol <= 2.25  )
+            tempRows = tempRows.concat(rows.filter(row => row.alcohol <= 2.25  ))
+            
             if (key == "checkedGlutenFree" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Gluten-Free"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Gluten-Free")))
+            
             if (key == "checkedWheatBeer" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Wheat Beer"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Wheat Beer")))
+            
             if (key == "checkedAle" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Ale"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Ale")))
+            
             if (key == "checkedLager" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Lager"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Lager")))
+            
             if (key == "checkedBelgian" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Belgian"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Belgian")))
+            
             if (key == "checkedSour" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Sour"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Sour")))
+            
             if (key == "checkedIPA" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("IPA"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("IPA")))
+            
             if (key == "checkedFruity" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Fruit"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
+            
             if (key == "checkedPorter" && temparray[key])
-            tempRows = tempRows.filter(row => row.type.includes("Porter"))
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Porter")))
+            
+            if (key == "checkedStout" && temparray[key])
+            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
         }
+
+        console.log('a')
+        console.log(rows)
+        console.log(tempRows)
+        
 
         setFilteredRows(tempRows);
         tempRows.map(tempRow => 
@@ -332,8 +349,8 @@ export default function Beers() {
                     [classes.fullList]: anchor === 'top' || anchor === 'bottom',
                 })}
                 role="presentation"
-                onClick={toggleDrawer("filter", false)}
-                onKeyDown={toggleDrawer("filter", false)}
+                onClick={toggleDrawer("filter", true)}
+                onKeyDown={toggleDrawer("filter", true)}
             >
                 <FormGroup >
                 <FormLabel component="legend">Filter by</FormLabel>
