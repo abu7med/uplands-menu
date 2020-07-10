@@ -1,3 +1,3 @@
-build/images/beers/*
-node_modules
+/build/images/beers
+/node_modules
 
