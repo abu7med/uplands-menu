@@ -504,7 +504,7 @@ export default function Beers() {
     <Button color="inherit">Go back to Menu</Button>
   </Toolbar>
 </AppBar>
-            <Paper component="form" className={classes.root}>
+            <Paper  component="form" className={classes.root}>
                 <SearchIcon style={{ fontSize: 24 }} />
                 <InputBase
                     className={classes.input}
