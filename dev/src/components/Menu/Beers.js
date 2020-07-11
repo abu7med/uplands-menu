@@ -45,10 +45,17 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 
+import InfoIcon from '@material-ui/icons/Info';
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+
 import {
     apiURL
 } from '../../utils/shared';
 const axios = require('axios');
+
 
 // let rows = []
 
@@ -211,7 +218,7 @@ export default function Beers() {
         setFilter({ ...filter, [event.target.name]: event.target.checked });
         let tempRows = [];
         let newRows = [];
-        console.log(tempRows)
+
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
         for (var key in temparray) {
             if (key == "checkedAlcoholFree" && temparray[key])
@@ -248,10 +255,15 @@ export default function Beers() {
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
         }
 
+<<<<<<< HEAD
         console.log('a')
         console.log(rows)
         console.log(tempRows)
 
+=======
+        if(tempRows.length == 0)
+            tempRows=rows;
+>>>>>>> a85ce9955e03b7579bde784c0e6105a47e5ef52e
 
         setFilteredRows(tempRows);
         tempRows.map(tempRow =>
@@ -542,8 +554,8 @@ function MenuItem(props) {
 
     return (
         <div>
-
             <ThemeProvider theme={theme}>
+<<<<<<< HEAD
 
                     <Accordion>
                         <AccordionSummary
@@ -581,6 +593,46 @@ function MenuItem(props) {
           </Typography>
                         </AccordionDetails>
                     </Accordion>
+=======
+            <Accordion>
+            <AccordionSummary
+            expandIcon={<InfoIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            >
+            
+                <Grid container spacing={1}>
+                    <Grid item xs={3}>
+                        <img src={props.properties.image} width="75" height="75" />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <Typography variant="h6" display="inline">
+                            {props.properties.title}
+                        </Typography>
+                        <Typography variant="subtitle1" display="inline">
+                            {props.properties.brewery}
+                        </Typography>
+                        <Typography variant="subtitle2" display="block">
+                            {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%") } - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU") }
+                        </Typography>
+                        <Box borderColor="transparent">
+                            <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
+                            <Typography display="inline">({props.properties.rating})</Typography>
+                        </Box>
+                        {/* <Rating name="read-only" value={props.properties.rating} readOnly display="block" /> */}
+                    </Grid>
+    
+                </Grid >
+            <Divider />
+            </AccordionSummary>
+            <AccordionDetails>
+                <Typography>
+                    {props.properties.description}
+                </Typography>
+            </AccordionDetails>
+
+            </Accordion>
+>>>>>>> a85ce9955e03b7579bde784c0e6105a47e5ef52e
             </ThemeProvider>
         </div>
 
