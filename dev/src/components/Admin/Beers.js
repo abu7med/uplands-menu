@@ -141,6 +141,9 @@ export default function Beers() {
   const [beerAlcohol, setAlcohol] = React.useState("");
   const [beerIBU, setIBU] = React.useState("");
   const [beerImage, setImage] = React.useState("");
+  const [beerForm, setForm] = React.useState("");
+  const [beerSize, setSize] = React.useState("");
+  const [beerLocation, setLocation] = React.useState("");
   const [imageExists, setImageExists] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [editOpen, setEditOpen] = React.useState(false);
@@ -190,6 +193,9 @@ export default function Beers() {
     setAlcohol("")
     setIBU("")
     setImage("")
+    setForm("")
+    setSize("")
+    setLocation("")
     setImageExists(false)
     setOpen(false);
     setEditOpen(false);
@@ -206,6 +212,9 @@ export default function Beers() {
       beerAlcohol: beerAlcohol,
       beerIBU: beerIBU,
       beerImage: beerImage,
+      beerForm: beerForm,
+      beerLocation: beerLocation,
+      beerSize: beerSize,
     }
     axios.post(apiURL + '/api/add/beers', beerItem)
       .then(function (response) {
@@ -225,6 +234,9 @@ export default function Beers() {
     setAlcohol("")
     setIBU("")
     setImage("")
+    setForm("")
+    setSize("")
+    setLocation("")
     setImageExists(false)
 
     setOpen(false);
@@ -247,6 +259,9 @@ export default function Beers() {
       beerAlcohol: beerAlcohol,
       beerIBU: beerIBU,
       beerImage: beerImage,
+      beerForm: beerForm,
+      beerLocation: beerLocation,
+      beerSize: beerSize,
     }
     let initialrows = []
     axios.post(apiURL + '/api/edit/beers', beerItem)
@@ -274,6 +289,9 @@ export default function Beers() {
     setAlcohol("")
     setIBU("")
     setImage("")
+    setForm("")
+    setSize("")
+    setLocation("")
     setImageExists(false)
     setEditOpen(false);
     setOpen(false);
@@ -368,6 +386,12 @@ export default function Beers() {
     setAlcohol(row.alcohol)
     if(row.ibu != null)
     setIBU(row.ibu)
+    if(row.form != null)
+    setForm(row.form)
+    if(row.location != null)
+    setLocation(row.location)
+    if(row.size != null)
+    setSize(row.size)
     if(row.image != null)
     setImage(row.image)
     checkImageExists(row.image, function(existsImage) {
@@ -540,6 +564,39 @@ export default function Beers() {
                     variant="outlined"
                   />
                 </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerLocation}
+                    onChange={(e) => setLocation(e.target.value)}
+                    margin="dense"
+                    id="location"
+                    label="Location"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerForm}
+                    onChange={(e) => setForm(e.target.value)}
+                    margin="dense"
+                    id="form"
+                    label="Form"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerSize}
+                    onChange={(e) => setSize(e.target.value)}
+                    margin="dense"
+                    id="size"
+                    label="Size"
+                    variant="outlined"
+                  />
+                </Grid>
                 <Grid item xs={12}>
 
                 {imageExists ? (
@@ -684,6 +741,39 @@ export default function Beers() {
                     margin="dense"
                     id="ibu"
                     label="IBU"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerLocation}
+                    onChange={(e) => setLocation(e.target.value)}
+                    margin="dense"
+                    id="location"
+                    label="Location"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerForm}
+                    onChange={(e) => setForm(e.target.value)}
+                    margin="dense"
+                    id="form"
+                    label="Form"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerSize}
+                    onChange={(e) => setSize(e.target.value)}
+                    margin="dense"
+                    id="size"
+                    label="Size"
                     variant="outlined"
                   />
                 </Grid>

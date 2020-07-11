@@ -33,7 +33,10 @@ module.exports = (app) => {
         rating : req.body.beerRating,
         price : req.body.beerPrice,
         alcohol : req.body.beerAlcohol,
-        ibu : req.body.beerIBU
+        ibu : req.body.beerIBU,
+        size : req.body.beerSize,
+        form : req.body.beerForm,
+        location : req.body.beerLocation
 
     }, function(err, result){
 
@@ -99,6 +102,9 @@ module.exports = (app) => {
     newBeer.price = req.body.beerPrice;
     newBeer.alcohol = req.body.beerAlcohol;
     newBeer.ibu = req.body.beerIBU;
+    newBeer.form = req.body.beerForm;
+    newBeer.location = req.body.beerLocation;
+    newBeer.size = req.body.beerSize;
     newBeer.image = '../../images/beers/' + req.body.beerTitle + '.jpeg';
     newBeer.save((err, beer) => {
       if (err) {
