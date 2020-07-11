@@ -36,6 +36,22 @@ const BeerSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+
+  location: {
+    type: String,
+    default: ''
+  },
+
+  form: {
+    type: String,
+    default: ''
+  },
+
+  size: {
+    type: Number,
+    default: 0
+  },
+
   created: {
     type: Date,
     default: Date.now
