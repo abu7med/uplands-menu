@@ -18,6 +18,12 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
@@ -83,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        
+
     },
     input: {
         marginLeft: theme.spacing(1),
@@ -102,65 +108,68 @@ const useStyles = makeStyles((theme) => ({
     fullList: {
         width: 'auto',
     },
+    title: {
+        flexGrow: 1,
+      },
 }));
-function Sorter(sortVariable, array){
-    if (sortVariable == "title-ascending"){
-        array = array.sort( function( a, b ) {
+function Sorter(sortVariable, array) {
+    if (sortVariable == "title-ascending") {
+        array = array.sort(function (a, b) {
             a = a.title.toLowerCase();
             b = b.title.toLowerCase();
-        
+
             return a < b ? -1 : a > b ? 1 : 0;
         });
         return array
     }
-    if (sortVariable == "title-descending"){
-        array = array.sort( function( a, b ) {
+    if (sortVariable == "title-descending") {
+        array = array.sort(function (a, b) {
             a = a.title.toLowerCase();
             b = b.title.toLowerCase();
-        
+
             return b < a ? -1 : b > a ? 1 : 0;
         });
         return array
     }
-    if (sortVariable == "brewery-ascending"){
-        array = array.sort( function( a, b ) {
+    if (sortVariable == "brewery-ascending") {
+        array = array.sort(function (a, b) {
             a = a.brewery.toLowerCase();
             b = b.brewery.toLowerCase();
-        
+
             return a < b ? -1 : a > b ? 1 : 0;
         });
         return array
     }
-    if (sortVariable == "brewery-descending"){
-        array = array.sort( function( a, b ) {
+    if (sortVariable == "brewery-descending") {
+        array = array.sort(function (a, b) {
             a = a.brewery.toLowerCase();
             b = b.brewery.toLowerCase();
-        
+
             return b < a ? -1 : b > a ? 1 : 0;
         });
         return array
     }
-    if (sortVariable == "alcohol-descending"){
+    if (sortVariable == "alcohol-descending") {
         array = array.sort((c1, c2) => c2.alcohol - c1.alcohol)
         return array
     }
-    if (sortVariable == "alcohol-ascending"){
+    if (sortVariable == "alcohol-ascending") {
         array = array.sort((c1, c2) => c1.alcohol - c2.alcohol)
         return array
     }
-    if (sortVariable == "rating-descending"){
+    if (sortVariable == "rating-descending") {
         array = array.sort((c1, c2) => c2.rating - c1.rating)
         return array
     }
-    if (sortVariable == "rating-ascending"){
+    if (sortVariable == "rating-ascending") {
         array = array.sort((c1, c2) => c1.rating - c2.rating)
         return array
     }
-    if (sortVariable == "ibu-descending"){
+    if (sortVariable == "ibu-descending") {
         array = array.sort((c1, c2) => c2.ibu - c1.ibu)
         return array
     }
-    if (sortVariable == "ibu-ascending"){
+    if (sortVariable == "ibu-ascending") {
         array = array.sort((c1, c2) => c1.ibu - c2.ibu)
         return array
     }
@@ -193,10 +202,10 @@ export default function Beers() {
     const [value, setValue] = React.useState('title-ascending');
     const [searchValue, setSearchValue] = React.useState('');
 
-  const handleSortChange = (event) => {
-    setValue(event.target.value);
-    setCurrentRows(Sorter(event.target.value, currentRows))    
-  };
+    const handleSortChange = (event) => {
+        setValue(event.target.value);
+        setCurrentRows(Sorter(event.target.value, currentRows))
+    };
 
     const handleFilterChange = (event) => {
         setFilter({ ...filter, [event.target.name]: event.target.checked });
@@ -206,48 +215,48 @@ export default function Beers() {
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
         for (var key in temparray) {
             if (key == "checkedAlcoholFree" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.alcohol <= 2.25  ))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.alcohol <= 2.25))
+
             if (key == "checkedGlutenFree" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Gluten-Free")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Gluten-Free")))
+
             if (key == "checkedWheatBeer" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Wheat Beer")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Wheat Beer")))
+
             if (key == "checkedAle" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Ale")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Ale")))
+
             if (key == "checkedLager" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Lager")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Lager")))
+
             if (key == "checkedBelgian" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Belgian")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Belgian")))
+
             if (key == "checkedSour" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Sour")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Sour")))
+
             if (key == "checkedIPA" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("IPA")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("IPA")))
+
             if (key == "checkedFruity" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
+
             if (key == "checkedPorter" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Porter")))
-            
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Porter")))
+
             if (key == "checkedStout" && temparray[key])
-            tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
         }
 
         console.log('a')
         console.log(rows)
         console.log(tempRows)
-        
+
 
         setFilteredRows(tempRows);
-        tempRows.map(tempRow => 
+        tempRows.map(tempRow =>
             searchedRows.map(searchedRow => {
-                if (tempRow._id == searchedRow._id){
+                if (tempRow._id == searchedRow._id) {
                     newRows.push(tempRow)
                 }
             })
@@ -255,26 +264,27 @@ export default function Beers() {
         )
         setCurrentRows(Sorter(value, newRows))
 
-      };
-      const handleSearchChange = (event) => {
+    };
+    const handleSearchChange = (event) => {
         setSearchValue(event.target.value.toLowerCase())
         let tempRows = [...rows]
         let newRows = []
-        tempRows = rows.filter(row => (row.title.toLowerCase().includes(event.target.value.toLowerCase()) || 
-        row.brewery.toLowerCase().includes(event.target.value.toLowerCase()) ))
+        tempRows = rows.filter(row => (row.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
+            row.brewery.toLowerCase().includes(event.target.value.toLowerCase())))
         setSearchedRows(tempRows);
-        tempRows.map(tempRow => 
+        tempRows.map(tempRow =>
             filteredRows.map(filteredRow => {
-                if (tempRow._id == filteredRow._id){
+                if (tempRow._id == filteredRow._id) {
                     newRows.push(tempRow)
                 }
             })
 
         )
         setCurrentRows(Sorter(value, newRows))
-     
-      };
-    
+
+    };
+
+
     const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -312,180 +322,189 @@ export default function Beers() {
 
     const sortList = (anchor) => (
         <ThemeProvider theme={theme}>
-        <Container maxWidth="xs">
-            <div
-                className={clsx(classes.list, {
-                    [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-                })}
-                role="presentation"
-                onClick={toggleDrawer(anchor, false)}
-                onKeyDown={toggleDrawer(anchor, false)}
-            >
-               <FormControl component="fieldset">
-               <FormLabel component="legend">Sort by</FormLabel>
-  <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
-    <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
-    <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
-    <FormControlLabel value="brewery-ascending" control={<Radio />} label="Brewery, A-Z" />
-    <FormControlLabel value="brewery-descending" control={<Radio />} label="Brewery, Z-A" />
-    <FormControlLabel value="alcohol-ascending" control={<Radio />} label="Alcohol rate, Ascending" />
-    <FormControlLabel value="alcohol-descending" control={<Radio />} label="Alcohol rate, Descending" />
-    <FormControlLabel value="rating-ascending" control={<Radio />} label="Untappd rating, Ascending" />
-    <FormControlLabel value="rating-descending" control={<Radio />} label="Untappd rating, Descending" />
-    <FormControlLabel value="ibu-ascending" control={<Radio />} label="IBU, Ascending" />
-    <FormControlLabel value="ibu-descending" control={<Radio />} label="IBU, Descending" />
-  </RadioGroup>
-</FormControl>
-            </div>
-        </Container>
+            <Container maxWidth="xs">
+                <div
+                    className={clsx(classes.list, {
+                        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                    })}
+                    role="presentation"
+                    onClick={toggleDrawer(anchor, false)}
+                    onKeyDown={toggleDrawer(anchor, false)}
+                >
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Sort by</FormLabel>
+                        <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
+                            <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
+                            <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
+                            <FormControlLabel value="brewery-ascending" control={<Radio />} label="Brewery, A-Z" />
+                            <FormControlLabel value="brewery-descending" control={<Radio />} label="Brewery, Z-A" />
+                            <FormControlLabel value="alcohol-ascending" control={<Radio />} label="Alcohol rate, Ascending" />
+                            <FormControlLabel value="alcohol-descending" control={<Radio />} label="Alcohol rate, Descending" />
+                            <FormControlLabel value="rating-ascending" control={<Radio />} label="Untappd rating, Ascending" />
+                            <FormControlLabel value="rating-descending" control={<Radio />} label="Untappd rating, Descending" />
+                            <FormControlLabel value="ibu-ascending" control={<Radio />} label="IBU, Ascending" />
+                            <FormControlLabel value="ibu-descending" control={<Radio />} label="IBU, Descending" />
+                        </RadioGroup>
+                    </FormControl>
+                </div>
+            </Container>
         </ThemeProvider>
     );
 
     const filterList = (anchor) => (
         <ThemeProvider theme={theme}>
-        <Container maxWidth="xs">
-            <div
-                className={clsx(classes.list, {
-                    [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-                })}
-                role="presentation"
-                onClick={toggleDrawer("filter", true)}
-                onKeyDown={toggleDrawer("filter", true)}
-            >
-                <FormGroup >
-                <FormLabel component="legend">Filter by</FormLabel>
-                <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedAlcoholFree}
-            onChange={handleFilterChange}
-            name="checkedAlcoholFree"
-            color="primary"
-          />
-        }
-        label="Alcohol Free (<2.25%)"
-      />
-      <Divider />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedGlutenFree}
-            onChange={handleFilterChange}
-            name="checkedGlutenFree"
-            color="primary"
-          />
-        }
-        label="Gluten Free"
-      />
-                  <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedAle}
-            onChange={handleFilterChange}
-            name="checkedAle"
-            color="primary"
-          />
-        }
-        label="Ale"
-      />
-            <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedLager}
-            onChange={handleFilterChange}
-            name="checkedLager"
-            color="primary"
-          />
-        }
-        label="Lager"
-      />
-            <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedSour}
-            onChange={handleFilterChange}
-            name="checkedSour"
-            color="primary"
-          />
-        }
-        label="Sour"
-      />
-                  <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedStout}
-            onChange={handleFilterChange}
-            name="checkedStout"
-            color="primary"
-          />
-        }
-        label="Stout"
-      />
-                              <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedIPA}
-            onChange={handleFilterChange}
-            name="checkedIPA"
-            color="primary"
-          />
-        }
-        label="IPA"
-      />
-                                    <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedFruity}
-            onChange={handleFilterChange}
-            name="checkedFruity"
-            color="primary"
-          />
-        }
-        label="Fruity"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedPorter}
-            onChange={handleFilterChange}
-            name="checkedPorter"
-            color="primary"
-          />
-        }
-        label="Porter"
-      />
+            <Container maxWidth="xs">
+                <div
+                    className={clsx(classes.list, {
+                        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                    })}
+                    role="presentation"
+                    onClick={toggleDrawer("filter", true)}
+                    onKeyDown={toggleDrawer("filter", true)}
+                >
+                    <FormGroup >
+                        <FormLabel component="legend">Filter by</FormLabel>
                         <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedWheatBeer}
-            onChange={handleFilterChange}
-            name="checkedWheatBeer"
-            color="primary"
-          />
-        }
-        label="Wheat Beer"
-      />
-                              <FormControlLabel
-        control={
-          <Checkbox
-            checked={filter.checkedBelgian}
-            onChange={handleFilterChange}
-            name="checkedBelgian"
-            color="primary"
-          />
-        }
-        label="Belgian"
-      />
-      
-                </FormGroup>
-            </div>
-        </Container>
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedAlcoholFree}
+                                    onChange={handleFilterChange}
+                                    name="checkedAlcoholFree"
+                                    color="primary"
+                                />
+                            }
+                            label="Alcohol Free (<2.25%)"
+                        />
+                        <Divider />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedGlutenFree}
+                                    onChange={handleFilterChange}
+                                    name="checkedGlutenFree"
+                                    color="primary"
+                                />
+                            }
+                            label="Gluten Free"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedAle}
+                                    onChange={handleFilterChange}
+                                    name="checkedAle"
+                                    color="primary"
+                                />
+                            }
+                            label="Ale"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedLager}
+                                    onChange={handleFilterChange}
+                                    name="checkedLager"
+                                    color="primary"
+                                />
+                            }
+                            label="Lager"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedSour}
+                                    onChange={handleFilterChange}
+                                    name="checkedSour"
+                                    color="primary"
+                                />
+                            }
+                            label="Sour"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedStout}
+                                    onChange={handleFilterChange}
+                                    name="checkedStout"
+                                    color="primary"
+                                />
+                            }
+                            label="Stout"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedIPA}
+                                    onChange={handleFilterChange}
+                                    name="checkedIPA"
+                                    color="primary"
+                                />
+                            }
+                            label="IPA"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedFruity}
+                                    onChange={handleFilterChange}
+                                    name="checkedFruity"
+                                    color="primary"
+                                />
+                            }
+                            label="Fruity"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedPorter}
+                                    onChange={handleFilterChange}
+                                    name="checkedPorter"
+                                    color="primary"
+                                />
+                            }
+                            label="Porter"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedWheatBeer}
+                                    onChange={handleFilterChange}
+                                    name="checkedWheatBeer"
+                                    color="primary"
+                                />
+                            }
+                            label="Wheat Beer"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={filter.checkedBelgian}
+                                    onChange={handleFilterChange}
+                                    name="checkedBelgian"
+                                    color="primary"
+                                />
+                            }
+                            label="Belgian"
+                        />
+
+                    </FormGroup>
+                </div>
+            </Container>
         </ThemeProvider>
-        
+
     );
 
     return (
         <Container maxWidth="xs">
+        <AppBar position="sticky">
+  <Toolbar variant="dense">
+
+    <Typography variant="h6" className={classes.title}>
+      Beers
+    </Typography>
+    <Button color="inherit">Go back to Menu</Button>
+  </Toolbar>
+</AppBar>
             <Paper component="form" className={classes.root}>
                 <SearchIcon style={{ fontSize: 24 }} />
                 <InputBase
@@ -526,31 +545,43 @@ function MenuItem(props) {
 
             <ThemeProvider theme={theme}>
 
-
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<InfoIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
                 <Grid container spacing={1}>
-                    <Grid item xs={3}>
-                        <img src={props.properties.image} width="75" height="75" />
-                    </Grid>
-                    <Grid item xs={9}>
-                        <Typography variant="h6" display="inline">
-                            {props.properties.title}
-                        </Typography>
-                        <Typography variant="subtitle1" display="inline">
-                            {props.properties.brewery}
-                        </Typography>
-                        <Typography variant="subtitle2" display="block">
-                            {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%") } - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU") }
-                        </Typography>
-                        <Box borderColor="transparent">
-                            <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
-                            <Typography display="inline">({props.properties.rating})</Typography>
-                        </Box>
-                        {/* <Rating name="read-only" value={props.properties.rating} readOnly display="block" /> */}
-                    </Grid>
+
+                            <Grid item xs={3}>
+                                <img src={props.properties.image} width="75" height="75" />
+                            </Grid>
+                            <Grid item xs={9}>
+                                <Typography variant="h6" display="inline">
+                                    {props.properties.title}
+                                </Typography>
+                                <Typography variant="subtitle1" display="inline">
+                                    {props.properties.brewery}
+                                </Typography>
+                                <Typography variant="subtitle2" display="block">
+                                    {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
+                                </Typography>
+                                <Box borderColor="transparent">
+                                    <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
+                                    <Typography display="inline">({props.properties.rating})</Typography>
+                                </Box>
+                                {/* <Rating name="read-only" value={props.properties.rating} readOnly display="block" /> */}
+                            </Grid>
 
                 </Grid >
+                </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                {props.properties.description}
+          </Typography>
+                        </AccordionDetails>
+                    </Accordion>
             </ThemeProvider>
-            <Divider />
         </div>
 
 
