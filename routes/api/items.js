@@ -23,6 +23,43 @@ module.exports = (app) => {
     });
   });
 
+  app.post('/api/edit/beers', function (req, res, next) {
+
+    Beer.findByIdAndUpdate(req.body.beerID,
+      {title: req.body.beerTitle,
+        brewery : req.body.beerBrewery, 
+        description : req.body.beerDescription,
+        type : req.body.beerType,
+        rating : req.body.beerRating,
+        price : req.body.beerPrice,
+        alcohol : req.body.beerAlcohol,
+        ibu : req.body.beerIBU
+
+    }, function(err, result){
+
+      if(err){
+          res.send(err)
+      }
+      else{
+        Beer.find({}, function(err, beers) {
+          var beerMap = {};
+      
+          beers.forEach(function(beer) {
+            beerMap[beer._id] = beer;
+          });
+          console.log(beerMap)
+      
+          res.send(beerMap);  
+        });
+        // console.log(result)
+        //   res.send(result)
+      }
+
+  })
+    //
+  });
+  
+
   app.delete('/api/delete/beers', function (req, res) {
 
     req.body.forEach(element => Beer.findByIdAndDelete(element, function (err) {

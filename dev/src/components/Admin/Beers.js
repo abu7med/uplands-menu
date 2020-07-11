@@ -31,6 +31,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import EditIcon from '@material-ui/icons/Edit';
 import {
   apiURL
 } from '../../utils/shared';
@@ -130,6 +131,7 @@ export default function Beers() {
   //button
   const [avalue, changeValue] = React.useState(0);
   const [untappdURL, setURL] = React.useState("");
+  const [beerID, setID] = React.useState();
   const [beerTitle, setTitle] = React.useState("");
   const [beerBrewery, setBrewery] = React.useState("");
   const [beerDescription, setDescription] = React.useState("");
@@ -141,6 +143,7 @@ export default function Beers() {
   const [beerImage, setImage] = React.useState("");
   const [imageExists, setImageExists] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
   //table
   const [rows, setRows] = React.useState([...initialrows]);
   const [order, setOrder] = React.useState('asc');
@@ -189,6 +192,7 @@ export default function Beers() {
     setImage("")
     setImageExists(false)
     setOpen(false);
+    setEditOpen(false);
   };
 
   const handleCreate = () => {
@@ -223,6 +227,55 @@ export default function Beers() {
     setImage("")
     setImageExists(false)
 
+    setOpen(false);
+    setEditOpen(false);
+
+
+
+  };
+
+  
+  const handleEdit = () => {
+    let beerItem = {
+      beerID : beerID,
+      beerTitle: beerTitle,
+      beerBrewery: beerBrewery,
+      beerDescription: beerDescription,
+      beerType: beerType,
+      beerRating: beerRating,
+      beerPrice: beerPrice,
+      beerAlcohol: beerAlcohol,
+      beerIBU: beerIBU,
+      beerImage: beerImage,
+    }
+    let initialrows = []
+    axios.post(apiURL + '/api/edit/beers', beerItem)
+      .then(function (response) {
+        for (var prop in response.data) {
+          var item = response.data[prop];
+    
+          initialrows.push(item);
+        }
+        console.log(initialrows)
+        setRows(initialrows)
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    setID(0)
+    setURL("")
+    setTitle("")
+    setBrewery("")
+    setDescription("")
+    setType("")
+    setRating("")
+    setPrice("")
+    setAlcohol("")
+    setIBU("")
+    setImage("")
+    setImageExists(false)
+    setEditOpen(false);
     setOpen(false);
 
 
@@ -292,6 +345,41 @@ export default function Beers() {
       return;
     }
     setSelected([]);
+  };
+
+  const handleEditOpen = (event, row) => {
+    if(row._id != null)
+    setID(row._id)
+    if(row.URL != null)
+    setURL(row.URL)
+    if(row.title != null)
+    setTitle(row.title)
+    if(row.brewery != null)
+    setBrewery(row.brewery)
+    if(row.description != null)
+    setDescription(row.description)
+    if(row.type != null)
+    setType(row.type)
+    if(row.rating != null)
+    setRating(row.rating)
+    if(row.price != null)
+    setPrice(row.price)
+    if(row.alcohol != null)
+    setAlcohol(row.alcohol)
+    if(row.ibu != null)
+    setIBU(row.ibu)
+    if(row.image != null)
+    setImage(row.image)
+    checkImageExists(row.image, function(existsImage) {
+      if(existsImage == true) {
+        setImageExists(true)
+      }
+      else {
+        setImageExists(false)
+      }
+      });
+    setEditOpen(true);
+    
   };
 
   const handleClick = (event, _id) => {
@@ -482,6 +570,153 @@ export default function Beers() {
           </Button>
           </DialogActions>
         </Dialog>
+
+                <Dialog open={editOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">New Beer</DialogTitle>
+          <DialogContent>
+            <div className={classes.root}>
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    value={untappdURL}
+                    onChange={(e) => setURL(e.target.value)}
+                    margin="dense"
+                    id="url"
+                    label="Untappd URL"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Button fullWidth
+                    onClick={handleImport}
+                    variant="contained"
+                    className={classes.button}>
+                    Import Beer info</Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    value={beerTitle}
+                    onChange={(e) => setTitle(e.target.value)}
+                    margin="dense"
+                    id="title"
+                    label="Title"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    value={beerBrewery}
+                    onChange={(e) => setBrewery(e.target.value)}
+                    margin="dense"
+                    id="brewery"
+                    label="Brewery"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    value={beerDescription}
+                    onChange={(e) => setDescription(e.target.value)}
+                    margin="dense"
+                    id="description"
+                    label="Description"
+                    multiline
+                    rows={3}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    value={beerType}
+                    onChange={(e) => setType(e.target.value)}
+                    margin="dense"
+                    id="type"
+                    label="Type"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    value={beerRating}
+                    onChange={(e) => setRating(e.target.value)}
+                    margin="dense"
+                    id="rating"
+                    label="Rating"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerPrice}
+                    onChange={(e) => setPrice(e.target.value)}
+                    margin="dense"
+                    id="price"
+                    label="Price"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerAlcohol}
+                    onChange={(e) => setAlcohol(e.target.value)}
+                    margin="dense"
+                    id="alcohol"
+                    label="Alcohol rate"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerIBU}
+                    onChange={(e) => setIBU(e.target.value)}
+                    margin="dense"
+                    id="ibu"
+                    label="IBU"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+
+                {imageExists ? (
+              <img src={beerImage} width="100" height="100" />
+            ) : null}
+                </Grid>
+                <Grid item xs={12}>
+                <TextField
+                    fullWidth
+                    value={beerImage}
+                    onChange={handleImageChange}
+                    margin="dense"
+                    id="imageURL"
+                    label="Image URL"
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+          </Button>
+            <Button onClick={handleEdit} color="primary">
+              Edit
+          </Button>
+          </DialogActions>
+        </Dialog>
       </div>
 
       <div className={classes.root}>
@@ -554,6 +789,11 @@ export default function Beers() {
                             checked={isItemSelected}
                             inputProps={{ 'aria-labelledby': labelId }}
                           />
+                        </TableCell>
+                        <TableCell padding="checkbox">
+                        <IconButton  onClick={(event) => handleEditOpen(event, row)} aria-label="edit">
+  <EditIcon />
+</IconButton>
                         </TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {row.title}
@@ -639,6 +879,9 @@ function EnhancedTableHead(props) {
             onChange={onSelectAllClick}
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
+        </TableCell>
+        <TableCell padding="checkbox">
+          Edit
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
