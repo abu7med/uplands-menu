@@ -39,10 +39,17 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 
+import InfoIcon from '@material-ui/icons/Info';
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+
 import {
     apiURL
 } from '../../utils/shared';
 const axios = require('axios');
+
 
 // let rows = []
 
@@ -202,7 +209,7 @@ export default function Beers() {
         setFilter({ ...filter, [event.target.name]: event.target.checked });
         let tempRows = [];
         let newRows = [];
-        console.log(tempRows)
+
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
         for (var key in temparray) {
             if (key == "checkedAlcoholFree" && temparray[key])
@@ -239,10 +246,8 @@ export default function Beers() {
             tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
         }
 
-        console.log('a')
-        console.log(rows)
-        console.log(tempRows)
-        
+        if(tempRows.length == 0)
+            tempRows=rows;
 
         setFilteredRows(tempRows);
         tempRows.map(tempRow => 
@@ -523,15 +528,19 @@ function MenuItem(props) {
 
     return (
         <div>
-
             <ThemeProvider theme={theme}>
-
-
+            <Accordion>
+            <AccordionSummary
+            expandIcon={<InfoIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            >
+            
                 <Grid container spacing={1}>
                     <Grid item xs={3}>
                         <img src={props.properties.image} width="75" height="75" />
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xs={8}>
                         <Typography variant="h6" display="inline">
                             {props.properties.title}
                         </Typography>
@@ -547,10 +556,18 @@ function MenuItem(props) {
                         </Box>
                         {/* <Rating name="read-only" value={props.properties.rating} readOnly display="block" /> */}
                     </Grid>
-
+    
                 </Grid >
-            </ThemeProvider>
             <Divider />
+            </AccordionSummary>
+            <AccordionDetails>
+                <Typography>
+                    {props.properties.description}
+                </Typography>
+            </AccordionDetails>
+
+            </Accordion>
+            </ThemeProvider>
         </div>
 
 
