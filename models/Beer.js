@@ -36,16 +36,6 @@ const BeerSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-<<<<<<< HEAD
-  location: {
-    type: String,
-    default: ""
-  },
-  form: {
-    type: String,
-    default: ""
-  },
-=======
 
   location: {
     type: String,
@@ -57,15 +47,10 @@ const BeerSchema = new mongoose.Schema({
     default: ''
   },
 
->>>>>>> f5f5bf860b2fce74f9f571fbf432ea9965cc9bea
   size: {
     type: Number,
     default: 0
   },
-<<<<<<< HEAD
-=======
-
->>>>>>> f5f5bf860b2fce74f9f571fbf432ea9965cc9bea
   created: {
     type: Date,
     default: Date.now
