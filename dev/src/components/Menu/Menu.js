@@ -4,12 +4,13 @@ import {
     Route,
     Link,
     Switch
-  } from 'react-router-dom'
+} from 'react-router-dom'
 import 'whatwg-fetch';
 import { Container, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
+import './Menu.css';
 
 const images = [
     {
@@ -45,6 +46,7 @@ const images = [
 ];
 
 const useStyles = makeStyles((theme) => ({
+
     root: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -119,32 +121,25 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-class Menu extends Component {
-    constructor(props) {
-        super(props);
+export default function Menu() {
+    const classes = useStyles();
 
-    }
-
-    componentDidMount() {
-
-    }
-
-    render() {
-
-        return (
-            <Container maxWidth="sm">
-                <Typography variant="h3" gutterBottom>
-                    <Box textAlign="center" letterSpacing={3} >
-                        menu
+    return (
+        <div className={classes.body}>
+        <Container maxWidth="xs" >
+            <Typography variant="h3" gutterBottom>
+                <Box textAlign="center" letterSpacing={3} >
+                    menu
         </Box >
-                </Typography>
+            </Typography>
 
-                <Box border={1} boxShadow={3}>
-                    <ButtonBases />
-                </Box >
-            </Container>
-        );
-    }
+            <Box border={1} boxShadow={3}>
+                <ButtonBases />
+            </Box >
+        </Container>
+        </div>
+    );
+
 
 }
 
@@ -162,7 +157,7 @@ function ButtonBases() {
                     style={{
                         width: image.width,
                     }}
-                    href={'/'+image.title}
+                    href={'/' + image.title}
                 >
                     <span
                         className={classes.imageSrc}
@@ -187,5 +182,3 @@ function ButtonBases() {
         </div>
     );
 }
-
-export default Menu;

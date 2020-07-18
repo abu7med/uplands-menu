@@ -43,6 +43,12 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { useHistory } from "react-router-dom";
+import './Menu.css';
+import Footer from '../Footer/Footer';
 
 
 import {
@@ -51,67 +57,125 @@ import {
 const axios = require('axios');
 
 
-// let rows = []
 
 
-
-// axios.get("/api/get/beers")
-//     .then(function (response) {
-//         // handle success
-
-//         for (var prop in response.data) {
-//             var item = response.data[prop];
-
-//             rows.push(item);
-
-//         }
-//         // console.log(response.data.length)
-//     })
-//     .catch(function (error) {
-//         // handle error
-//         console.log(error);
-//     })
-//     .then(function () {
-
-
-//         // always executed
-//     })
-
-const theme = createMuiTheme({
+const fontTheme = createMuiTheme({
     typography: {
         // In Chinese and Japanese the characters are usually larger,
         // so a smaller fontsize may be appropriate.
+
+        fontFamily: 'Kalam',
         fontSize: 11,
 
     },
+
 });
+// const defaultTheme = createMuiTheme({
+//     typography: {
+//         // In Chinese and Japanese the characters are usually larger,
+//         // so a smaller fontsize may be appropriate.
+
+//         fontFamily: 'Roboto',
+//         fontSize: 14,
+
+//     },
+
+// });
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-
+        position: 'sticky',
+        top: '48px',
+        zIndex: '5'
     },
+
     input: {
         marginLeft: theme.spacing(1),
         flex: 1,
     },
+    appbar: {
+        fontFamily: 'roboto',
+        fontSize: 20,
+        position: 'sticky',
+
+
+        
+
+    },
+    sticky: {
+        top: '0px',
+
+        position: 'sticky',
+
+        
+
+    },
     iconButton: {
         padding: 10,
     },
-    divider: {
-        height: 28,
-        margin: 4,
+    content: {
+        marginTop: '10px',
+        marginLeft: '10px',
+        marginRight: '10px',
     },
     list: {
         width: 250,
     },
+    options: {
+        fontFamily: 'Roboto',
+        fontSize: 14,
+    },
     fullList: {
         width: 'auto',
     },
+    menuitem: {
+        fontFamily: 'Kalam',
+        fontSize: 11,
+    },
     title: {
         flexGrow: 1,
-      },
+    },
+    label: {
+        position: 'relative',
+  top: '5px',
+  marginBottom: '4px',
+    },
+    rating: {
+
+        display: "inline",
+        position: 'relative',
+  top: '-3px',
+
+    },
+    img: {
+        marginTop: '4px',
+        border: '1px ',
+        borderStyle: 'outset',
+  borderRadius: '8px',
+    },
+    card: {
+        color: 'white',
+        // background: 'rgba(0, 0, 0, 0)'
+        backgroundColor: '#49515F',
+        marginTop: '2px',
+        marginBottom: '2px',
+        height: '10%'
+
+
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    textButton: {
+        position: 'relative',
+  top: '-13px',
+        float: 'right',
+
+
+
+    },
 }));
 function Sorter(sortVariable, array) {
     if (sortVariable == "title-ascending") {
@@ -179,6 +243,7 @@ function Sorter(sortVariable, array) {
 
 export default function Beers() {
     const classes = useStyles();
+    const history = useHistory();
     const [rows, setRows] = React.useState([]);
     const [filteredRows, setFilteredRows] = React.useState([]);
     const [searchedRows, setSearchedRows] = React.useState([]);
@@ -249,8 +314,8 @@ export default function Beers() {
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
         }
 
-        if(tempRows.length == 0)
-            tempRows=rows;
+        if (tempRows.length == 0)
+            tempRows = rows;
 
         setFilteredRows(tempRows);
         tempRows.map(tempRow =>
@@ -282,6 +347,9 @@ export default function Beers() {
         setCurrentRows(Sorter(value, newRows))
 
     };
+    const handleClick = (event) => {
+        history.push("/");
+      }
 
 
     const toggleDrawer = (anchor, open) => (event) => {
@@ -320,7 +388,6 @@ export default function Beers() {
     }, []);
 
     const sortList = (anchor) => (
-        <ThemeProvider theme={theme}>
             <Container maxWidth="xs">
                 <div
                     className={clsx(classes.list, {
@@ -330,8 +397,9 @@ export default function Beers() {
                     onClick={toggleDrawer(anchor, false)}
                     onKeyDown={toggleDrawer(anchor, false)}
                 >
+
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Sort by</FormLabel>
+                        <FormLabel className={classes.label} component="legend">Sort by</FormLabel>
                         <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
                             <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
                             <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
@@ -347,11 +415,12 @@ export default function Beers() {
                     </FormControl>
                 </div>
             </Container>
-        </ThemeProvider>
+
+        
     );
 
     const filterList = (anchor) => (
-        <ThemeProvider theme={theme}>
+        
             <Container maxWidth="xs">
                 <div
                     className={clsx(classes.list, {
@@ -362,7 +431,7 @@ export default function Beers() {
                     onKeyDown={toggleDrawer("filter", true)}
                 >
                     <FormGroup >
-                        <FormLabel component="legend">Filter by</FormLabel>
+                        <FormLabel className={classes.label} component="legend">Filter by</FormLabel>
                         <FormControlLabel
                             control={
                                 <Checkbox
@@ -489,22 +558,24 @@ export default function Beers() {
                     </FormGroup>
                 </div>
             </Container>
-        </ThemeProvider>
+      
 
     );
 
     return (
-        <Container maxWidth="xs">
-        <AppBar position="sticky">
-  <Toolbar variant="dense">
-
-    <Typography variant="h6" className={classes.title}>
-      Beers
+        <Container disableGutters maxWidth="xs" >
+            <AppBar className={classes.appbar} >
+                <Toolbar variant="dense">
+                    <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                        <ArrowBackIosIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.appbar}>
+                        Beers
     </Typography>
-    <Button color="inherit">Go back to Menu</Button>
-  </Toolbar>
-</AppBar>
-            <Paper  component="form" className={classes.root}>
+
+                </Toolbar>
+            </AppBar>
+            <Paper component="form" className={classes.root}>
                 <SearchIcon style={{ fontSize: 24 }} />
                 <InputBase
                     className={classes.input}
@@ -527,10 +598,13 @@ export default function Beers() {
                 </React.Fragment>
 
             </Paper>
+ 
             <Divider />
             {currentRows.map(function (row) {
                 return (<MenuItem key={row._id} properties={row} />)
             })}
+            <Divider />
+            <Footer />
         </Container>
     );
 
@@ -538,48 +612,90 @@ export default function Beers() {
 }
 
 function MenuItem(props) {
+    const classes = useStyles();
+    const [showText, setText] = React.useState(false);
+    const handleTextButton = () => {
+        if (showText == true)
+            setText(false)
+        else
+            setText(true)
+
+    };
 
     return (
         <div>
-            <ThemeProvider theme={theme}>
 
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<InfoIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                <Grid container spacing={1}>
 
-                            <Grid item xs={3}>
-                                <img src={props.properties.image} width="75" height="75" />
+                <Card className={classes.card}>
+                    <div className={classes.content}>
+                        <Grid container >
+                        <ThemeProvider theme={fontTheme}>
+
+                            <Grid item xs={2}>
+                                <img className={classes.img} src={props.properties.image} width="50" height="50" />
                             </Grid>
-                            <Grid item xs={9}>
+                            <Grid item xs={10}>
                                 <Typography variant="h6" display="inline">
                                     {props.properties.title}
                                 </Typography>
                                 <Typography variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
-                                <Typography variant="subtitle2" display="block">
+                                <Typography  variant="subtitle2" display="block">
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography>
                                 <Box borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
-                                    <Typography display="inline">({props.properties.rating})</Typography>
+                                    <Typography className={classes.rating}>({props.properties.rating})</Typography>
                                 </Box>
-                                {/* <Rating name="read-only" value={props.properties.rating} readOnly display="block" /> */}
+                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
+                            <Grid item xs={12}>
+                                {showText ? (
 
-                </Grid >
-                </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>
-                                {props.properties.description}
-          </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-            </ThemeProvider>
+                                    <Typography display="inline" variant="body2">
+                                        {props.properties.description}
+                                        <IconButton className={classes.textButton} display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
+                                            < IndeterminateCheckBoxIcon />
+                                        </IconButton>
+                                    </Typography>
+                                ) : (
+                                        <Typography  display="inline" variant="body2">
+                                            {props.properties.description.substring(0, 60)}...
+                                        <IconButton className={classes.textButton} display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
+                                                <AddBoxIcon />
+                                            </IconButton>
+                                        </Typography>
+                                    )
+
+                                }</Grid>
+                                
+                            {/* { showText ? (<Grid item xs={12}>
+                                <Grid item xs={8}>
+                            <Typography variant="body1">
+                                    {props.properties.description}
+                                </Typography>
+                                </Grid>
+                                <Grid item xs={4}>
+                                <IconButton onClick={handleTextButton} className={classes.menuButton} color="inherit" aria-label="menu">
+                        < IndeterminateCheckBoxIcon />
+                            </IconButton>
+                            </Grid></Grid>) :
+                            (<Grid item xs={12}><Grid item xs={8}>
+                                <Typography display="block" variant="body1">
+                                    {props.properties.description.substring(0,50)}...
+                                </Typography>
+                                </Grid>
+                                <Grid item xs={4}>
+                                <IconButton display="block" edge="start" onClick={handleTextButton}  className={classes.menuButton} color="inherit" aria-label="menu">
+                        <AddBoxIcon />
+                            </IconButton></Grid></Grid>)
+                           
+                            } */}
+</ThemeProvider>
+                        </Grid >
+                    </div>
+                </Card>
         </div>
 
 

@@ -36,7 +36,9 @@ module.exports = (app) => {
         ibu : req.body.beerIBU,
         size : req.body.beerSize,
         form : req.body.beerForm,
-        location : req.body.beerLocation
+        location : req.body.beerLocation,
+        image : req.body.beerImage,
+        untappd : req.body.beerUntappd
 
     }, function(err, result){
 
@@ -50,7 +52,6 @@ module.exports = (app) => {
           beers.forEach(function(beer) {
             beerMap[beer._id] = beer;
           });
-          console.log(beerMap)
       
           res.send(beerMap);  
         });
@@ -74,25 +75,25 @@ module.exports = (app) => {
 
   app.post('/api/add/beers', function (req, res, next) {
 
-    request({
-      url : req.body.beerImage,
-      //make the returned body a Buffer
-      encoding : null
-  }, function(error, response, body) {
+  //   request({
+  //     url : req.body.beerImage,
+  //     //make the returned body a Buffer
+  //     encoding : null
+  // }, function(error, response, body) {
   
-      //will be true, body is Buffer( http://nodejs.org/api/buffer.html )
+  //     //will be true, body is Buffer( http://nodejs.org/api/buffer.html )
   
-      //do what you want with body
-      //like writing the buffer to a file
-      fs.writeFile('./build/images/beers/' + req.body.beerTitle + '.jpeg', body, {
-          encoding : null
-      }, function(err) {
+  //     //do what you want with body
+  //     //like writing the buffer to a file
+  //     fs.writeFile('./build/images/beers/' + req.body.beerTitle + '.jpeg', body, {
+  //         encoding : null
+  //     }, function(err) {
   
-          if (err)
-              throw err;
-      });
+  //         if (err)
+  //             throw err;
+  //     });
   
-  });
+  // });
     const newBeer = new Beer();
     newBeer.title = req.body.beerTitle;
     newBeer.brewery = req.body.beerBrewery; 
@@ -105,7 +106,9 @@ module.exports = (app) => {
     newBeer.form = req.body.beerForm;
     newBeer.location = req.body.beerLocation;
     newBeer.size = req.body.beerSize;
-    newBeer.image = '../../images/beers/' + req.body.beerTitle + '.jpeg';
+    newBeer.image = req.body.beerImage;
+    newBeer.untappd = req.body.beerUntappd;
+    // newBeer.image = '../../images/beers/' + req.body.beerTitle + '.jpeg';
     newBeer.save((err, beer) => {
       if (err) {
         return res.send({

@@ -215,6 +215,7 @@ export default function Beers() {
       beerForm: beerForm,
       beerLocation: beerLocation,
       beerSize: beerSize,
+      beerUntappd: untappdURL
     }
     axios.post(apiURL + '/api/add/beers', beerItem)
       .then(function (response) {
@@ -262,6 +263,7 @@ export default function Beers() {
       beerForm: beerForm,
       beerLocation: beerLocation,
       beerSize: beerSize,
+      beerUntappd: untappdURL
     }
     let initialrows = []
     axios.post(apiURL + '/api/edit/beers', beerItem)
