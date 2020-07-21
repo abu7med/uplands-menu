@@ -15,7 +15,7 @@ export default function Footer() {
   const classes = useStyles();
   return (
     <footer className={classes.text}>
-      <Typography  variant="h6">
+      {/* <Typography  variant="h6">
         Contact us:
         <Link color="inherit" display="block" href="#" >
         Beer enquiries
@@ -26,7 +26,7 @@ export default function Footer() {
       <Link color="inherit" display="block" href="#" >
          Food enquiries
       </Link>
-                                    </Typography>
+                                    </Typography> */}
     </footer>
   )
 }

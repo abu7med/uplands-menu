@@ -46,6 +46,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useHistory } from "react-router-dom";
 import './Menu.css';
 import Footer from '../Footer/Footer';
@@ -64,7 +65,7 @@ const fontTheme = createMuiTheme({
         // In Chinese and Japanese the characters are usually larger,
         // so a smaller fontsize may be appropriate.
 
-        fontFamily: 'Kalam',
+        fontFamily: 'Roboto',
         fontSize: 11,
 
     },
@@ -99,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'roboto',
         fontSize: 20,
         position: 'sticky',
+ 
 
 
         
@@ -244,6 +246,7 @@ function Sorter(sortVariable, array) {
 export default function Beers() {
     const classes = useStyles();
     const history = useHistory();
+    const [loading, setLoading] = React.useState(true);
     const [rows, setRows] = React.useState([]);
     const [filteredRows, setFilteredRows] = React.useState([]);
     const [searchedRows, setSearchedRows] = React.useState([]);
@@ -375,6 +378,7 @@ export default function Beers() {
                 setSearchedRows([...importedRows])
                 setFilteredRows([...importedRows])
                 setCurrentRows(Sorter(value, [...importedRows]))
+                setLoading(false)
             })
             .catch(function (error) {
                 // handle error
@@ -564,7 +568,10 @@ export default function Beers() {
 
     return (
         <Container disableGutters maxWidth="xs" >
-            <AppBar className={classes.appbar} >
+        {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+                        Loading beers
+    </Typography></div>) : (<div>
+            <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                 <Toolbar variant="dense">
                     <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <ArrowBackIosIcon />
@@ -600,11 +607,17 @@ export default function Beers() {
             </Paper>
  
             <Divider />
+            <Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+                        {currentRows.length } beers found
+    </Typography>
             {currentRows.map(function (row) {
                 return (<MenuItem key={row._id} properties={row} />)
             })}
             <Divider />
             <Footer />
+            </div>
+            )}
+            
         </Container>
     );
 
@@ -655,16 +668,19 @@ function MenuItem(props) {
 
                                     <Typography display="inline" variant="body2">
                                         {props.properties.description}
-                                        <IconButton className={classes.textButton} display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
+                                        <IconButton display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
                                             < IndeterminateCheckBoxIcon />
                                         </IconButton>
                                     </Typography>
                                 ) : (
+
                                         <Typography  display="inline" variant="body2">
-                                            {props.properties.description.substring(0, 60)}...
-                                        <IconButton className={classes.textButton} display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
+                                        {props.properties.description.length > 60 ? 
+                                            (<div>{props.properties.description.substring(0, 60)}...
+                                        <IconButton  display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
                                                 <AddBoxIcon />
-                                            </IconButton>
+                                            </IconButton></div>):(<div style={{ marginBottom: "10px" }} >{props.properties.description.substring}</div>)}
+                                        
                                         </Typography>
                                     )
 

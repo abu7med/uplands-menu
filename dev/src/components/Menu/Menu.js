@@ -126,7 +126,7 @@ export default function Menu() {
 
     return (
         <div className={classes.body}>
-        <Container maxWidth="xs" >
+        <Container disableGutters maxWidth="xs" >
             <Typography variant="h3" gutterBottom>
                 <Box textAlign="center" letterSpacing={3} >
                     menu
