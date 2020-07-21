@@ -6,7 +6,8 @@ const useStyles = makeStyles((theme) => ({
 
   text: {
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    margin: "10px"
 
   },
 }));
@@ -15,6 +16,8 @@ export default function Footer() {
   const classes = useStyles();
   return (
     <footer className={classes.text}>
+    <img  src='../../images/pbu_40_white.png' />
+    {/* <div>Flag icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */}
       {/* <Typography  variant="h6">
         Contact us:
         <Link color="inherit" display="block" href="#" >

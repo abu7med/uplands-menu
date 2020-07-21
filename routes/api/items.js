@@ -38,7 +38,8 @@ module.exports = (app) => {
         form : req.body.beerForm,
         location : req.body.beerLocation,
         image : req.body.beerImage,
-        untappd : req.body.beerUntappd
+        untappd : req.body.beerUntappd,
+        country : req.body.beerCountry
 
     }, function(err, result){
 
@@ -108,6 +109,7 @@ module.exports = (app) => {
     newBeer.size = req.body.beerSize;
     newBeer.image = req.body.beerImage;
     newBeer.untappd = req.body.beerUntappd;
+    newBeer.country = req.body.beerCountry;
     // newBeer.image = '../../images/beers/' + req.body.beerTitle + '.jpeg';
     newBeer.save((err, beer) => {
       if (err) {

@@ -55,6 +55,10 @@ const BeerSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  country: {
+    type: String,
+    default: ''
+  },
   created: {
     type: Date,
     default: Date.now

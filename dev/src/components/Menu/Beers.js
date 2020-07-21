@@ -655,12 +655,14 @@ function MenuItem(props) {
                                 <img className={classes.img} src={props.properties.image} width="50" height="50" />
                             </Grid>
                             <Grid item xs={10}>
-                                <Typography variant="h6" display="inline">
+                                <Typography variant="h6" display="block">
                                     {props.properties.title}
                                 </Typography>
+                                <img style={{ marginRight: "5px" }} src={'../../images/flags/' + props.properties.country + ".png"} width="15" height="15" />
                                 <Typography variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
+                                
                                 <Typography variant="subtitle2" display="block">
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography>

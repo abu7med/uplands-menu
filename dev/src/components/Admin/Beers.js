@@ -143,6 +143,7 @@ export default function Beers() {
   const [beerImage, setImage] = React.useState("");
   const [beerForm, setForm] = React.useState("");
   const [beerSize, setSize] = React.useState("");
+  const [beerCountry, setCountry] = React.useState("");
   const [beerLocation, setLocation] = React.useState("");
   const [imageExists, setImageExists] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -190,6 +191,7 @@ export default function Beers() {
     setType("")
     setRating("")
     setPrice("")
+    setCountry("")
     setAlcohol("")
     setIBU("")
     setImage("")
@@ -209,6 +211,7 @@ export default function Beers() {
       beerType: beerType,
       beerRating: beerRating,
       beerPrice: beerPrice,
+      beerCountry: beerCountry,
       beerAlcohol: beerAlcohol,
       beerIBU: beerIBU,
       beerImage: beerImage,
@@ -232,6 +235,7 @@ export default function Beers() {
     setType("")
     setRating("")
     setPrice("")
+    setCountry("")
     setAlcohol("")
     setIBU("")
     setImage("")
@@ -257,6 +261,7 @@ export default function Beers() {
       beerType: beerType,
       beerRating: beerRating,
       beerPrice: beerPrice,
+      beerCountry: beerCountry,
       beerAlcohol: beerAlcohol,
       beerIBU: beerIBU,
       beerImage: beerImage,
@@ -273,7 +278,6 @@ export default function Beers() {
     
           initialrows.push(item);
         }
-        console.log(initialrows)
         setRows(initialrows)
 
       })
@@ -288,6 +292,7 @@ export default function Beers() {
     setType("")
     setRating("")
     setPrice("")
+    setCountry("")
     setAlcohol("")
     setIBU("")
     setImage("")
@@ -302,21 +307,23 @@ export default function Beers() {
 
   };
   const handleImport = () => {
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const url = untappdURL
-    axios.get(proxyurl + url)
+    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const untappdID = untappdURL.substring(untappdURL.lastIndexOf('/') + 1)
+
+    axios.get("https://api.untappd.com/v4/beer/info/"+untappdID+"?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
       .then(function (response) {
         // handle success
-        const $ = cheerio.load(response.data);
-        setTitle($('div.name').children('h1').text());
-        setBrewery($('p.brewery').text());
-        setType($('p.style').text());
-        setAlcohol($('p.abv').text().replace(/[^\d.-]/g, ''));
-        setIBU(() => { if ($('p.ibu').text().replace(/[^\d.-]/g, '') === "") { return (0) } else { return $('p.ibu').text().replace(/[^\d.-]/g, '') } });
-        setRating($('span.num').text().replace(/[^\d.-]/g, ''));
-        setDescription($('div.beer-descrption-read-less').text());
-        setImage($('a.label').children('img').attr('src'));
-        checkImageExists($('a.label').children('img').attr('src'), function(existsImage) {
+
+        setTitle(response.data.response.beer.beer_name);
+        setBrewery(response.data.response.beer.brewery.brewery_name);
+        setType(response.data.response.beer.beer_style);
+        setAlcohol(response.data.response.beer.beer_abv);
+        setIBU(response.data.response.beer.beer_ibu);
+        setRating(response.data.response.beer.weighted_rating_score);
+        setDescription(response.data.response.beer.beer_description);
+        setImage(response.data.response.beer.beer_label);
+        setCountry(response.data.response.beer.brewery.country_name);
+        checkImageExists(response.data.response.beer.beer_label, function(existsImage) {
           if(existsImage == true) {
             setImageExists(true)
           }
@@ -332,7 +339,36 @@ export default function Beers() {
       .then(function () {
         // always executed
       });
-    const html = axios.get(proxyurl + url);
+    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    // const url = untappdURL
+    // axios.get(proxyurl + url)
+    //   .then(function (response) {
+    //     // handle success
+    //     const $ = cheerio.load(response.data);
+    //     setTitle($('div.name').children('h1').text());
+    //     setBrewery($('p.brewery').text());
+    //     setType($('p.style').text());
+    //     setAlcohol($('p.abv').text().replace(/[^\d.-]/g, ''));
+    //     setIBU(() => { if ($('p.ibu').text().replace(/[^\d.-]/g, '') === "") { return (0) } else { return $('p.ibu').text().replace(/[^\d.-]/g, '') } });
+    //     setRating($('span.num').text().replace(/[^\d.-]/g, ''));
+    //     setDescription($('div.beer-descrption-read-less').text());
+    //     setImage($('a.label').children('img').attr('src'));
+    //     checkImageExists($('a.label').children('img').attr('src'), function(existsImage) {
+    //       if(existsImage == true) {
+    //         setImageExists(true)
+    //       }
+    //       else {
+    //         setImageExists(false)
+    //       }
+    //       });
+    //   })
+    //   .catch(function (error) {
+    //     // handle error
+    //     console.log(error);
+    //   })
+    //   .then(function () {
+    //     // always executed
+    //   });
 
 
   };
@@ -370,8 +406,8 @@ export default function Beers() {
   const handleEditOpen = (event, row) => {
     if(row._id != null)
     setID(row._id)
-    if(row.URL != null)
-    setURL(row.URL)
+    if(row.untappd != null)
+    setURL(row.untappd)
     if(row.title != null)
     setTitle(row.title)
     if(row.brewery != null)
@@ -382,6 +418,8 @@ export default function Beers() {
     setType(row.type)
     if(row.rating != null)
     setRating(row.rating)
+    if(row.country != null)
+    setCountry(row.country)
     if(row.price != null)
     setPrice(row.price)
     if(row.alcohol != null)
@@ -511,7 +549,7 @@ export default function Beers() {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     fullWidth
                     value={beerType}
@@ -522,7 +560,7 @@ export default function Beers() {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     fullWidth
                     value={beerRating}
@@ -530,6 +568,17 @@ export default function Beers() {
                     margin="dense"
                     id="rating"
                     label="Rating"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerCountry}
+                    onChange={(e) => setCountry(e.target.value)}
+                    margin="dense"
+                    id="country"
+                    label="Country"
                     variant="outlined"
                   />
                 </Grid>
@@ -691,7 +740,7 @@ export default function Beers() {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     fullWidth
                     value={beerType}
@@ -702,7 +751,7 @@ export default function Beers() {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     fullWidth
                     value={beerRating}
@@ -710,6 +759,17 @@ export default function Beers() {
                     margin="dense"
                     id="rating"
                     label="Rating"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    value={beerCountry}
+                    onChange={(e) => setCountry(e.target.value)}
+                    margin="dense"
+                    id="country"
+                    label="Country"
                     variant="outlined"
                   />
                 </Grid>
