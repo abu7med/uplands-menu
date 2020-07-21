@@ -10,38 +10,55 @@ import { Container, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import './Menu.css';
 
 const images = [
     {
         url: '../../images/beers.jpg',
-        title: 'Beers',
-        width: '50%',
+        title: 'beers',
+        width: '100%',
     },
     {
         url: '../../images/food.jpg',
-        title: 'Food',
-        width: '50%',
+        title: 'food',
+        width: '100%',
     },
     {
         url: '../../images/drinks.jpg',
-        title: 'Drinks',
-        width: '50%',
+        title: 'drinks',
+        width: '100%',
     },
     {
         url: '../../images/ciders.jpg',
-        title: 'Ciders',
-        width: '50%',
+        title: 'ciders',
+        width: '100%',
     },
     {
         url: '../../images/soda.jpg',
-        title: 'Sodas',
-        width: '50%',
+        title: 'sodas',
+        width: '100%',
     },
     {
         url: '../../images/wine.jpg',
-        title: 'Wine',
-        width: '50%',
+        title: 'wine',
+        width: '100%',
+    },
+    {
+        url: '../../images/whiskey.jpg',
+        title: 'whiskey',
+        width: '100%',
+    },
+    {
+        url: '../../images/shots.jpg',
+        title: 'shots',
+        width: '100%',
+    },
+    {
+        url: '../../images/boardgames.jpeg',
+        title: 'board games',
+        width: '100%',
     },
 ];
 
@@ -53,9 +70,15 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 300,
         width: '100%',
     },
+    appbar: {
+        fontFamily: 'roboto',
+        fontSize: 20,
+        position: 'sticky',
+
+    },
     image: {
         position: 'relative',
-        height: 200,
+        height: 100,
         [theme.breakpoints.down('xs')]: {
             width: '100% !important', // Overrides inline-style
             height: 100,
@@ -125,19 +148,22 @@ export default function Menu() {
     const classes = useStyles();
 
     return (
-        <div className={classes.body}>
+
         <Container disableGutters maxWidth="xs" >
-            <Typography variant="h3" gutterBottom>
-                <Box textAlign="center" letterSpacing={3} >
-                    menu
-        </Box >
-            </Typography>
+            <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
+                        <Toolbar variant="dense">
+                            
+                            <Typography variant="h6" className={classes.appbar}>
+                                Menu
+    </Typography>
+
+                        </Toolbar>
+                    </AppBar>
 
             <Box border={1} boxShadow={3}>
                 <ButtonBases />
             </Box >
         </Container>
-        </div>
     );
 
 
@@ -157,7 +183,7 @@ function ButtonBases() {
                     style={{
                         width: image.width,
                     }}
-                    href={'/' + image.title}
+                    href={'/' + image.title.split(" ").join("")}
                 >
                     <span
                         className={classes.imageSrc}
@@ -173,7 +199,7 @@ function ButtonBases() {
                             color="inherit"
                             className={classes.imageTitle}
                         >
-                            {image.title}
+                            {image.title.charAt(0).toUpperCase() + image.title.slice(1).toLowerCase()}
                             <span className={classes.imageMarked} />
                         </Typography>
                     </span>

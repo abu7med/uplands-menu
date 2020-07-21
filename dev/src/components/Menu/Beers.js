@@ -47,6 +47,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Link from '@material-ui/core/Link';
 import { useHistory } from "react-router-dom";
 import './Menu.css';
 import Footer from '../Footer/Footer';
@@ -100,10 +101,10 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'roboto',
         fontSize: 20,
         position: 'sticky',
- 
 
 
-        
+
+
 
     },
     sticky: {
@@ -111,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
 
         position: 'sticky',
 
-        
+
 
     },
     iconButton: {
@@ -119,6 +120,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         marginTop: '10px',
+        marginBottom: '10px',
         marginLeft: '10px',
         marginRight: '10px',
     },
@@ -141,21 +143,21 @@ const useStyles = makeStyles((theme) => ({
     },
     label: {
         position: 'relative',
-  top: '5px',
-  marginBottom: '4px',
+        top: '5px',
+        marginBottom: '4px',
     },
     rating: {
 
         display: "inline",
         position: 'relative',
-  top: '-3px',
+        top: '-3px',
 
     },
     img: {
         marginTop: '4px',
         border: '1px ',
         borderStyle: 'outset',
-  borderRadius: '8px',
+        borderRadius: '8px',
     },
     card: {
         color: 'white',
@@ -172,7 +174,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textButton: {
         position: 'relative',
-  top: '-13px',
+        top: '-13px',
         float: 'right',
 
 
@@ -274,6 +276,7 @@ export default function Beers() {
     const handleSortChange = (event) => {
         setValue(event.target.value);
         setCurrentRows(Sorter(event.target.value, currentRows))
+        window.scrollTo(0, 0)
     };
 
     const handleFilterChange = (event) => {
@@ -330,6 +333,7 @@ export default function Beers() {
 
         )
         setCurrentRows(Sorter(value, newRows))
+        window.scrollTo(0, 0)
 
     };
     const handleSearchChange = (event) => {
@@ -348,19 +352,22 @@ export default function Beers() {
 
         )
         setCurrentRows(Sorter(value, newRows))
+        window.scrollTo(0, 0)
 
     };
     const handleClick = (event) => {
         history.push("/");
-      }
+    }
 
 
     const toggleDrawer = (anchor, open) => (event) => {
+
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
 
         setState({ ...state, [anchor]: open });
+
     };
     React.useEffect(() => {
         axios.get(apiURL + "/api/get/beers")
@@ -392,232 +399,232 @@ export default function Beers() {
     }, []);
 
     const sortList = (anchor) => (
-            <Container maxWidth="xs">
-                <div
-                    className={clsx(classes.list, {
-                        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-                    })}
-                    role="presentation"
-                    onClick={toggleDrawer(anchor, false)}
-                    onKeyDown={toggleDrawer(anchor, false)}
-                >
+        <Container maxWidth="xs">
+            <div
+                className={clsx(classes.list, {
+                    [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                })}
+                role="presentation"
+                onClick={toggleDrawer(anchor, false)}
+                onKeyDown={toggleDrawer(anchor, false)}
+            >
 
-                    <FormControl component="fieldset">
-                        <FormLabel className={classes.label} component="legend">Sort by</FormLabel>
-                        <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
-                            <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
-                            <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
-                            <FormControlLabel value="brewery-ascending" control={<Radio />} label="Brewery, A-Z" />
-                            <FormControlLabel value="brewery-descending" control={<Radio />} label="Brewery, Z-A" />
-                            <FormControlLabel value="alcohol-ascending" control={<Radio />} label="Alcohol rate, Ascending" />
-                            <FormControlLabel value="alcohol-descending" control={<Radio />} label="Alcohol rate, Descending" />
-                            <FormControlLabel value="rating-ascending" control={<Radio />} label="Untappd rating, Ascending" />
-                            <FormControlLabel value="rating-descending" control={<Radio />} label="Untappd rating, Descending" />
-                            <FormControlLabel value="ibu-ascending" control={<Radio />} label="IBU, Ascending" />
-                            <FormControlLabel value="ibu-descending" control={<Radio />} label="IBU, Descending" />
-                        </RadioGroup>
-                    </FormControl>
-                </div>
-            </Container>
+                <FormControl component="fieldset">
+                    <FormLabel className={classes.label} component="legend">Sort by</FormLabel>
+                    <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
+                        <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
+                        <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
+                        <FormControlLabel value="brewery-ascending" control={<Radio />} label="Brewery, A-Z" />
+                        <FormControlLabel value="brewery-descending" control={<Radio />} label="Brewery, Z-A" />
+                        <FormControlLabel value="alcohol-ascending" control={<Radio />} label="Alcohol rate, Ascending" />
+                        <FormControlLabel value="alcohol-descending" control={<Radio />} label="Alcohol rate, Descending" />
+                        <FormControlLabel value="rating-ascending" control={<Radio />} label="Untappd rating, Ascending" />
+                        <FormControlLabel value="rating-descending" control={<Radio />} label="Untappd rating, Descending" />
+                        <FormControlLabel value="ibu-ascending" control={<Radio />} label="IBU, Ascending" />
+                        <FormControlLabel value="ibu-descending" control={<Radio />} label="IBU, Descending" />
+                    </RadioGroup>
+                </FormControl>
+            </div>
+        </Container>
 
-        
+
     );
 
     const filterList = (anchor) => (
-        
-            <Container maxWidth="xs">
-                <div
-                    className={clsx(classes.list, {
-                        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-                    })}
-                    role="presentation"
-                    onClick={toggleDrawer("filter", true)}
-                    onKeyDown={toggleDrawer("filter", true)}
-                >
-                    <FormGroup >
-                        <FormLabel className={classes.label} component="legend">Filter by</FormLabel>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedAlcoholFree}
-                                    onChange={handleFilterChange}
-                                    name="checkedAlcoholFree"
-                                    color="primary"
-                                />
-                            }
-                            label="Alcohol Free (<2.25%)"
-                        />
-                        <Divider />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedGlutenFree}
-                                    onChange={handleFilterChange}
-                                    name="checkedGlutenFree"
-                                    color="primary"
-                                />
-                            }
-                            label="Gluten Free"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedAle}
-                                    onChange={handleFilterChange}
-                                    name="checkedAle"
-                                    color="primary"
-                                />
-                            }
-                            label="Ale"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedLager}
-                                    onChange={handleFilterChange}
-                                    name="checkedLager"
-                                    color="primary"
-                                />
-                            }
-                            label="Lager"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedSour}
-                                    onChange={handleFilterChange}
-                                    name="checkedSour"
-                                    color="primary"
-                                />
-                            }
-                            label="Sour"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedStout}
-                                    onChange={handleFilterChange}
-                                    name="checkedStout"
-                                    color="primary"
-                                />
-                            }
-                            label="Stout"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedIPA}
-                                    onChange={handleFilterChange}
-                                    name="checkedIPA"
-                                    color="primary"
-                                />
-                            }
-                            label="IPA"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedFruity}
-                                    onChange={handleFilterChange}
-                                    name="checkedFruity"
-                                    color="primary"
-                                />
-                            }
-                            label="Fruity"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedPorter}
-                                    onChange={handleFilterChange}
-                                    name="checkedPorter"
-                                    color="primary"
-                                />
-                            }
-                            label="Porter"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedWheatBeer}
-                                    onChange={handleFilterChange}
-                                    name="checkedWheatBeer"
-                                    color="primary"
-                                />
-                            }
-                            label="Wheat Beer"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={filter.checkedBelgian}
-                                    onChange={handleFilterChange}
-                                    name="checkedBelgian"
-                                    color="primary"
-                                />
-                            }
-                            label="Belgian"
-                        />
 
-                    </FormGroup>
-                </div>
-            </Container>
-      
+        <Container maxWidth="xs">
+            <div
+                className={clsx(classes.list, {
+                    [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                })}
+                role="presentation"
+                onClick={toggleDrawer("filter", true)}
+                onKeyDown={toggleDrawer("filter", true)}
+            >
+                <FormGroup >
+                    <FormLabel className={classes.label} component="legend">Filter by</FormLabel>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedAlcoholFree}
+                                onChange={handleFilterChange}
+                                name="checkedAlcoholFree"
+                                color="primary"
+                            />
+                        }
+                        label="Alcohol Free (<2.25%)"
+                    />
+                    <Divider />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedGlutenFree}
+                                onChange={handleFilterChange}
+                                name="checkedGlutenFree"
+                                color="primary"
+                            />
+                        }
+                        label="Gluten Free"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedAle}
+                                onChange={handleFilterChange}
+                                name="checkedAle"
+                                color="primary"
+                            />
+                        }
+                        label="Ale"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedLager}
+                                onChange={handleFilterChange}
+                                name="checkedLager"
+                                color="primary"
+                            />
+                        }
+                        label="Lager"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedSour}
+                                onChange={handleFilterChange}
+                                name="checkedSour"
+                                color="primary"
+                            />
+                        }
+                        label="Sour"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedStout}
+                                onChange={handleFilterChange}
+                                name="checkedStout"
+                                color="primary"
+                            />
+                        }
+                        label="Stout"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedIPA}
+                                onChange={handleFilterChange}
+                                name="checkedIPA"
+                                color="primary"
+                            />
+                        }
+                        label="IPA"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedFruity}
+                                onChange={handleFilterChange}
+                                name="checkedFruity"
+                                color="primary"
+                            />
+                        }
+                        label="Fruity"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedPorter}
+                                onChange={handleFilterChange}
+                                name="checkedPorter"
+                                color="primary"
+                            />
+                        }
+                        label="Porter"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedWheatBeer}
+                                onChange={handleFilterChange}
+                                name="checkedWheatBeer"
+                                color="primary"
+                            />
+                        }
+                        label="Wheat Beer"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedBelgian}
+                                onChange={handleFilterChange}
+                                name="checkedBelgian"
+                                color="primary"
+                            />
+                        }
+                        label="Belgian"
+                    />
+
+                </FormGroup>
+            </div>
+        </Container>
+
 
     );
 
     return (
         <Container disableGutters maxWidth="xs" >
-        {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
-                        Loading beers
+            {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+                Loading beers
     </Typography></div>) : (<div>
-            <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
-                <Toolbar variant="dense">
-                    <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <ArrowBackIosIcon />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.appbar}>
-                        Beers
+                    <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
+                        <Toolbar variant="dense">
+                            <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                                <ArrowBackIosIcon />
+                            </IconButton>
+                            <Typography variant="h6" className={classes.appbar}>
+                                Beers
     </Typography>
 
-                </Toolbar>
-            </AppBar>
-            <Paper component="form" className={classes.root}>
-                <SearchIcon style={{ fontSize: 24 }} />
-                <InputBase
-                    className={classes.input}
-                    placeholder="Search Beers and Breweries..."
-                    onChange={handleSearchChange}
-                    value={searchValue}
-                />
+                        </Toolbar>
+                    </AppBar>
+                    <Paper component="form" className={classes.root}>
+                        <SearchIcon style={{ fontSize: 24 }} />
+                        <InputBase
+                            className={classes.input}
+                            placeholder="Search Beers and Breweries..."
+                            onChange={handleSearchChange}
+                            value={searchValue}
+                        />
 
-                <React.Fragment key="sort">
-                    <Button onClick={toggleDrawer("sort", true)}>Sort</Button>
-                    <Drawer anchor="left" open={state["sort"]} onClose={toggleDrawer("sort", false)}>
-                        {sortList("left")}
-                    </Drawer>
-                </React.Fragment>
-                <React.Fragment key="filter">
-                    <Button onClick={toggleDrawer("filter", true)}>Filter</Button>
-                    <Drawer anchor="left" open={state["filter"]} onClose={toggleDrawer("filter", false)}>
-                        {filterList("left")}
-                    </Drawer>
-                </React.Fragment>
+                        <React.Fragment key="sort">
+                            <Button onClick={toggleDrawer("sort", true)}>Sort</Button>
+                            <Drawer anchor="left" open={state["sort"]} onClose={toggleDrawer("sort", false)}>
+                                {sortList("left")}
+                            </Drawer>
+                        </React.Fragment>
+                        <React.Fragment key="filter">
+                            <Button onClick={toggleDrawer("filter", true)}>Filter</Button>
+                            <Drawer anchor="left" open={state["filter"]} onClose={toggleDrawer("filter", false)}>
+                                {filterList("left")}
+                            </Drawer>
+                        </React.Fragment>
 
-            </Paper>
- 
-            <Divider />
-            <Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
-                        {currentRows.length } beers found
+                    </Paper>
+
+                    <Divider />
+                    <Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+                        {currentRows.length} beers found
     </Typography>
-            {currentRows.map(function (row) {
-                return (<MenuItem key={row._id} properties={row} />)
-            })}
-            <Divider />
-            <Footer />
-            </div>
-            )}
-            
+                    {currentRows.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <Divider />
+                    <Footer />
+                </div>
+                )}
+
         </Container>
     );
 
@@ -639,9 +646,9 @@ function MenuItem(props) {
         <div>
 
 
-                <Card className={classes.card}>
-                    <div className={classes.content}>
-                        <Grid container >
+            <Card className={classes.card}>
+                <div className={classes.content}>
+                    <Grid container >
                         <ThemeProvider theme={fontTheme}>
 
                             <Grid item xs={2}>
@@ -654,7 +661,7 @@ function MenuItem(props) {
                                 <Typography variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
-                                <Typography  variant="subtitle2" display="block">
+                                <Typography variant="subtitle2" display="block">
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography>
                                 <Box borderColor="transparent">
@@ -663,29 +670,24 @@ function MenuItem(props) {
                                 </Box>
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
-                            <Grid item xs={12}>
+
                                 {showText ? (
 
                                     <Typography display="inline" variant="body2">
                                         {props.properties.description}
-                                        <IconButton display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
-                                            < IndeterminateCheckBoxIcon />
-                                        </IconButton>
+                                        <Link  color="inherit" onClick={handleTextButton}>
+                                            [Show less]
+                                     </Link>
                                     </Typography>
-                                ) : (
+                                ) : (<div>{(props.properties.description.length > 60) ? (<Typography display="inline" variant="body2">
+                                    
 
-                                        <Typography  display="inline" variant="body2">
-                                        {props.properties.description.length > 60 ? 
-                                            (<div>{props.properties.description.substring(0, 60)}...
-                                        <IconButton  display="inline" onClick={handleTextButton} color="inherit" aria-label="menu">
-                                                <AddBoxIcon />
-                                            </IconButton></div>):(<div style={{ marginBottom: "10px" }} >{props.properties.description.substring}</div>)}
-                                        
-                                        </Typography>
-                                    )
+                                        {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
+                                            [Show more]
+                                     </Link></Typography>) : (<Typography display="inline" variant="body2">{props.properties.description}</Typography>)
 
-                                }</Grid>
-                                
+                                    }</div>)} 
+
                             {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>
                             <Typography variant="body1">
@@ -708,10 +710,10 @@ function MenuItem(props) {
                             </IconButton></Grid></Grid>)
                            
                             } */}
-</ThemeProvider>
-                        </Grid >
-                    </div>
-                </Card>
+                        </ThemeProvider>
+                    </Grid >
+                </div>
+            </Card>
         </div>
 
 
