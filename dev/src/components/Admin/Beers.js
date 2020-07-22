@@ -118,14 +118,14 @@ axios.get(apiURL + "/api/get/beers")
 
 function checkImageExists(imageUrl, callBack) {
   var imageData = new Image();
-  imageData.onload = function() {
-  callBack(true);
+  imageData.onload = function () {
+    callBack(true);
   };
-  imageData.onerror = function() {
-  callBack(false);
+  imageData.onerror = function () {
+    callBack(false);
   };
   imageData.src = imageUrl;
-  }
+}
 
 export default function Beers() {
   //button
@@ -167,14 +167,14 @@ export default function Beers() {
     });
     for (var i = 0; i < initialrows.length; i++) {
       var obj = initialrows[i];
-  
+
       if (selected.indexOf(obj._id) !== -1) {
         initialrows.splice(i, 1);
-          i--;
+        i--;
       }
-  }
-  setRows([...initialrows])
-  setSelected([])
+    }
+    setRows([...initialrows])
+    setSelected([])
 
   };
   //create new item functions
@@ -251,10 +251,10 @@ export default function Beers() {
 
   };
 
-  
+
   const handleEdit = () => {
     let beerItem = {
-      beerID : beerID,
+      beerID: beerID,
       beerTitle: beerTitle,
       beerBrewery: beerBrewery,
       beerDescription: beerDescription,
@@ -275,7 +275,7 @@ export default function Beers() {
       .then(function (response) {
         for (var prop in response.data) {
           var item = response.data[prop];
-    
+
           initialrows.push(item);
         }
         setRows(initialrows)
@@ -310,7 +310,7 @@ export default function Beers() {
     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
     const untappdID = untappdURL.substring(untappdURL.lastIndexOf('/') + 1)
 
-    axios.get("https://api.untappd.com/v4/beer/info/"+untappdID+"?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
+    axios.get("https://api.untappd.com/v4/beer/info/" + untappdID + "?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
       .then(function (response) {
         // handle success
 
@@ -323,14 +323,14 @@ export default function Beers() {
         setDescription(response.data.response.beer.beer_description);
         setImage(response.data.response.beer.beer_label);
         setCountry(response.data.response.beer.brewery.country_name);
-        checkImageExists(response.data.response.beer.beer_label, function(existsImage) {
-          if(existsImage == true) {
+        checkImageExists(response.data.response.beer.beer_label, function (existsImage) {
+          if (existsImage == true) {
             setImageExists(true)
           }
           else {
             setImageExists(false)
           }
-          });
+        });
       })
       .catch(function (error) {
         // handle error
@@ -375,14 +375,14 @@ export default function Beers() {
 
   const handleImageChange = (event) => {
     setImage(event.target.value)
-    checkImageExists(event.target.value, function(existsImage) {
-      if(existsImage == true) {
+    checkImageExists(event.target.value, function (existsImage) {
+      if (existsImage == true) {
         setImageExists(true)
       }
       else {
         setImageExists(false)
       }
-      });
+    });
 
   };
   //table functions
@@ -404,46 +404,46 @@ export default function Beers() {
   };
 
   const handleEditOpen = (event, row) => {
-    if(row._id != null)
-    setID(row._id)
-    if(row.untappd != null)
-    setURL(row.untappd)
-    if(row.title != null)
-    setTitle(row.title)
-    if(row.brewery != null)
-    setBrewery(row.brewery)
-    if(row.description != null)
-    setDescription(row.description)
-    if(row.type != null)
-    setType(row.type)
-    if(row.rating != null)
-    setRating(row.rating)
-    if(row.country != null)
-    setCountry(row.country)
-    if(row.price != null)
-    setPrice(row.price)
-    if(row.alcohol != null)
-    setAlcohol(row.alcohol)
-    if(row.ibu != null)
-    setIBU(row.ibu)
-    if(row.form != null)
-    setForm(row.form)
-    if(row.location != null)
-    setLocation(row.location)
-    if(row.size != null)
-    setSize(row.size)
-    if(row.image != null)
-    setImage(row.image)
-    checkImageExists(row.image, function(existsImage) {
-      if(existsImage == true) {
+    if (row._id != null)
+      setID(row._id)
+    if (row.untappd != null)
+      setURL(row.untappd)
+    if (row.title != null)
+      setTitle(row.title)
+    if (row.brewery != null)
+      setBrewery(row.brewery)
+    if (row.description != null)
+      setDescription(row.description)
+    if (row.type != null)
+      setType(row.type)
+    if (row.rating != null)
+      setRating(row.rating)
+    if (row.country != null)
+      setCountry(row.country)
+    if (row.price != null)
+      setPrice(row.price)
+    if (row.alcohol != null)
+      setAlcohol(row.alcohol)
+    if (row.ibu != null)
+      setIBU(row.ibu)
+    if (row.form != null)
+      setForm(row.form)
+    if (row.location != null)
+      setLocation(row.location)
+    if (row.size != null)
+      setSize(row.size)
+    if (row.image != null)
+      setImage(row.image)
+    checkImageExists(row.image, function (existsImage) {
+      if (existsImage == true) {
         setImageExists(true)
       }
       else {
         setImageExists(false)
       }
-      });
+    });
     setEditOpen(true);
-    
+
   };
 
   const handleClick = (event, _id) => {
@@ -479,7 +479,186 @@ export default function Beers() {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const createDialogContent = () => {
+    return (<DialogContent>
+      <div className={classes.root}>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              value={untappdURL}
+              onChange={(e) => setURL(e.target.value)}
+              margin="dense"
+              id="url"
+              label="Untappd URL"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Button fullWidth
+              onClick={handleImport}
+              variant="contained"
+              className={classes.button}>
+              Import Beer info</Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              value={beerTitle}
+              onChange={(e) => setTitle(e.target.value)}
+              margin="dense"
+              id="title"
+              label="Title"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              value={beerBrewery}
+              onChange={(e) => setBrewery(e.target.value)}
+              margin="dense"
+              id="brewery"
+              label="Brewery"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              value={beerDescription}
+              onChange={(e) => setDescription(e.target.value)}
+              margin="dense"
+              id="description"
+              label="Description"
+              multiline
+              rows={3}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerType}
+              onChange={(e) => setType(e.target.value)}
+              margin="dense"
+              id="type"
+              label="Type"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerRating}
+              onChange={(e) => setRating(e.target.value)}
+              margin="dense"
+              id="rating"
+              label="Rating"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerCountry}
+              onChange={(e) => setCountry(e.target.value)}
+              margin="dense"
+              id="country"
+              label="Country"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerPrice}
+              onChange={(e) => setPrice(e.target.value)}
+              margin="dense"
+              id="price"
+              label="Price"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerAlcohol}
+              onChange={(e) => setAlcohol(e.target.value)}
+              margin="dense"
+              id="alcohol"
+              label="Alcohol rate"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerIBU}
+              onChange={(e) => setIBU(e.target.value)}
+              margin="dense"
+              id="ibu"
+              label="IBU"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerLocation}
+              onChange={(e) => setLocation(e.target.value)}
+              margin="dense"
+              id="location"
+              label="Location"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerForm}
+              onChange={(e) => setForm(e.target.value)}
+              margin="dense"
+              id="form"
+              label="Form"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              fullWidth
+              value={beerSize}
+              onChange={(e) => setSize(e.target.value)}
+              margin="dense"
+              id="size"
+              label="Size"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
 
+            {imageExists ? (
+              <img src={beerImage} width="100" height="100" />
+            ) : null}
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              value={beerImage}
+              onChange={handleImageChange}
+              margin="dense"
+              id="imageURL"
+              label="Image URL"
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+      </div>
+    </DialogContent>)
+  }
 
 
   return (
@@ -490,185 +669,8 @@ export default function Beers() {
       </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">New Beer</DialogTitle>
-          <DialogContent>
-            <div className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    value={untappdURL}
-                    onChange={(e) => setURL(e.target.value)}
-                    margin="dense"
-                    id="url"
-                    label="Untappd URL"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Button fullWidth
-                    onClick={handleImport}
-                    variant="contained"
-                    className={classes.button}>
-                    Import Beer info</Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    value={beerTitle}
-                    onChange={(e) => setTitle(e.target.value)}
-                    margin="dense"
-                    id="title"
-                    label="Title"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    value={beerBrewery}
-                    onChange={(e) => setBrewery(e.target.value)}
-                    margin="dense"
-                    id="brewery"
-                    label="Brewery"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    value={beerDescription}
-                    onChange={(e) => setDescription(e.target.value)}
-                    margin="dense"
-                    id="description"
-                    label="Description"
-                    multiline
-                    rows={3}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerType}
-                    onChange={(e) => setType(e.target.value)}
-                    margin="dense"
-                    id="type"
-                    label="Type"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerRating}
-                    onChange={(e) => setRating(e.target.value)}
-                    margin="dense"
-                    id="rating"
-                    label="Rating"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerCountry}
-                    onChange={(e) => setCountry(e.target.value)}
-                    margin="dense"
-                    id="country"
-                    label="Country"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerPrice}
-                    onChange={(e) => setPrice(e.target.value)}
-                    margin="dense"
-                    id="price"
-                    label="Price"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerAlcohol}
-                    onChange={(e) => setAlcohol(e.target.value)}
-                    margin="dense"
-                    id="alcohol"
-                    label="Alcohol rate"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerIBU}
-                    onChange={(e) => setIBU(e.target.value)}
-                    margin="dense"
-                    id="ibu"
-                    label="IBU"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerLocation}
-                    onChange={(e) => setLocation(e.target.value)}
-                    margin="dense"
-                    id="location"
-                    label="Location"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerForm}
-                    onChange={(e) => setForm(e.target.value)}
-                    margin="dense"
-                    id="form"
-                    label="Form"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerSize}
-                    onChange={(e) => setSize(e.target.value)}
-                    margin="dense"
-                    id="size"
-                    label="Size"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12}>
 
-                {imageExists ? (
-              <img src={beerImage} width="100" height="100" />
-            ) : null}
-                </Grid>
-                <Grid item xs={12}>
-                <TextField
-                    fullWidth
-                    value={beerImage}
-                    onChange={handleImageChange}
-                    margin="dense"
-                    id="imageURL"
-                    label="Image URL"
-                    variant="outlined"
-                  />
-                </Grid>
-              </Grid>
-            </div>
-          </DialogContent>
-
+          {createDialogContent()}
           <DialogActions>
             <Button onClick={handleClose} color="primary">
               Cancel
@@ -679,186 +681,9 @@ export default function Beers() {
           </DialogActions>
         </Dialog>
 
-                <Dialog open={editOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">New Beer</DialogTitle>
-          <DialogContent>
-            <div className={classes.root}>
-              <Grid container spacing={1}>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    value={untappdURL}
-                    onChange={(e) => setURL(e.target.value)}
-                    margin="dense"
-                    id="url"
-                    label="Untappd URL"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Button fullWidth
-                    onClick={handleImport}
-                    variant="contained"
-                    className={classes.button}>
-                    Import Beer info</Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    value={beerTitle}
-                    onChange={(e) => setTitle(e.target.value)}
-                    margin="dense"
-                    id="title"
-                    label="Title"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    value={beerBrewery}
-                    onChange={(e) => setBrewery(e.target.value)}
-                    margin="dense"
-                    id="brewery"
-                    label="Brewery"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    value={beerDescription}
-                    onChange={(e) => setDescription(e.target.value)}
-                    margin="dense"
-                    id="description"
-                    label="Description"
-                    multiline
-                    rows={3}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerType}
-                    onChange={(e) => setType(e.target.value)}
-                    margin="dense"
-                    id="type"
-                    label="Type"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerRating}
-                    onChange={(e) => setRating(e.target.value)}
-                    margin="dense"
-                    id="rating"
-                    label="Rating"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerCountry}
-                    onChange={(e) => setCountry(e.target.value)}
-                    margin="dense"
-                    id="country"
-                    label="Country"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerPrice}
-                    onChange={(e) => setPrice(e.target.value)}
-                    margin="dense"
-                    id="price"
-                    label="Price"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerAlcohol}
-                    onChange={(e) => setAlcohol(e.target.value)}
-                    margin="dense"
-                    id="alcohol"
-                    label="Alcohol rate"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerIBU}
-                    onChange={(e) => setIBU(e.target.value)}
-                    margin="dense"
-                    id="ibu"
-                    label="IBU"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerLocation}
-                    onChange={(e) => setLocation(e.target.value)}
-                    margin="dense"
-                    id="location"
-                    label="Location"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerForm}
-                    onChange={(e) => setForm(e.target.value)}
-                    margin="dense"
-                    id="form"
-                    label="Form"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    value={beerSize}
-                    onChange={(e) => setSize(e.target.value)}
-                    margin="dense"
-                    id="size"
-                    label="Size"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-
-                {imageExists ? (
-              <img src={beerImage} width="100" height="100" />
-            ) : null}
-                </Grid>
-                <Grid item xs={12}>
-                <TextField
-                    fullWidth
-                    value={beerImage}
-                    onChange={handleImageChange}
-                    margin="dense"
-                    id="imageURL"
-                    label="Image URL"
-                    variant="outlined"
-                  />
-                </Grid>
-              </Grid>
-            </div>
-          </DialogContent>
+        <Dialog open={editOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Edit Beer</DialogTitle>
+          {createDialogContent()}
 
           <DialogActions>
             <Button onClick={handleClose} color="primary">
@@ -943,9 +768,9 @@ export default function Beers() {
                           />
                         </TableCell>
                         <TableCell padding="checkbox">
-                        <IconButton  onClick={(event) => handleEditOpen(event, row)} aria-label="edit">
-  <EditIcon />
-</IconButton>
+                          <IconButton onClick={(event) => handleEditOpen(event, row)} aria-label="edit">
+                            <EditIcon />
+                          </IconButton>
                         </TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {row.title}

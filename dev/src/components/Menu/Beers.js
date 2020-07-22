@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Container, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,10 +54,12 @@ import './Menu.css';
 import Footer from '../Footer/Footer';
 
 
+
 import {
     apiURL
 } from '../../utils/shared';
 const axios = require('axios');
+const country        = require('country-data').lookup
 
 
 
@@ -370,6 +373,7 @@ export default function Beers() {
 
     };
     React.useEffect(() => {
+        console.log("c")
         axios.get(apiURL + "/api/get/beers")
             .then(function (response) {
                 // handle success
@@ -381,15 +385,21 @@ export default function Beers() {
                     importedRows.push(item);
 
                 }
+                console.log("a")
                 setRows(importedRows)
                 setSearchedRows([...importedRows])
                 setFilteredRows([...importedRows])
+                
                 setCurrentRows(Sorter(value, [...importedRows]))
+                console.log("d")
                 setLoading(false)
+                console.log("b")
+                
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
+                
             })
             .then(function () {
 
@@ -634,6 +644,7 @@ export default function Beers() {
 function MenuItem(props) {
     const classes = useStyles();
     const [showText, setText] = React.useState(false);
+    const [countryFlag, setFlag] = React.useState("");
     const handleTextButton = () => {
         if (showText == true)
             setText(false)
@@ -641,6 +652,11 @@ function MenuItem(props) {
             setText(true)
 
     };
+    React.useEffect(() => {
+
+        if (props.properties.country.length > 0)
+        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2 + ".svg")
+      }, []);
 
     return (
         <div>
@@ -658,17 +674,17 @@ function MenuItem(props) {
                                 <Typography variant="h6" display="block">
                                     {props.properties.title}
                                 </Typography>
-                                <img style={{ marginRight: "5px" }} src={'../../images/flags/' + props.properties.country + ".png"} width="15" height="15" />
+
                                 <Typography variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
-                                
+                                <img style={{ marginLeft: "5px", marginBottom: "-3px"  }} src={countryFlag} width="15" height="15" />
                                 <Typography variant="subtitle2" display="block">
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography>
                                 <Box borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
-                                    <Typography className={classes.rating}>({props.properties.rating})</Typography>
+                                    <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box>
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>

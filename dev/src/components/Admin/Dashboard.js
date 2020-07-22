@@ -22,7 +22,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
 import Beers from './Beers';
-
+import Ciders from './Ciders';
+import Sodas from './Sodas';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -132,10 +133,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard(props) {
   const classes = useStyles();
-  let text = "hej"
-  const [display, setDisplay] = React.useState(<div>hej</div>);
+  const [display, setDisplay] = React.useState();
   const beerDisplay = () => {
     setDisplay(<Beers/>)
+  };
+  const ciderDisplay = () => {
+    setDisplay(<Ciders/>)
+  };
+  const sodaDisplay = () => {
+    setDisplay(<Sodas/>)
   };
   const foodDisplay = () => {
     setDisplay(<div>food</div>)
@@ -203,13 +209,13 @@ export default function Dashboard(props) {
       </ListItemIcon>
       <ListItemText primary="Drinks" />
     </ListItem>
-    <ListItem button >
+    <ListItem button onClick={ciderDisplay}>
       <ListItemIcon>
         <LocalCafeIcon />
       </ListItemIcon>
       <ListItemText primary="Ciders" />
     </ListItem>
-    <ListItem button>
+    <ListItem button onClick={sodaDisplay}>
       <ListItemIcon>
         <LocalDrinkIcon />
       </ListItemIcon>
@@ -220,6 +226,24 @@ export default function Dashboard(props) {
         <LocalBarIcon />
       </ListItemIcon>
       <ListItemText primary="Wine" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <LocalDrinkIcon />
+      </ListItemIcon>
+      <ListItemText primary="Shots" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <LocalDrinkIcon />
+      </ListItemIcon>
+      <ListItemText primary="Whiskey" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <LocalDrinkIcon />
+      </ListItemIcon>
+      <ListItemText primary="Board games" />
     </ListItem>
   </div></List>
         <Divider />
