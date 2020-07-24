@@ -673,6 +673,9 @@ function MenuItem(props) {
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box>
+                                <Typography variant="body1" display="block">
+                                    {props.properties.location} bar: {props.properties.form}
+                                </Typography>
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
 

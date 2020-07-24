@@ -32,6 +32,9 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
+import Skeleton from '@material-ui/lab/Skeleton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import MenuItem from '@material-ui/core/MenuItem';
 import {
   apiURL
 } from '../../utils/shared';
@@ -131,6 +134,7 @@ export default function Beers() {
   //button
   const [avalue, changeValue] = React.useState(0);
   const [untappdURL, setURL] = React.useState("");
+  const [loadingUntappd, setLoadingUntappd] = React.useState(false);
   const [beerID, setID] = React.useState();
   const [beerTitle, setTitle] = React.useState("");
   const [beerBrewery, setBrewery] = React.useState("");
@@ -308,6 +312,7 @@ export default function Beers() {
   };
   const handleImport = () => {
     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    setLoadingUntappd(true)
     const untappdID = untappdURL.substring(untappdURL.lastIndexOf('/') + 1)
 
     axios.get("https://api.untappd.com/v4/beer/info/" + untappdID + "?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
@@ -337,6 +342,7 @@ export default function Beers() {
         console.log(error);
       })
       .then(function () {
+        setLoadingUntappd(false)  
         // always executed
       });
     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -494,12 +500,15 @@ export default function Beers() {
               variant="outlined"
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Button fullWidth
               onClick={handleImport}
               variant="contained"
               className={classes.button}>
               Import Beer info</Button>
+          </Grid>
+          <Grid item xs={2}>
+          {loadingUntappd ? (<CircularProgress />):null}
           </Grid>
           <Grid item xs={12}>
             <Divider />
@@ -608,24 +617,36 @@ export default function Beers() {
           <Grid item xs={4}>
             <TextField
               fullWidth
+              select
               value={beerLocation}
               onChange={(e) => setLocation(e.target.value)}
               margin="dense"
               id="location"
               label="Location"
               variant="outlined"
-            />
+              >{['Inside','Outside', 'Inside/Outside'].map((location) => (
+                <MenuItem key={location} value={location}>
+                {location}
+                </MenuItem>
+              ))}
+               </TextField>
           </Grid>
           <Grid item xs={4}>
             <TextField
               fullWidth
+              select
               value={beerForm}
               onChange={(e) => setForm(e.target.value)}
               margin="dense"
               id="form"
               label="Form"
               variant="outlined"
-            />
+              >        >{['Bottle','Tap'].map((form) => (
+                <MenuItem key={form} value={form}>
+                {form}
+                </MenuItem>
+              ))}
+              </TextField>
           </Grid>
           <Grid item xs={4}>
             <TextField
@@ -638,13 +659,15 @@ export default function Beers() {
               variant="outlined"
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid container justify="center" item xs={12}>
 
             {imageExists ? (
-              <img src={beerImage} width="100" height="100" />
-            ) : null}
+              <img  src={beerImage} width="100" height="100" />
+            ) : (
+              <Skeleton variant="rect" width={100} height={100} />
+            )}
           </Grid>
-          <Grid item xs={12}>
+          <Grid  item xs={12}>
             <TextField
               fullWidth
               value={beerImage}

@@ -259,8 +259,8 @@ function MenuItem(props) {
                     <Grid container >
                         <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={2}>
-                                <img className={classes.img} src={props.properties.image} width="50" height="50" />
+                            <Grid justify="center" container xs={2}>
+                                <img className={classes.img} src={props.properties.image} width="35" height="35" />
                             </Grid>
                             <Grid item xs={10}>
                                 <Typography variant="h6" display="block">
@@ -268,6 +268,9 @@ function MenuItem(props) {
                                 </Typography>
                                 <Typography variant="subtitle2" display="block">
                                     {props.properties.type}
+                                </Typography>
+                                <Typography variant="body1" display="block">
+                                    {props.properties.location} bar: {props.properties.form}
                                 </Typography>
                                 
             

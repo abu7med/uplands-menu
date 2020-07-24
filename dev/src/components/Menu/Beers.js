@@ -653,9 +653,17 @@ function MenuItem(props) {
 
     };
     React.useEffect(() => {
+        if (props.properties.country == "England")
+        setFlag("../../images/flags/gb-eng.png")
+        else if (props.properties.country == "Scotland")
+        setFlag("../../images/flags/gb-sct.png")
+        else if (props.properties.country == "Northern Ireland")
+        setFlag("../../images/flags/gb-nir.png")
+        else if (props.properties.country == "Wales")
+        setFlag("../../images/flags/gb-wls.png")
+        else if (props.properties.country.length > 0)
+        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2 + ".png")
 
-        if (props.properties.country.length > 0)
-        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2 + ".svg")
       }, []);
 
     return (
@@ -678,7 +686,8 @@ function MenuItem(props) {
                                 <Typography variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
-                                <img style={{ marginLeft: "5px", marginBottom: "-3px"  }} src={countryFlag} width="15" height="15" />
+                                
+                                <img style={{ marginLeft: "5px", marginBottom: "-1px"  }} src={countryFlag} height="12" />
                                 <Typography variant="subtitle2" display="block">
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography>
@@ -686,6 +695,9 @@ function MenuItem(props) {
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box>
+                                {/* <Typography variant="body1" display="block">
+                                    {props.properties.location} bar: {props.properties.form}
+                                </Typography> */}
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
 

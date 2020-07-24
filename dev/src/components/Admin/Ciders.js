@@ -25,6 +25,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -32,6 +33,7 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
+import Skeleton from '@material-ui/lab/Skeleton';
 import {
   apiURL
 } from '../../utils/shared';
@@ -589,24 +591,36 @@ export default function Ciders() {
       <Grid item xs={4}>
         <TextField
           fullWidth
+          select
           value={ciderLocation}
           onChange={(e) => setLocation(e.target.value)}
           margin="dense"
           id="location"
           label="Location"
           variant="outlined"
-        />
+          >{['Inside','Outside', 'Inside/Outside'].map((location) => (
+            <MenuItem key={location} value={location}>
+            {location}
+            </MenuItem>
+          ))}
+           </TextField>
       </Grid>
       <Grid item xs={4}>
         <TextField
           fullWidth
+          select
           value={ciderForm}
           onChange={(e) => setForm(e.target.value)}
           margin="dense"
           id="form"
           label="Form"
           variant="outlined"
-        />
+          >        >{['Bottle','Tap'].map((form) => (
+            <MenuItem key={form} value={form}>
+            {form}
+            </MenuItem>
+          ))}
+          </TextField>
       </Grid>
       <Grid item xs={4}>
         <TextField
@@ -619,11 +633,13 @@ export default function Ciders() {
           variant="outlined"
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid container justify="center" item xs={12}>
 
       {imageExists ? (
     <img src={ciderImage} width="100" height="100" />
-  ) : null}
+  ) :(
+    <Skeleton variant="rect" width={100} height={100} />
+  )}
       </Grid>
       <Grid item xs={12}>
       <TextField

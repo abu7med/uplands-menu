@@ -39,6 +39,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
+import Skeleton from '@material-ui/lab/Skeleton';
 import {
   apiURL
 } from '../../utils/shared';
@@ -138,7 +139,7 @@ export default function Sodas() {
   const [sodaImage, setImage] = React.useState("");
   const [sodaForm, setForm] = React.useState("");
   const [sodaSize, setSize] = React.useState("");
-  const [sodaLocation, setLocation] = React.useState([]);
+  const [sodaLocation, setLocation] = React.useState("Inside");
   const [imageExists, setImageExists] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [editOpen, setEditOpen] = React.useState(false);
@@ -428,10 +429,9 @@ export default function Sodas() {
           id="location"
           label="Location"
           variant="outlined"
-        >{['Inside','Outside'].map((location) => (
+        >{['Inside','Outside', 'Inside/Outside'].map((location) => (
           <MenuItem key={location} value={location}>
-            <Checkbox checked={sodaLocation.indexOf(location) > -1} />
-            <ListItemText primary={location} />
+          {location}
           </MenuItem>
         ))}
          </TextField>
@@ -450,13 +450,19 @@ export default function Sodas() {
       <Grid item xs={4}>
         <TextField
           fullWidth
+          select
           value={sodaForm}
           onChange={(e) => setForm(e.target.value)}
           margin="dense"
           id="form"
           label="Form"
           variant="outlined"
-        />
+          >        >{['Bottle','Tap'].map((form) => (
+            <MenuItem key={form} value={form}>
+            {form}
+            </MenuItem>
+          ))}
+          </TextField>
       </Grid>
       <Grid item xs={4}>
         <TextField
@@ -469,11 +475,13 @@ export default function Sodas() {
           variant="outlined"
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid container justify="center" item xs={12}>
 
       {imageExists ? (
     <img src={sodaImage} width="100" height="100" />
-  ) : null}
+  ) : (
+    <Skeleton variant="rect" width={100} height={100} />
+  )}
       </Grid>
       <Grid item xs={12}>
       <TextField
