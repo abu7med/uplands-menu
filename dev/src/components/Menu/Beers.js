@@ -662,7 +662,7 @@ function MenuItem(props) {
         else if (props.properties.country == "Wales")
         setFlag("../../images/flags/gb-wls.png")
         else if (props.properties.country.length > 0)
-        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2 + ".png")
+        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2.toLowerCase() + ".png")
 
       }, []);
 

@@ -642,7 +642,7 @@ function MenuItem(props) {
     React.useEffect(() => {
 
         if (props.properties.country.length > 0)
-        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2 + ".svg")
+        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2.toLowerCase() + ".png")
       }, []);
 
     return (
