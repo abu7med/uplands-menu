@@ -153,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
 
         display: "inline",
         position: 'relative',
-        top: '-3px',
+        top: '-4px',
 
     },
     img: {
@@ -253,6 +253,8 @@ export default function Beers() {
     const history = useHistory();
     const [loading, setLoading] = React.useState(true);
     const [rows, setRows] = React.useState([]);
+    const [countries, setCountries] = React.useState([]);
+    const [breweries, setBreweries] = React.useState([]);
     const [filteredRows, setFilteredRows] = React.useState([]);
     const [searchedRows, setSearchedRows] = React.useState([]);
     const [currentRows, setCurrentRows] = React.useState([]);
@@ -272,6 +274,7 @@ export default function Beers() {
         checkedIPA: false,
         checkedBelgian: false,
         checkedPorter: false,
+        checkedOther: false,
     });
     const [value, setValue] = React.useState('title-ascending');
     const [searchValue, setSearchValue] = React.useState('');
@@ -296,22 +299,22 @@ export default function Beers() {
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Gluten-Free")))
 
             if (key == "checkedWheatBeer" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Wheat Beer")))
+                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))))
 
             if (key == "checkedAle" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Ale")))
+                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))))
 
             if (key == "checkedLager" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Lager")))
+                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))))
 
             if (key == "checkedBelgian" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Belgian")))
+                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))))
 
             if (key == "checkedSour" && temparray[key])
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Sour")))
 
             if (key == "checkedIPA" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("IPA")))
+                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))))
 
             if (key == "checkedFruity" && temparray[key])
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
@@ -321,6 +324,9 @@ export default function Beers() {
 
             if (key == "checkedStout" && temparray[key])
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
+            
+            if (key == "checkedOther" && temparray[key])
+                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Rauchbier")))
         }
 
         if (tempRows.length == 0)
@@ -384,6 +390,10 @@ export default function Beers() {
 
                     importedRows.push(item);
 
+                    if (!countries.includes(item.country))
+                    countries.push(item.country);
+                    if (!breweries.includes(item.brewery))
+                    breweries.push(item.brewery);
                 }
                 console.log("a")
                 setRows(importedRows)
@@ -464,7 +474,7 @@ export default function Beers() {
                         }
                         label="Alcohol Free (<2.25%)"
                     />
-                    <Divider />
+                    
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -476,6 +486,7 @@ export default function Beers() {
                         }
                         label="Gluten Free"
                     />
+                    <Divider />
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -529,7 +540,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label="IPA"
+                        label="Pale Ale"
                     />
                     <FormControlLabel
                         control={
@@ -575,6 +586,46 @@ export default function Beers() {
                         }
                         label="Belgian"
                     />
+                                        <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedOther}
+                                onChange={handleFilterChange}
+                                name="checkedOther"
+                                color="primary"
+                            />
+                        }
+                        label="Other"
+                    />
+                    
+                    <FormLabel className={classes.label} component="legend">Origins</FormLabel>
+{countries.map(function (country) {
+                        return (<FormControlLabel
+                            control={
+                                <Checkbox
+
+                                    onChange={handleFilterChange}
+                                    name={"checked"+country}
+                                    color="primary"
+                                />
+                            }
+                            label={country}
+                        />)
+                    })}
+                    {/* <FormLabel className={classes.label} component="legend">Breweries</FormLabel>
+{breweries.map(function (brewery) {
+                        return (<FormControlLabel
+                            control={
+                                <Checkbox
+
+                                    onChange={handleFilterChange}
+                                    name={"checked"+brewery}
+                                    color="primary"
+                                />
+                            }
+                            label={brewery}
+                        />)
+                    })} */}
 
                 </FormGroup>
             </div>
@@ -584,7 +635,7 @@ export default function Beers() {
     );
 
     return (
-        <Container disableGutters maxWidth="xs" >
+        <Container style={{ backgroundColor: '#282c34'}} disableGutters maxWidth="xs" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading beers
     </Typography></div>) : (<div>
@@ -675,29 +726,46 @@ function MenuItem(props) {
                     <Grid container >
                         <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={2}>
-                                <img className={classes.img} src={props.properties.image} width="50" height="50" />
+                            <Grid item xs={1}  >
+                                <img className={classes.img} src={props.properties.image} width="35" height="35" />
                             </Grid>
-                            <Grid item xs={10}>
-                                <Typography variant="h6" display="block">
+                            <Grid item xs={9} >
+                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
                                     {props.properties.title}
                                 </Typography>
 
-                                <Typography variant="subtitle1" display="inline">
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
                                 
                                 <img style={{ marginLeft: "5px", marginBottom: "-1px"  }} src={countryFlag} height="12" />
-                                <Typography variant="subtitle2" display="block">
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu == 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography>
-                                <Box borderColor="transparent">
+                                <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box>
                                 {/* <Typography variant="body1" display="block">
                                     {props.properties.location} bar: {props.properties.form}
                                 </Typography> */}
+                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                            </Grid>
+                            <Grid style={{ textAlign: "center"  }} item xs={2} >
+                            <Typography variant="body1" display="block">
+                                    Inside
+                                </Typography>
+                                <Typography variant="body1" display="block">
+                                    Outside
+                                </Typography>
+                                <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/>
+                                <Typography variant="body1" display="block">
+                                    Bottle
+                                </Typography>
+                                <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/>
+                                <Typography variant="body1" display="block">
+                                    335 cl
+                                </Typography>
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
 

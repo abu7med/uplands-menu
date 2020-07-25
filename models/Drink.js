@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const SodaSchema = new mongoose.Schema({
+const DrinkSchema = new mongoose.Schema({
   title: {
     type: String,
     default: ''
@@ -22,21 +22,19 @@ const SodaSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-
-  form: {
+  description: {
     type: String,
     default: ''
   },
-
-  size: {
+  ingredients: {
     type: String,
     default: ''
   },
-
+ 
   created: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = mongoose.model('Soda', SodaSchema);
+module.exports = mongoose.model('Drink', DrinkSchema);

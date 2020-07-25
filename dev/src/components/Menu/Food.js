@@ -49,7 +49,7 @@ import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
-import Alert from '@material-ui/lab/Alert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { useHistory } from "react-router-dom";
 import './Menu.css';
 
@@ -152,7 +152,7 @@ function Sorter(sortVariable, array) {
 
 }
 
-export default function Sodas() {
+export default function Food() {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = React.useState(true);
@@ -182,7 +182,7 @@ export default function Sodas() {
 
     };
     React.useEffect(() => {
-        axios.get(apiURL + "/api/get/sodas")
+        axios.get(apiURL + "/api/get/foods")
             .then(function (response) {
                 // handle success
                 let importedRows = []
@@ -215,7 +215,7 @@ export default function Sodas() {
     return (
         <Container disableGutters maxWidth="xs" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
-                Loading sodas
+                Loading food
     </Typography></div>) : (<div>
                     <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                         <Toolbar variant="dense">
@@ -223,7 +223,7 @@ export default function Sodas() {
                                 <ArrowBackIosIcon />
                             </IconButton>
                             <Typography variant="h6" className={classes.appbar}>
-                                Sodas
+                                Food
     </Typography>
 
                         </Toolbar>
@@ -231,11 +231,33 @@ export default function Sodas() {
 
 
                     <Divider />
-                    <Alert variant="filled" severity="info">
-    10 kr per 330 ml bottle. Served in both bars.</Alert>
-                    {currentRows.map(function (row) {
+                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                        Burgers (18:00-22:00)
+    </Typography>
+    <Alert variant="filled" severity="info">
+    All burgers are served with a side of pommes or salad. You can ask for vegetarian or vegan option.</Alert>
+                    {currentRows.map(function (row) {if (row.type == "Burger")
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
+                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                        Salads (18:00-22:00)
+    </Typography>
+                    {currentRows.map(function (row) {if (row.type == "Salad")
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                        Snacks (18:00-00:30)
+    </Typography>
+                    {currentRows.map(function (row) {if (row.type == "Snacks")
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                        Dessert (18:00-00:30)
+    </Typography>
+                    {currentRows.map(function (row) {if (row.type == "Dessert")
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    
 
                 </div>
                 )}
@@ -262,11 +284,22 @@ function MenuItem(props) {
                             <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} width="35" height="35" />
                             </Grid>
-                            <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px", marginTop: "10px" }} variant="h6" display="block">
+                            <Grid item xs={9}>
+                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
                                     {props.properties.title}
                                 </Typography>
-
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
+                                    {props.properties.ingredients}
+                                </Typography>
+                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                    {props.properties.description}
+                                </Typography>
+                                </Grid>
+                                <Grid item xs={2}>
+                                <Typography style={{ textAlign: "center" }} variant="h6" display="block">
+                                    {props.properties.price} kr
+                                </Typography>
+                                
                                 </Grid>
 
                                 

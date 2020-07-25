@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const SodaSchema = new mongoose.Schema({
+const FoodSchema = new mongoose.Schema({
   title: {
     type: String,
     default: ''
@@ -17,18 +17,16 @@ const SodaSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-
-  location: {
+  ingredients: {
+    type: String,
+    default: ''
+  },
+  description: {
     type: String,
     default: ''
   },
 
-  form: {
-    type: String,
-    default: ''
-  },
-
-  size: {
+  available: {
     type: String,
     default: ''
   },
@@ -39,4 +37,4 @@ const SodaSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Soda', SodaSchema);
+module.exports = mongoose.model('Food', FoodSchema);

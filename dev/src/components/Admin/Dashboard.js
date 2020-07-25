@@ -24,6 +24,12 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Beers from './Beers';
 import Ciders from './Ciders';
 import Sodas from './Sodas';
+import Food from './Food';
+import Drinks from './Drinks';
+import Shots from './Shots';
+import Boardgames from './Boardgames';
+import Wines from './Wines';
+import Whiskey from './Whiskey';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -144,7 +150,22 @@ export default function Dashboard(props) {
     setDisplay(<Sodas/>)
   };
   const foodDisplay = () => {
-    setDisplay(<div>food</div>)
+    setDisplay(<Food/>)
+  };
+  const drinkDisplay = () => {
+    setDisplay(<Drinks/>)
+  };
+  const shotDisplay = () => {
+    setDisplay(<Shots/>)
+  };
+  const bordgameDisplay = () => {
+    setDisplay(<Boardgames/>)
+  };
+  const wineDisplay = () => {
+    setDisplay(<Wines/>)
+  };
+  const whiskeyDisplay = () => {
+    setDisplay(<Whiskey/>)
   };
 
   const [open, setOpen] = React.useState(true);
@@ -203,7 +224,7 @@ export default function Dashboard(props) {
       </ListItemIcon>
       <ListItemText primary="Food" />
     </ListItem>
-    <ListItem button>
+    <ListItem button onClick={drinkDisplay}>
       <ListItemIcon>
         <LocalBarIcon />
       </ListItemIcon>
@@ -221,25 +242,25 @@ export default function Dashboard(props) {
       </ListItemIcon>
       <ListItemText primary="Soda" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
+    <ListItem button onClick={wineDisplay}> 
+      <ListItemIcon >
         <LocalBarIcon />
       </ListItemIcon>
       <ListItemText primary="Wine" />
     </ListItem>
-    <ListItem button>
+    <ListItem button onClick={shotDisplay}>
       <ListItemIcon>
         <LocalDrinkIcon />
       </ListItemIcon>
       <ListItemText primary="Shots" />
     </ListItem>
-    <ListItem button>
+    <ListItem button onClick={whiskeyDisplay}>
       <ListItemIcon>
         <LocalDrinkIcon />
       </ListItemIcon>
       <ListItemText primary="Whiskey" />
     </ListItem>
-    <ListItem button>
+    <ListItem button onClick={bordgameDisplay}>
       <ListItemIcon>
         <LocalDrinkIcon />
       </ListItemIcon>

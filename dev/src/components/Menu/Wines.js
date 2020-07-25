@@ -49,7 +49,7 @@ import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
-import Alert from '@material-ui/lab/Alert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { useHistory } from "react-router-dom";
 import './Menu.css';
 
@@ -152,7 +152,7 @@ function Sorter(sortVariable, array) {
 
 }
 
-export default function Sodas() {
+export default function Wines() {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = React.useState(true);
@@ -182,7 +182,7 @@ export default function Sodas() {
 
     };
     React.useEffect(() => {
-        axios.get(apiURL + "/api/get/sodas")
+        axios.get(apiURL + "/api/get/wines")
             .then(function (response) {
                 // handle success
                 let importedRows = []
@@ -215,7 +215,7 @@ export default function Sodas() {
     return (
         <Container disableGutters maxWidth="xs" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
-                Loading sodas
+                Loading wines
     </Typography></div>) : (<div>
                     <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                         <Toolbar variant="dense">
@@ -223,7 +223,7 @@ export default function Sodas() {
                                 <ArrowBackIosIcon />
                             </IconButton>
                             <Typography variant="h6" className={classes.appbar}>
-                                Sodas
+                                Wines
     </Typography>
 
                         </Toolbar>
@@ -231,11 +231,14 @@ export default function Sodas() {
 
 
                     <Divider />
-                    <Alert variant="filled" severity="info">
-    10 kr per 330 ml bottle. Served in both bars.</Alert>
+                    
+    <Alert variant="filled" severity="info">
+    Choose to buy the  bottle or a glass of it.</Alert>
                     {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
+                   
+                    
 
                 </div>
                 )}
@@ -248,7 +251,20 @@ export default function Sodas() {
 
 function MenuItem(props) {
     const classes = useStyles();
+    const [showText, setText] = React.useState(false);
+    const [countryFlag, setFlag] = React.useState("");
+    const handleTextButton = () => {
+        if (showText == true)
+            setText(false)
+        else
+            setText(true)
 
+    };
+    React.useEffect(() => {
+
+        if (props.properties.country.length > 0)
+            setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
+    }, []);
 
     return (
         <div>
@@ -263,11 +279,19 @@ function MenuItem(props) {
                                 <img className={classes.img} src={props.properties.image} width="35" height="35" />
                             </Grid>
                             <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px", marginTop: "10px" }} variant="h6" display="block">
+                                <Typography style={{ marginLeft: "15px"}} variant="h6" display="inline">
                                     {props.properties.title}
                                 </Typography>
-
+                                <img style={{ marginLeft: "5px", marginBottom: "-1px" }} src={countryFlag} height="12" />
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
+                                    {props.properties.type} - {props.properties.alcohol}%
+                                </Typography>
+                                
+                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                    {props.properties.description}
+                                </Typography>
                                 </Grid>
+                                
 
                                 
             

@@ -35,6 +35,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import {
   apiURL
 } from '../../utils/shared';
@@ -655,8 +656,12 @@ export default function Beers() {
               onChange={(e) => setSize(e.target.value)}
               margin="dense"
               id="size"
-              label="Size"
+              label="Sizes"
               variant="outlined"
+              helperText="Ex: 400 or 400,500,1500"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
+              }}
             />
           </Grid>
           <Grid container justify="center" item xs={12}>

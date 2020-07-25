@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
-const SodaSchema = new mongoose.Schema({
+const WhiskeySchema = new mongoose.Schema({
   title: {
     type: String,
     default: ''
   },
   type: {
+    type: String,
+    default: ''
+  },
+  alcohol: {
+    type: Number,
+    default: 0
+  },
+  country: {
     type: String,
     default: ''
   },
@@ -18,25 +26,15 @@ const SodaSchema = new mongoose.Schema({
     default: 0
   },
 
-  location: {
+  description: {
     type: String,
     default: ''
   },
-
-  form: {
-    type: String,
-    default: ''
-  },
-
-  size: {
-    type: String,
-    default: ''
-  },
-
+ 
   created: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = mongoose.model('Soda', SodaSchema);
+module.exports = mongoose.model('Whiskey', WhiskeySchema);

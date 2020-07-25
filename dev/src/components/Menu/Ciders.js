@@ -59,7 +59,7 @@ import {
     apiURL
 } from '../../utils/shared';
 const axios = require('axios');
-const country        = require('country-data').lookup
+const country = require('country-data').lookup
 
 
 
@@ -380,7 +380,7 @@ export default function Ciders() {
                 setRows(importedRows)
                 setSearchedRows([...importedRows])
                 setFilteredRows([...importedRows])
-                
+
                 setCurrentRows(Sorter(value, [...importedRows]))
                 setLoading(false)
 
@@ -388,7 +388,7 @@ export default function Ciders() {
             .catch(function (error) {
                 // handle error
                 console.log(error);
-                
+
             })
             .then(function () {
 
@@ -642,8 +642,8 @@ function MenuItem(props) {
     React.useEffect(() => {
 
         if (props.properties.country.length > 0)
-        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2.toLowerCase() + ".png")
-      }, []);
+            setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
+    }, []);
 
     return (
         <div>
@@ -654,47 +654,63 @@ function MenuItem(props) {
                     <Grid container >
                         <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={2}>
-                                <img className={classes.img} src={props.properties.image} width="50" height="50" />
+                            <Grid item xs={1}>
+                                <img className={classes.img} src={props.properties.image} width="35" height="35" />
                             </Grid>
-                            <Grid item xs={10}>
-                                <Typography variant="h6" display="block">
+                            <Grid item xs={9}>
+                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
                                     {props.properties.title}
                                 </Typography>
 
-                                <Typography variant="subtitle1" display="inline">
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="inline">
                                     {props.properties.brewery}
                                 </Typography>
-                                <img style={{ marginLeft: "5px", marginBottom: "-3px"  }} src={countryFlag} width="15" height="15" />
-                                <Typography variant="subtitle2" display="block">
+                                <img style={{ marginLeft: "5px", marginBottom: "-3px" }} src={countryFlag} width="15" height="15" />
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle2" display="block">
                                     {props.properties.type} - {props.properties.alcohol == 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}
                                 </Typography>
-                                <Box borderColor="transparent">
+                                <Box style={{ marginLeft: "15px" }} borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box>
-                                <Typography variant="body1" display="block">
-                                    {props.properties.location} bar: {props.properties.form}
+                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                            </Grid>
+                            <Grid style={{ textAlign: "center" }} item xs={2} >
+                                {props.properties.location.split('/').map(function (location) {
+                                    return (<Typography variant="body2" display="block">
+                                        {location}
+                                    </Typography>)
+                                })}
+                                <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle' />
+                                <Typography variant="body2" display="block">
+                                    {props.properties.form}
                                 </Typography>
+                                <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle' />
+                                {props.properties.size.split(',').map(function (size) {
+                                    return (<Typography variant="body2" display="block">
+                                        {size} ml
+                                    </Typography>)
+                                })}
+                                
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
 
-                                {showText ? (
+                            {showText ? (
 
-                                    <Typography display="inline" variant="body2">
-                                        {props.properties.description}
-                                        <Link  color="inherit" onClick={handleTextButton}>
-                                            [Show less]
+                                <Typography display="inline" variant="body2">
+                                    {props.properties.description}
+                                    <Link color="inherit" onClick={handleTextButton}>
+                                        [Show less]
                                      </Link>
-                                    </Typography>
-                                ) : (<div>{(props.properties.description.length > 60) ? (<Typography display="inline" variant="body2">
-                                    
+                                </Typography>
+                            ) : (<div>{(props.properties.description.length > 60) ? (<Typography display="inline" variant="body2">
 
-                                        {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
-                                            [Show more]
+
+                                {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
+                                    [Show more]
                                      </Link></Typography>) : (<Typography display="inline" variant="body2">{props.properties.description}</Typography>)
 
-                                    }</div>)} 
+                            }</div>)}
 
                             {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>

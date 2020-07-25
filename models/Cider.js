@@ -48,8 +48,8 @@ const CiderSchema = new mongoose.Schema({
   },
 
   size: {
-    type: Number,
-    default: 0
+    type: String,
+    default: ''
   },
   country: {
     type: String,

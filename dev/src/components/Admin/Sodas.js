@@ -40,6 +40,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import Skeleton from '@material-ui/lab/Skeleton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import {
   apiURL
 } from '../../utils/shared';
@@ -471,8 +472,12 @@ export default function Sodas() {
           onChange={(e) => setSize(e.target.value)}
           margin="dense"
           id="size"
-          label="Size"
+          label="Sizes"
           variant="outlined"
+          helperText="Ex: 400 or 400,500,1500"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
+              }}
         />
       </Grid>
       <Grid container justify="center" item xs={12}>

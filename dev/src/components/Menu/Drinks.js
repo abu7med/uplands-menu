@@ -49,7 +49,7 @@ import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
-import Alert from '@material-ui/lab/Alert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { useHistory } from "react-router-dom";
 import './Menu.css';
 
@@ -60,7 +60,7 @@ import {
     apiURL
 } from '../../utils/shared';
 const axios = require('axios');
-const country        = require('country-data').lookup
+
 
 
 
@@ -152,7 +152,7 @@ function Sorter(sortVariable, array) {
 
 }
 
-export default function Sodas() {
+export default function Drink() {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = React.useState(true);
@@ -182,7 +182,7 @@ export default function Sodas() {
 
     };
     React.useEffect(() => {
-        axios.get(apiURL + "/api/get/sodas")
+        axios.get(apiURL + "/api/get/drinks")
             .then(function (response) {
                 // handle success
                 let importedRows = []
@@ -215,7 +215,7 @@ export default function Sodas() {
     return (
         <Container disableGutters maxWidth="xs" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
-                Loading sodas
+                Loading drinks
     </Typography></div>) : (<div>
                     <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                         <Toolbar variant="dense">
@@ -223,7 +223,7 @@ export default function Sodas() {
                                 <ArrowBackIosIcon />
                             </IconButton>
                             <Typography variant="h6" className={classes.appbar}>
-                                Sodas
+                                Drinks
     </Typography>
 
                         </Toolbar>
@@ -231,11 +231,14 @@ export default function Sodas() {
 
 
                     <Divider />
-                    <Alert variant="filled" severity="info">
-    10 kr per 330 ml bottle. Served in both bars.</Alert>
+                    
+    <Alert variant="filled" severity="info">
+    All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert>
                     {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
+                    
+                    
 
                 </div>
                 )}
@@ -263,11 +266,17 @@ function MenuItem(props) {
                                 <img className={classes.img} src={props.properties.image} width="35" height="35" />
                             </Grid>
                             <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px", marginTop: "10px" }} variant="h6" display="block">
+                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
                                     {props.properties.title}
                                 </Typography>
-
+                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
+                                    {props.properties.ingredients}
+                                </Typography>
+                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                    {props.properties.description}
+                                </Typography>
                                 </Grid>
+                                
 
                                 
             

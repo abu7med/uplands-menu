@@ -25,14 +25,20 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import ListItemText from '@material-ui/core/ListItemText';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
 import Skeleton from '@material-ui/lab/Skeleton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {
@@ -41,16 +47,6 @@ import {
 const axios = require('axios');
 const cheerio = require("cheerio")
 const moment = require('moment')
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     '& .MuiTextField-root': {
-//       margin: theme.spacing(1),
-
-//     },
-//   },
-// }));
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,10 +79,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
     marginBottom: 20,
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
 }));
 
+
 let initialrows = []
-axios.get(apiURL + "/api/get/ciders")
+axios.get(apiURL + "/api/get/whiskeys")
   .then(function (response) {
     // handle success
 
@@ -107,18 +109,6 @@ axios.get(apiURL + "/api/get/ciders")
     // always executed
   });
 
-//   function imageExists(image_url){
-
-//     var http = new XMLHttpRequest();
-
-//     http.open('HEAD', image_url, false);
-//     http.send();
-
-//     return http.status != 403;
-
-// }
-// console.log(imageExists("https://untappd.akamaized.net/site/cider_logos/cider-3634240_8206f_sm.jpeg"))
-
 function checkImageExists(imageUrl, callBack) {
   var imageData = new Image();
   imageData.onload = function() {
@@ -130,23 +120,18 @@ function checkImageExists(imageUrl, callBack) {
   imageData.src = imageUrl;
   }
 
-export default function Ciders() {
+export default function Whiskey() {
   //button
   const [avalue, changeValue] = React.useState(0);
   const [untappdURL, setURL] = React.useState("");
-  const [ciderID, setID] = React.useState();
-  const [ciderTitle, setTitle] = React.useState("");
-  const [ciderBrewery, setBrewery] = React.useState("");
-  const [ciderDescription, setDescription] = React.useState("");
-  const [ciderType, setType] = React.useState("");
-  const [ciderRating, setRating] = React.useState("");
-  const [ciderPrice, setPrice] = React.useState("");
-  const [ciderAlcohol, setAlcohol] = React.useState("");
-  const [ciderImage, setImage] = React.useState("");
-  const [ciderForm, setForm] = React.useState("");
-  const [ciderSize, setSize] = React.useState("");
-  const [ciderCountry, setCountry] = React.useState("");
-  const [ciderLocation, setLocation] = React.useState("");
+  const [whiskeyID, setID] = React.useState();
+  const [whiskeyTitle, setTitle] = React.useState("");
+  const [whiskeyType, setType] = React.useState("");
+  const [whiskeyPrice, setPrice] = React.useState("");
+  const [whiskeyCountry, setCountry] = React.useState("");
+  const [whiskeyImage, setImage] = React.useState("");
+  const [whiskeyDescription, setDescription] = React.useState("");
+  const [whiskeyAlcohol, setAlcohol] = React.useState("");
   const [imageExists, setImageExists] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [editOpen, setEditOpen] = React.useState(false);
@@ -164,7 +149,7 @@ export default function Ciders() {
 
 
   const deleteRows = (event) => {
-    axios.delete(apiURL + "/api/delete/ciders", {
+    axios.delete(apiURL + "/api/delete/whiskeys", {
       data: selected
     });
     for (var i = 0; i < initialrows.length; i++) {
@@ -186,41 +171,29 @@ export default function Ciders() {
   };
 
   const handleClose = () => {
-    setURL("")
     setTitle("")
-    setBrewery("")
-    setDescription("")
     setType("")
-    setRating("")
     setPrice("")
-    setCountry("")
-    setAlcohol("")
     setImage("")
-    setForm("")
-    setSize("")
-    setLocation("")
+    setCountry("")
+    setDescription("")
+    setAlcohol("")
     setImageExists(false)
     setOpen(false);
     setEditOpen(false);
   };
 
   const handleCreate = () => {
-    let ciderItem = {
-      ciderTitle: ciderTitle,
-      ciderBrewery: ciderBrewery,
-      ciderDescription: ciderDescription,
-      ciderType: ciderType,
-      ciderRating: ciderRating,
-      ciderPrice: ciderPrice,
-      ciderCountry: ciderCountry,
-      ciderAlcohol: ciderAlcohol,
-      ciderImage: ciderImage,
-      ciderForm: ciderForm,
-      ciderLocation: ciderLocation,
-      ciderSize: ciderSize,
-      ciderUntappd: untappdURL
+    let whiskeyItem = {
+      whiskeyTitle: whiskeyTitle,
+      whiskeyType: whiskeyType,
+      whiskeyPrice: whiskeyPrice,
+      whiskeyImage: whiskeyImage,
+      whiskeyCountry: whiskeyCountry,
+      whiskeyDescription: whiskeyDescription,
+      whiskeyAlcohol: whiskeyAlcohol,
     }
-    axios.post(apiURL + '/api/add/ciders', ciderItem)
+    axios.post(apiURL + '/api/add/whiskeys', whiskeyItem)
       .then(function (response) {
         initialrows.push(response.data);
         setRows([...initialrows])
@@ -228,19 +201,13 @@ export default function Ciders() {
       .catch(function (error) {
         console.log(error);
       });
-    setURL("")
-    setTitle("")
-    setBrewery("")
+      setTitle("")
+      setType("")
+      setPrice("")
+      setImage("")
+      setCountry("")
+      setAlcohol("")
     setDescription("")
-    setType("")
-    setRating("")
-    setPrice("")
-    setCountry("")
-    setAlcohol("")
-    setImage("")
-    setForm("")
-    setSize("")
-    setLocation("")
     setImageExists(false)
 
     setOpen(false);
@@ -252,24 +219,18 @@ export default function Ciders() {
 
   
   const handleEdit = () => {
-    let ciderItem = {
-      ciderID : ciderID,
-      ciderTitle: ciderTitle,
-      ciderBrewery: ciderBrewery,
-      ciderDescription: ciderDescription,
-      ciderType: ciderType,
-      ciderRating: ciderRating,
-      ciderPrice: ciderPrice,
-      ciderCountry: ciderCountry,
-      ciderAlcohol: ciderAlcohol,
-      ciderImage: ciderImage,
-      ciderForm: ciderForm,
-      ciderLocation: ciderLocation,
-      ciderSize: ciderSize,
-      ciderUntappd: untappdURL
+    let whiskeyItem = {
+      whiskeyID : whiskeyID,
+      whiskeyTitle: whiskeyTitle,
+      whiskeyType: whiskeyType,
+      whiskeyPrice: whiskeyPrice,
+      whiskeyImage: whiskeyImage,
+      whiskeyCountry: whiskeyCountry,
+      whiskeyDescription: whiskeyDescription,
+      whiskeyAlcohol: whiskeyAlcohol,
     }
     let initialrows = []
-    axios.post(apiURL + '/api/edit/ciders', ciderItem)
+    axios.post(apiURL + '/api/edit/whiskeys', whiskeyItem)
       .then(function (response) {
         for (var prop in response.data) {
           var item = response.data[prop];
@@ -283,88 +244,17 @@ export default function Ciders() {
         console.log(error);
       });
     setID(0)
-    setURL("")
     setTitle("")
-    setBrewery("")
-    setDescription("")
     setType("")
-    setRating("")
     setPrice("")
+    setImage("")
     setCountry("")
     setAlcohol("")
-    setImage("")
-    setForm("")
-    setSize("")
-    setLocation("")
+    setDescription("")
     setImageExists(false)
     setEditOpen(false);
     setOpen(false);
 
-
-
-  };
-  const handleImport = () => {
-    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const untappdID = untappdURL.substring(untappdURL.lastIndexOf('/') + 1)
-
-    axios.get("https://api.untappd.com/v4/beer/info/"+untappdID+"?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
-      .then(function (response) {
-        // handle success
-
-        setTitle(response.data.response.beer.beer_name);
-        setBrewery(response.data.response.beer.brewery.brewery_name);
-        setType(response.data.response.beer.beer_style);
-        setAlcohol(response.data.response.beer.beer_abv);
-        setRating(response.data.response.beer.weighted_rating_score);
-        setDescription(response.data.response.beer.beer_description);
-        setImage(response.data.response.beer.beer_label);
-        setCountry(response.data.response.beer.brewery.country_name);
-        checkImageExists(response.data.response.beer.beer_label, function(existsImage) {
-          if(existsImage == true) {
-            setImageExists(true)
-          }
-          else {
-            setImageExists(false)
-          }
-          });
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    // const url = untappdURL
-    // axios.get(proxyurl + url)
-    //   .then(function (response) {
-    //     // handle success
-    //     const $ = cheerio.load(response.data);
-    //     setTitle($('div.name').children('h1').text());
-    //     setBrewery($('p.brewery').text());
-    //     setType($('p.style').text());
-    //     setAlcohol($('p.abv').text().replace(/[^\d.-]/g, ''));
-    //     setIBU(() => { if ($('p.ibu').text().replace(/[^\d.-]/g, '') === "") { return (0) } else { return $('p.ibu').text().replace(/[^\d.-]/g, '') } });
-    //     setRating($('span.num').text().replace(/[^\d.-]/g, ''));
-    //     setDescription($('div.cider-descrption-read-less').text());
-    //     setImage($('a.label').children('img').attr('src'));
-    //     checkImageExists($('a.label').children('img').attr('src'), function(existsImage) {
-    //       if(existsImage == true) {
-    //         setImageExists(true)
-    //       }
-    //       else {
-    //         setImageExists(false)
-    //       }
-    //       });
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   })
-    //   .then(function () {
-    //     // always executed
-    //   });
 
 
   };
@@ -402,30 +292,18 @@ export default function Ciders() {
   const handleEditOpen = (event, row) => {
     if(row._id != null)
     setID(row._id)
-    if(row.untappd != null)
-    setURL(row.untappd)
     if(row.title != null)
     setTitle(row.title)
-    if(row.brewery != null)
-    setBrewery(row.brewery)
-    if(row.description != null)
-    setDescription(row.description)
     if(row.type != null)
     setType(row.type)
-    if(row.rating != null)
-    setRating(row.rating)
     if(row.country != null)
     setCountry(row.country)
-    if(row.price != null)
-    setPrice(row.price)
     if(row.alcohol != null)
     setAlcohol(row.alcohol)
-    if(row.form != null)
-    setForm(row.form)
-    if(row.location != null)
-    setLocation(row.location)
-    if(row.size != null)
-    setSize(row.size)
+    if(row.price != null)
+    setPrice(row.price)
+    if(row.description != null)
+    setDescription(row.description)
     if(row.image != null)
     setImage(row.image)
     checkImageExists(row.image, function(existsImage) {
@@ -481,28 +359,7 @@ export default function Ciders() {
       <Grid item xs={6}>
         <TextField
           fullWidth
-          value={untappdURL}
-          onChange={(e) => setURL(e.target.value)}
-          margin="dense"
-          id="url"
-          label="Untappd URL"
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <Button fullWidth
-          onClick={handleImport}
-          variant="contained"
-          className={classes.button}>
-          Import Cider info</Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Divider />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth
-          value={ciderTitle}
+          value={whiskeyTitle}
           onChange={(e) => setTitle(e.target.value)}
           margin="dense"
           id="title"
@@ -513,31 +370,7 @@ export default function Ciders() {
       <Grid item xs={6}>
         <TextField
           fullWidth
-          value={ciderBrewery}
-          onChange={(e) => setBrewery(e.target.value)}
-          margin="dense"
-          id="brewery"
-          label="Brewery"
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          fullWidth
-          value={ciderDescription}
-          onChange={(e) => setDescription(e.target.value)}
-          margin="dense"
-          id="description"
-          label="Description"
-          multiline
-          rows={3}
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={4}>
-        <TextField
-          fullWidth
-          value={ciderType}
+          value={whiskeyType}
           onChange={(e) => setType(e.target.value)}
           margin="dense"
           id="type"
@@ -545,21 +378,10 @@ export default function Ciders() {
           variant="outlined"
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <TextField
           fullWidth
-          value={ciderRating}
-          onChange={(e) => setRating(e.target.value)}
-          margin="dense"
-          id="rating"
-          label="Rating"
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={4}>
-        <TextField
-          fullWidth
-          value={ciderCountry}
+          value={whiskeyCountry}
           onChange={(e) => setCountry(e.target.value)}
           margin="dense"
           id="country"
@@ -570,86 +392,58 @@ export default function Ciders() {
       <Grid item xs={6}>
         <TextField
           fullWidth
-          value={ciderPrice}
-          onChange={(e) => setPrice(e.target.value)}
-          margin="dense"
-          id="price"
-          label="Price"
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth
-          value={ciderAlcohol}
+          value={whiskeyAlcohol}
           onChange={(e) => setAlcohol(e.target.value)}
           margin="dense"
           id="alcohol"
           label="Alcohol rate"
           variant="outlined"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">%</InputAdornment>,
+          }}
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12}>
         <TextField
           fullWidth
-          select
-          value={ciderLocation}
-          onChange={(e) => setLocation(e.target.value)}
+          value={whiskeyDescription}
+          onChange={(e) => setDescription(e.target.value)}
           margin="dense"
-          id="location"
-          label="Location"
+          id="description"
+          label="Description"
+          multiline
+          rows={3}
           variant="outlined"
-          >{['Inside','Outside', 'Inside/Outside'].map((location) => (
-            <MenuItem key={location} value={location}>
-            {location}
-            </MenuItem>
-          ))}
-           </TextField>
-      </Grid>
-      <Grid item xs={4}>
-        <TextField
-          fullWidth
-          select
-          value={ciderForm}
-          onChange={(e) => setForm(e.target.value)}
-          margin="dense"
-          id="form"
-          label="Form"
-          variant="outlined"
-          >        >{['Bottle','Tap'].map((form) => (
-            <MenuItem key={form} value={form}>
-            {form}
-            </MenuItem>
-          ))}
-          </TextField>
-      </Grid>
-      <Grid item xs={4}>
-        <TextField
-          fullWidth
-          value={ciderSize}
-          onChange={(e) => setSize(e.target.value)}
-          margin="dense"
-          id="size"
-          label="Sizes"
-          variant="outlined"
-          helperText="Ex: 400 or 400,500,1500"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
-              }}
         />
       </Grid>
+
+
+
+      
+      {/* <Grid item xs={6}>
+        <TextField
+          fullWidth
+          value={whiskeyAvailable}
+          onChange={(e) => setAvailable(e.target.value)}
+          margin="dense"
+          id="available"
+          label="Available hours"
+          variant="outlined"
+          helperText="Ex: 18:00-22:00"
+        />
+      </Grid> */}
       <Grid container justify="center" item xs={12}>
 
       {imageExists ? (
-    <img src={ciderImage} width="100" height="100" />
-  ) :(
+    <img src={whiskeyImage} width="100" height="100" />
+  ) : (
     <Skeleton variant="rect" width={100} height={100} />
   )}
       </Grid>
       <Grid item xs={12}>
       <TextField
           fullWidth
-          value={ciderImage}
+          value={whiskeyImage}
           onChange={handleImageChange}
           margin="dense"
           id="imageURL"
@@ -667,10 +461,10 @@ export default function Ciders() {
     <div>
       <div >
         <Button className={classes.mainItems} variant="outlined" color="primary" onClick={handleClickOpen}>
-          Create new cider
+          Create new whiskey
       </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">New Cider</DialogTitle>
+          <DialogTitle id="form-dialog-title">New Whiskey</DialogTitle>
           {createDialogContent()}
 
           <DialogActions>
@@ -684,7 +478,7 @@ export default function Ciders() {
         </Dialog>
 
                 <Dialog open={editOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Edit Cider</DialogTitle>
+          <DialogTitle id="form-dialog-title">Edit Whiskey</DialogTitle>
           {createDialogContent()}
 
           <DialogActions>
@@ -711,7 +505,7 @@ export default function Ciders() {
         </Typography>
             ) : (
                 <Typography className={classesToolbar.title} variant="h6" id="tableTitle" component="div">
-                  Ciders
+                  Whiskey
         </Typography>
               )}
 
@@ -777,8 +571,6 @@ export default function Ciders() {
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {row.title}
                         </TableCell>
-                        <TableCell align="right">{row.brewery}</TableCell>
-                        <TableCell align="right">{row.alcohol}</TableCell>
                         <TableCell align="right">{row.price}</TableCell>
                         <TableCell align="right">{moment(row.created).format('YYYY-MM-DD')}</TableCell>
                       </TableRow>
@@ -836,8 +628,6 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
-  { id: 'brewery', numeric: false, disablePadding: false, label: 'Brewery' },
-  { id: 'alcohol', numeric: true, disablePadding: false, label: 'Alcohol rate' },
   { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
   { id: 'date', numeric: true, disablePadding: false, label: 'Creation date' },
 ];

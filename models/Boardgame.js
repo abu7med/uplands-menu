@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
-const SodaSchema = new mongoose.Schema({
+const BoardgameSchema = new mongoose.Schema({
   title: {
+    type: String,
+    default: ''
+  },
+  playingtime: {
+    type: String,
+    default: ''
+  },
+  description: {
     type: String,
     default: ''
   },
@@ -12,23 +20,15 @@ const SodaSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-
-  price: {
+  rank: {
     type: Number,
     default: 0
   },
-
-  location: {
+  players: {
     type: String,
-    default: ''
+    default: 0
   },
-
-  form: {
-    type: String,
-    default: ''
-  },
-
-  size: {
+  language: {
     type: String,
     default: ''
   },
@@ -39,4 +39,4 @@ const SodaSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Soda', SodaSchema);
+module.exports = mongoose.model('Boardgame', BoardgameSchema);

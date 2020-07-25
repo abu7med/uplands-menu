@@ -140,6 +140,7 @@ const useStyles = makeStyles((theme) => ({
         left: 'calc(50% - 9px)',
         transition: theme.transitions.create('opacity'),
     },
+
 }));
 
 
@@ -149,7 +150,7 @@ export default function Menu() {
 
     return (
 
-        <Container disableGutters maxWidth="xs" >
+        <Container  disableGutters maxWidth="xs" >
             <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                         <Toolbar variant="dense">
                             

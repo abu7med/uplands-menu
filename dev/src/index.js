@@ -13,6 +13,12 @@ import Menu from './components/Menu/Menu';
 import Beers from './components/Menu/Beers';
 import Ciders from './components/Menu/Ciders';
 import Sodas from './components/Menu/Sodas';
+import Food from './components/Menu/Food';
+import Drinks from './components/Menu/Drinks';
+import Shots from './components/Menu/Shots';
+import Wines from './components/Menu/Wines';
+import Whiskey from './components/Menu/Whiskey';
+import Boardgames from './components/Menu/Boardgames';
 import Admin from './components/Admin/Admin';
 import 'fontsource-roboto';
 
@@ -25,6 +31,12 @@ render((
         <Route path="/beers" component={Beers}/>
         <Route path="/ciders" component={Ciders}/>
         <Route path="/sodas" component={Sodas}/>
+        <Route path="/food" component={Food}/>
+        <Route path="/drinks" component={Drinks}/>
+        <Route path="/shots" component={Shots}/>
+        <Route path="/wine" component={Wines}/>
+        <Route path="/whiskey" component={Whiskey}/>
+        <Route path="/boardgames" component={Boardgames}/>
         <Route component={NotFound}/>
       </Switch>
     </App>
