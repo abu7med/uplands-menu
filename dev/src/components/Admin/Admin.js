@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Box, CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import Dashboard from './Dashboard';
 import SignIn from './SignIn';
 import 'whatwg-fetch';
@@ -218,12 +218,12 @@ class Admin extends Component {
     const {
       isLoading,
       token,
-      signInError,
-      signInEmail,
-      signInPassword,
-      signUpEmail,
-      signUpPassword,
-      signUpError,
+      // signInError,
+      // signInEmail,
+      // signInPassword,
+      // signUpEmail,
+      // signUpPassword,
+      // signUpError,
     } = this.state;
 
     if (isLoading) {

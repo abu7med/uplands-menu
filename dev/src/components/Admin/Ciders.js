@@ -1,16 +1,13 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -28,8 +25,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
@@ -39,17 +34,7 @@ import {
   apiURL
 } from '../../utils/shared';
 const axios = require('axios');
-const cheerio = require("cheerio")
 const moment = require('moment')
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     '& .MuiTextField-root': {
-//       margin: theme.spacing(1),
-
-//     },
-//   },
-// }));
 
 
 const useStyles = makeStyles((theme) => ({
@@ -131,8 +116,7 @@ function checkImageExists(imageUrl, callBack) {
   }
 
 export default function Ciders() {
-  //button
-  const [avalue, changeValue] = React.useState(0);
+
   const [untappdURL, setURL] = React.useState("");
   const [ciderID, setID] = React.useState();
   const [ciderTitle, setTitle] = React.useState("");
@@ -320,7 +304,7 @@ export default function Ciders() {
         setImage(response.data.response.beer.beer_label);
         setCountry(response.data.response.beer.brewery.country_name);
         checkImageExists(response.data.response.beer.beer_label, function(existsImage) {
-          if(existsImage == true) {
+          if(existsImage === true) {
             setImageExists(true)
           }
           else {
@@ -335,44 +319,14 @@ export default function Ciders() {
       .then(function () {
         // always executed
       });
-    // const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    // const url = untappdURL
-    // axios.get(proxyurl + url)
-    //   .then(function (response) {
-    //     // handle success
-    //     const $ = cheerio.load(response.data);
-    //     setTitle($('div.name').children('h1').text());
-    //     setBrewery($('p.brewery').text());
-    //     setType($('p.style').text());
-    //     setAlcohol($('p.abv').text().replace(/[^\d.-]/g, ''));
-    //     setIBU(() => { if ($('p.ibu').text().replace(/[^\d.-]/g, '') === "") { return (0) } else { return $('p.ibu').text().replace(/[^\d.-]/g, '') } });
-    //     setRating($('span.num').text().replace(/[^\d.-]/g, ''));
-    //     setDescription($('div.cider-descrption-read-less').text());
-    //     setImage($('a.label').children('img').attr('src'));
-    //     checkImageExists($('a.label').children('img').attr('src'), function(existsImage) {
-    //       if(existsImage == true) {
-    //         setImageExists(true)
-    //       }
-    //       else {
-    //         setImageExists(false)
-    //       }
-    //       });
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   })
-    //   .then(function () {
-    //     // always executed
-    //   });
-
+  
 
   };
 
   const handleImageChange = (event) => {
     setImage(event.target.value)
     checkImageExists(event.target.value, function(existsImage) {
-      if(existsImage == true) {
+      if(existsImage === true) {
         setImageExists(true)
       }
       else {
@@ -429,7 +383,7 @@ export default function Ciders() {
     if(row.image != null)
     setImage(row.image)
     checkImageExists(row.image, function(existsImage) {
-      if(existsImage == true) {
+      if(existsImage === true) {
         setImageExists(true)
       }
       else {
@@ -641,7 +595,7 @@ export default function Ciders() {
       <Grid container justify="center" item xs={12}>
 
       {imageExists ? (
-    <img src={ciderImage} width="100" height="100" />
+    <img src={ciderImage} alt="Cider" width="100" height="100" />
   ) :(
     <Skeleton variant="rect" width={100} height={100} />
   )}

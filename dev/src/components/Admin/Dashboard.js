@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -11,15 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+// import { secondaryListItems } from './listItems';
 // import Chart from './Chart';
 import Beers from './Beers';
 import Ciders from './Ciders';
@@ -34,27 +29,11 @@ import Whiskey from './Whiskey';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LocalBarIcon from '@material-ui/icons/LocalBar';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import LocalCafeIcon from '@material-ui/icons/LocalCafe';
+import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
 
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -175,7 +154,7 @@ export default function Dashboard(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div className={classes.root}>
@@ -212,30 +191,31 @@ export default function Dashboard(props) {
         </div>
         <Divider />
         <List><div>
-    <ListItem button onClick={beerDisplay}>
-      <ListItemIcon>
-        <LocalCafeIcon />
-      </ListItemIcon>
-      <ListItemText primary="Beers" />
-    </ListItem>
-    <ListItem button onClick={foodDisplay}>
+        <ListItem button onClick={foodDisplay}>
       <ListItemIcon>
         <FastfoodIcon />
       </ListItemIcon>
       <ListItemText primary="Food" />
     </ListItem>
-    <ListItem button onClick={drinkDisplay}>
-      <ListItemIcon>
-        <LocalBarIcon />
+    <ListItem button onClick={beerDisplay}>
+    <ListItemIcon>
+        <LocalDrinkIcon />
       </ListItemIcon>
-      <ListItemText primary="Drinks" />
+      <ListItemText primary="Beers" />
     </ListItem>
     <ListItem button onClick={ciderDisplay}>
-      <ListItemIcon>
-        <LocalCafeIcon />
+    <ListItemIcon>
+        <LocalDrinkIcon />
       </ListItemIcon>
       <ListItemText primary="Ciders" />
     </ListItem>
+    <ListItem button onClick={drinkDisplay}>
+    <ListItemIcon>
+        <LocalDrinkIcon />
+      </ListItemIcon>
+      <ListItemText primary="Drinks" />
+    </ListItem>
+    
     <ListItem button onClick={sodaDisplay}>
       <ListItemIcon>
         <LocalDrinkIcon />
@@ -243,8 +223,8 @@ export default function Dashboard(props) {
       <ListItemText primary="Soda" />
     </ListItem>
     <ListItem button onClick={wineDisplay}> 
-      <ListItemIcon >
-        <LocalBarIcon />
+    <ListItemIcon>
+        <LocalDrinkIcon />
       </ListItemIcon>
       <ListItemText primary="Wine" />
     </ListItem>
@@ -262,13 +242,18 @@ export default function Dashboard(props) {
     </ListItem>
     <ListItem button onClick={bordgameDisplay}>
       <ListItemIcon>
-        <LocalDrinkIcon />
+        <VideogameAssetIcon />
       </ListItemIcon>
       <ListItemText primary="Board games" />
     </ListItem>
   </div></List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        <List><ListItem button>
+      <ListItemIcon>
+      <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Users" />
+    </ListItem></List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

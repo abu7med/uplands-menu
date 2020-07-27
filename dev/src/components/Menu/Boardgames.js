@@ -1,69 +1,22 @@
 
 import React from 'react';
-import { Container, Box } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Rating from '@material-ui/lab/Rating';
-import SearchIcon from '@material-ui/icons/Search';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
-import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Link from '@material-ui/core/Link';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
 import { useHistory } from "react-router-dom";
 import './Menu.css';
 
-
-
-
-import {
-    apiURL
-} from '../../utils/shared';
 const axios = require('axios');
-
-
-
-
 
 const fontTheme = createMuiTheme({
     typography: {
@@ -130,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 function Sorter(sortVariable, array) {
-    if (sortVariable == "title-ascending") {
+    if (sortVariable === "title-ascending") {
         array = array.sort(function (a, b) {
             a = a.title.toLowerCase();
             b = b.title.toLowerCase();
@@ -139,7 +92,7 @@ function Sorter(sortVariable, array) {
         });
         return array
     }
-    if (sortVariable == "title-descending") {
+    if (sortVariable === "title-descending") {
         array = array.sort(function (a, b) {
             a = a.title.toLowerCase();
             b = b.title.toLowerCase();
@@ -156,33 +109,17 @@ export default function Boardgames() {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = React.useState(true);
-    const [rows, setRows] = React.useState([]);
-    const [filteredRows, setFilteredRows] = React.useState([]);
-    const [searchedRows, setSearchedRows] = React.useState([]);
     const [currentRows, setCurrentRows] = React.useState([]);
-    const [state, setState] = React.useState({
-        sort: false,
-        
-    });
-    const [value, setValue] = React.useState('title-ascending');
-    const [searchValue, setSearchValue] = React.useState('');
+
+
 
     const handleClick = (event) => {
         history.push("/");
     }
 
 
-    const toggleDrawer = (anchor, open) => (event) => {
-
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setState({ ...state, [anchor]: open });
-
-    };
     React.useEffect(() => {
-        axios.get(apiURL + "/api/get/boardgames")
+        axios.get("/api/get/boardgames")
             .then(function (response) {
                 // handle success
                 let importedRows = []
@@ -192,9 +129,8 @@ export default function Boardgames() {
 
                     importedRows.push(item);
 
-                }
-                setRows(importedRows)               
-                setCurrentRows(Sorter(value, [...importedRows]))
+                }             
+                setCurrentRows(Sorter('title-ascending', [...importedRows]))
                 setLoading(false)
 
             })
@@ -263,7 +199,7 @@ function MenuItem(props) {
                         <ThemeProvider theme={fontTheme}>
 
                             <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} width="35" height="35" />
+                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid>
                             <Grid item xs={11}>
                                 <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">

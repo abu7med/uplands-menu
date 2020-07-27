@@ -1,10 +1,4 @@
-import React, { Component } from 'react';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link,
-    Switch
-} from 'react-router-dom'
+import React from 'react';
 import 'whatwg-fetch';
 import { Container, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';

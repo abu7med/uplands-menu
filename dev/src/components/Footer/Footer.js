@@ -1,7 +1,7 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 const useStyles = makeStyles((theme) => ({
 
   text: {
@@ -16,7 +16,7 @@ export default function Footer() {
   const classes = useStyles();
   return (
     <footer className={classes.text}>
-    <img  src='../../images/pbu_40_white.png' />
+    <img  src='../../images/pbu_40_white.png'  alt="Untappd logo"/>
     {/* <div>Flag icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */}
       {/* <Typography  variant="h6">
         Contact us:
