@@ -41,17 +41,17 @@ const country        = require('country-data').lookup
 
 
 
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
+// const fontTheme = createMuiTheme({
+//     typography: {
+//         // In Chinese and Japanese the characters are usually larger,
+//         // so a smaller fontsize may be appropriate.
 
-        fontFamily: 'Roboto',
-        fontSize: 11,
+//         fontFamily: 'Roboto',
+//         fontSize: 11,
 
-    },
+//     },
 
-});
+// });
 // const defaultTheme = createMuiTheme({
 //     typography: {
 //         // In Chinese and Japanese the characters are usually larger,
@@ -78,46 +78,32 @@ const useStyles = makeStyles((theme) => ({
         flex: 1,
     },
     appbar: {
-        fontFamily: 'roboto',
-        fontSize: 20,
         position: 'sticky',
 
         flexGrow: 1,
-
-
-
     },
     sticky: {
         top: '0px',
 
         position: 'sticky',
-
-
-
     },
     iconButton: {
         padding: 10,
     },
     content: {
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '5px',
+        marginBottom: '5px',
         marginLeft: '10px',
         marginRight: '10px',
     },
     list: {
         width: 250,
     },
-    options: {
-        fontFamily: 'Roboto',
-        fontSize: 14,
-    },
+
     fullList: {
         width: 'auto',
     },
-    menuitem: {
-        fontFamily: 'Kalam',
-        fontSize: 11,
-    },
+
     title: {
         flexGrow: 1,
     },
@@ -126,13 +112,13 @@ const useStyles = makeStyles((theme) => ({
         top: '5px',
         marginBottom: '4px',
     },
-    rating: {
+    // rating: {
 
-        display: "inline",
-        position: 'relative',
-        top: '-4px',
+    //     display: "inline",
+    //     position: 'relative',
+    //     top: '-4px',
 
-    },
+    // },
     img: {
         marginTop: '4px',
         border: '1px ',
@@ -152,14 +138,7 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
-    textButton: {
-        position: 'relative',
-        top: '-13px',
-        float: 'right',
 
-
-
-    },
 }));
 function Sorter(sortVariable, array) {
     if (sortVariable === "title-ascending") {
@@ -180,48 +159,48 @@ function Sorter(sortVariable, array) {
         });
         return array
     }
-    if (sortVariable === "brewery-ascending") {
-        array = array.sort(function (a, b) {
-            a = a.brewery.toLowerCase();
-            b = b.brewery.toLowerCase();
+    // if (sortVariable === "brewery-ascending") {
+    //     array = array.sort(function (a, b) {
+    //         a = a.brewery.toLowerCase();
+    //         b = b.brewery.toLowerCase();
 
-            return a < b ? -1 : a > b ? 1 : 0;
-        });
-        return array
-    }
-    if (sortVariable === "brewery-descending") {
-        array = array.sort(function (a, b) {
-            a = a.brewery.toLowerCase();
-            b = b.brewery.toLowerCase();
+    //         return a < b ? -1 : a > b ? 1 : 0;
+    //     });
+    //     return array
+    // }
+    // if (sortVariable === "brewery-descending") {
+    //     array = array.sort(function (a, b) {
+    //         a = a.brewery.toLowerCase();
+    //         b = b.brewery.toLowerCase();
 
-            return b < a ? -1 : b > a ? 1 : 0;
-        });
-        return array
-    }
-    if (sortVariable === "alcohol-descending") {
-        array = array.sort((c1, c2) => c2.alcohol - c1.alcohol)
-        return array
-    }
-    if (sortVariable === "alcohol-ascending") {
-        array = array.sort((c1, c2) => c1.alcohol - c2.alcohol)
-        return array
-    }
-    if (sortVariable === "rating-descending") {
-        array = array.sort((c1, c2) => c2.rating - c1.rating)
-        return array
-    }
-    if (sortVariable === "rating-ascending") {
-        array = array.sort((c1, c2) => c1.rating - c2.rating)
-        return array
-    }
-    if (sortVariable === "ibu-descending") {
-        array = array.sort((c1, c2) => c2.ibu - c1.ibu)
-        return array
-    }
-    if (sortVariable === "ibu-ascending") {
-        array = array.sort((c1, c2) => c1.ibu - c2.ibu)
-        return array
-    }
+    //         return b < a ? -1 : b > a ? 1 : 0;
+    //     });
+    //     return array
+    // }
+    // if (sortVariable === "alcohol-descending") {
+    //     array = array.sort((c1, c2) => c2.alcohol - c1.alcohol)
+    //     return array
+    // }
+    // if (sortVariable === "alcohol-ascending") {
+    //     array = array.sort((c1, c2) => c1.alcohol - c2.alcohol)
+    //     return array
+    // }
+    // if (sortVariable === "rating-descending") {
+    //     array = array.sort((c1, c2) => c2.rating - c1.rating)
+    //     return array
+    // }
+    // if (sortVariable === "rating-ascending") {
+    //     array = array.sort((c1, c2) => c1.rating - c2.rating)
+    //     return array
+    // }
+    // if (sortVariable === "ibu-descending") {
+    //     array = array.sort((c1, c2) => c2.ibu - c1.ibu)
+    //     return array
+    // }
+    // if (sortVariable === "ibu-ascending") {
+    //     array = array.sort((c1, c2) => c1.ibu - c2.ibu)
+    //     return array
+    // }
 
 }
 
@@ -256,11 +235,11 @@ export default function Beers() {
     const [value, setValue] = React.useState('title-ascending');
     const [searchValue, setSearchValue] = React.useState('');
 
-    const handleSortChange = (event) => {
-        setValue(event.target.value);
-        setCurrentRows(Sorter(event.target.value, currentRows))
-        window.scrollTo(0, 0)
-    };
+    // const handleSortChange = (event) => {
+    //     setValue(event.target.value);
+    //     setCurrentRows(Sorter(event.target.value, currentRows))
+    //     window.scrollTo(0, 0)
+    // };
     const handleClickClock = (event) => {
         setAnchorEl(event.currentTarget);
       };
@@ -270,7 +249,7 @@ export default function Beers() {
       const open = Boolean(anchorEl);
       const id = open ? 'simple-popover' : undefined;
     const handleFilterChange = (event) => {
-        
+
         setFilter({ ...filter, [event.target.name]: event.target.checked });
         let tempRows = [];
         let newRows = [];
@@ -304,15 +283,12 @@ export default function Beers() {
             if (key === "checkedFruity" && temparray[key])
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
 
-            if (key === "checkedPorter" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Porter")))
-
             if (key === "checkedStout" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Stout")))
-            
+                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))))
+
             if (key === "checkedOther" && temparray[key])
                 tempRows = tempRows.concat(rows.filter(row => row.type.includes("Rauchbier")))
-            
+
             countries.filter(country => (key === "checked"+country && temparray[key])).map(filteredCountry => {
                 tempRows = tempRows.concat(rows.filter(row => row.country.includes(filteredCountry))) }
             )
@@ -383,7 +359,7 @@ export default function Beers() {
                     countries.push(item.country);
                     filter["checked"+item.country] = false
                     }
-                    
+
                 }
                 setCountries(countries)
                 setFilter(filter)
@@ -391,17 +367,17 @@ export default function Beers() {
                 setRows(importedRows)
                 setSearchedRows([...importedRows])
                 setFilteredRows([...importedRows])
-                
+
                 setCurrentRows(Sorter(value, [...importedRows]))
                 console.log("d")
                 setLoading(false)
                 console.log("b")
-                
+
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
-                
+
             })
             .then(function () {
 
@@ -410,37 +386,37 @@ export default function Beers() {
             })
     }, []);
 
-    const sortList = (anchor) => (
-        <Container maxWidth="xs">
-            <div
-                className={clsx(classes.list, {
-                    [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-                })}
-                role="presentation"
-                onClick={toggleDrawer(anchor, false)}
-                onKeyDown={toggleDrawer(anchor, false)}
-            >
+    // const sortList = (anchor) => (
+    //     <Container maxWidth="xs">
+    //         <div
+    //             className={clsx(classes.list, {
+    //                 [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+    //             })}
+    //             role="presentation"
+    //             onClick={toggleDrawer(anchor, false)}
+    //             onKeyDown={toggleDrawer(anchor, false)}
+    //         >
 
-                <FormControl component="fieldset">
-                    <FormLabel className={classes.label} component="legend">Sort by</FormLabel>
-                    <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
-                        <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
-                        <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
-                        <FormControlLabel value="brewery-ascending" control={<Radio />} label="Brewery, A-Z" />
-                        <FormControlLabel value="brewery-descending" control={<Radio />} label="Brewery, Z-A" />
-                        <FormControlLabel value="alcohol-ascending" control={<Radio />} label="Alcohol rate, Ascending" />
-                        <FormControlLabel value="alcohol-descending" control={<Radio />} label="Alcohol rate, Descending" />
-                        <FormControlLabel value="rating-ascending" control={<Radio />} label="Untappd rating, Ascending" />
-                        <FormControlLabel value="rating-descending" control={<Radio />} label="Untappd rating, Descending" />
-                        <FormControlLabel value="ibu-ascending" control={<Radio />} label="IBU, Ascending" />
-                        <FormControlLabel value="ibu-descending" control={<Radio />} label="IBU, Descending" />
-                    </RadioGroup>
-                </FormControl>
-            </div>
-        </Container>
+    //             <FormControl component="fieldset">
+    //                 <FormLabel className={classes.label} component="legend">Sort by</FormLabel>
+    //                 <RadioGroup aria-label="sortVariables" name="sortVariables" value={value} onChange={handleSortChange}>
+    //                     <FormControlLabel value="title-ascending" control={<Radio />} label="Title, A-Z" />
+    //                     <FormControlLabel value="title-descending" control={<Radio />} label="Title, Z-A" />
+    //                     <FormControlLabel value="brewery-ascending" control={<Radio />} label="Brewery, A-Z" />
+    //                     <FormControlLabel value="brewery-descending" control={<Radio />} label="Brewery, Z-A" />
+    //                     <FormControlLabel value="alcohol-ascending" control={<Radio />} label="Alcohol rate, Ascending" />
+    //                     <FormControlLabel value="alcohol-descending" control={<Radio />} label="Alcohol rate, Descending" />
+    //                     <FormControlLabel value="rating-ascending" control={<Radio />} label="Untappd rating, Ascending" />
+    //                     <FormControlLabel value="rating-descending" control={<Radio />} label="Untappd rating, Descending" />
+    //                     <FormControlLabel value="ibu-ascending" control={<Radio />} label="IBU, Ascending" />
+    //                     <FormControlLabel value="ibu-descending" control={<Radio />} label="IBU, Descending" />
+    //                 </RadioGroup>
+    //             </FormControl>
+    //         </div>
+    //     </Container>
 
 
-    );
+    // );
 
     const filterList = (anchor) => (
 
@@ -466,7 +442,7 @@ export default function Beers() {
                         }
                         label={"Alcohol Free (<2.25%) (" + currentRows.filter(row => row.alcohol <= 2.25).length + ")"}
                     />
-                    
+
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -521,7 +497,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Stout (" + currentRows.filter(row => row.type.includes("Stout")).length + ")"}
+                        label={"Stout/Porter (" + currentRows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -545,17 +521,7 @@ export default function Beers() {
                         }
                         label={"Fruity (" + currentRows.filter(row => row.type.includes("Fruit")).length + ")"}
                     />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={filter.checkedPorter}
-                                onChange={handleFilterChange}
-                                name="checkedPorter"
-                                color="primary"
-                            />
-                        }
-                        label={"Porter (" + currentRows.filter(row => row.type.includes("Porter")).length + ")"}
-                    />
+
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -589,7 +555,7 @@ export default function Beers() {
                         }
                         label={"Other (" + currentRows.filter(row => row.type.includes("Rauchbier")).length + ")"}
                     />
-                    
+
                     <FormLabel className={classes.label} component="legend">Origins</FormLabel>
 {countries.map(function (country) {
                         return (<FormControlLabel
@@ -601,7 +567,7 @@ export default function Beers() {
                                     color="primary"
                                 />
                             }
-                            label={country + " ("+currentRows.filter(row => row.country.includes(country)).length + ")"}
+                            label={country + " ("+rows.filter(row => row.country.includes(country)).length + ")"}
                         />)
                     })}
                     {/* <FormLabel className={classes.label} component="legend">Breweries</FormLabel>
@@ -656,7 +622,10 @@ export default function Beers() {
           horizontal: 'center',
         }}
       >
-        <Typography style={{ padding: "10px" }} >Opening times: 18:00-01:00</Typography>
+        <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
+        <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
+        <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
+        <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px" , paddingLeft: "10px", paddingRight: "10px"}} >Last order 30 min before closing!</p>
       </Popover>
                         </Toolbar>
                     </AppBar>
@@ -669,12 +638,12 @@ export default function Beers() {
                             value={searchValue}
                         />
 
-                        <React.Fragment key="sort">
+                        {/* <React.Fragment key="sort">
                             <Button onClick={toggleDrawer("sort", true)}>Sort</Button>
                             <Drawer anchor="left" open={state["sort"]} onClose={toggleDrawer("sort", false)}>
                                 {sortList("left")}
                             </Drawer>
-                        </React.Fragment>
+                        </React.Fragment> */}
                         <React.Fragment key="filter">
                             <Button onClick={toggleDrawer("filter", true)}>Filter</Button>
                             <Drawer anchor="left" open={state["filter"]} onClose={toggleDrawer("filter", false)}>
@@ -685,12 +654,26 @@ export default function Beers() {
                     </Paper>
 
                     <Divider />
-                    <Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+                    <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} beers found
-    </Typography>
-                    {currentRows.map(function (row) {
+    </h4>
+    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On tap
+    </h6>
+    {currentRows.filter(row => row.form === "Tap")
+                    .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle
+    </h6>
+                    {currentRows.filter(row => row.form === "Bottle")
+                    .map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    {/* {currentRows.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })} */}
                     <Divider />
                     <Footer />
                 </div>
@@ -734,67 +717,65 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
+                        {/* <ThemeProvider theme={fontTheme}> */}
 
                             <Grid item xs={1}  >
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid>
                             <Grid item xs={9} >
-                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
+                                <h6 style={{ marginLeft: "15px", fontSize: "1em"}} display="block">
                                     {props.properties.title}
-                                </Typography>
-
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="inline">
-                                    {props.properties.brewery}
-                                </Typography>
-                                
-                                <img style={{ marginLeft: "5px", marginBottom: "-1px"  }} alt="Country" src={countryFlag} height="12" />
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
+                                </h6>
+                                <p style={{ marginLeft: "15px", fontSize: "0.9em"}} display="inline">
+                                {props.properties.brewery} <img style={{ marginLeft: "5px", marginBottom: "-1px"  }} alt="Country" src={countryFlag} height="12" />
+                                </p>
+                                <p style={{ marginLeft: "15px", fontSize: "0.8em"}} display="block">
+                                {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
+                                </p>
+                                {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
-                                </Typography>
-                                <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
+                                </Typography> */}
+                                {/* <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
-                                </Box>
+                                </Box> */}
                                 {/* <Typography variant="body1" display="block">
                                     {props.properties.location} bar: {props.properties.form}
                                 </Typography> */}
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
                             <Grid style={{ textAlign: "center"  }} item xs={2} >
-                            <Typography variant="body1" display="block">
-                                    Inside
-                                </Typography>
-                                <Typography variant="body1" display="block">
-                                    Outside
-                                </Typography>
-                                <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/>
-                                <Typography variant="body1" display="block">
-                                    Bottle
-                                </Typography>
-                                <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/>
-                                <Typography variant="body1" display="block">
-                                    335 cl
-                                </Typography>
+                            {props.properties.size.split(',').map(function (size) {
+                                    return (<p style={{ fontSize: "0.8em"}} display="block">
+                                    {size} ml
+                                </p>)
+                                })}
+                            
+
+                                {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                                <h6 style={{ fontSize: "0.8em"}} display="block">
+                                    {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                                </h6>
+                            
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
 
                                 {showText ? (
 
-                                    <Typography display="inline" variant="body2">
+                                    <p style={{ fontSize: "0.7em"}}>
                                         {props.properties.description}
                                         <Link  color="inherit" onClick={handleTextButton}>
                                             [Show less]
                                      </Link>
-                                    </Typography>
-                                ) : (<div>{(props.properties.description.length > 60) ? (<Typography display="inline" variant="body2">
-                                    
+                                    </p>
+                                ) : (<div>{(props.properties.description.length > 60) ? (<p  style={{ fontSize: "0.7em"}} >
+
 
                                         {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
                                             [Show more]
-                                     </Link></Typography>) : (<Typography display="inline" variant="body2">{props.properties.description}</Typography>)
+                                     </Link></p>) : (<p style={{ fontSize: "0.7em"}} >{props.properties.description}</p>)
 
-                                    }</div>)} 
+                                    }</div>)}
 
                             {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>
@@ -816,9 +797,9 @@ function MenuItem(props) {
                                 <IconButton display="block" edge="start" onClick={handleTextButton}  className={classes.menuButton} color="inherit" aria-label="menu">
                         <AddBoxIcon />
                             </IconButton></Grid></Grid>)
-                           
+
                             } */}
-                        </ThemeProvider>
+                        {/* </ThemeProvider> */}
                     </Grid >
                 </div>
             </Card>

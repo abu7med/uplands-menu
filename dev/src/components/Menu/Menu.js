@@ -9,19 +9,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import './Menu.css';
 
 const images = [
-    {
-        url: '../../images/beers.jpg',
-        title: 'beers',
-        width: '100%',
-    },
+
     {
         url: '../../images/food.jpg',
         title: 'food',
         width: '100%',
     },
     {
-        url: '../../images/drinks.jpg',
-        title: 'drinks',
+        url: '../../images/beers.jpg',
+        title: 'beers',
         width: '100%',
     },
     {
@@ -32,6 +28,11 @@ const images = [
     {
         url: '../../images/soda.jpg',
         title: 'sodas',
+        width: '100%',
+    },
+    {
+        url: '../../images/drinks.jpg',
+        title: 'drinks',
         width: '100%',
     },
     {

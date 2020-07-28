@@ -4,7 +4,12 @@ body {
     background-size: cover; */
     margin:0;
     padding:0;
+    font-family: Roboto;
   }
+h4, h5, h6, p {
+  margin-top: 3px; 
+  margin-bottom: 3px;
+}
   
   .bg-image {
     /* The image used */

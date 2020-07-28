@@ -27,18 +27,6 @@ const country = require('country-data').lookup
 
 
 
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-
-        fontFamily: 'Roboto',
-        fontSize: 11,
-
-    },
-
-});
-
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: '2px 4px',
@@ -54,13 +42,7 @@ const useStyles = makeStyles((theme) => ({
         flex: 1,
     },
     appbar: {
-        fontFamily: 'roboto',
-        fontSize: 20,
         position: 'sticky',
-
-
-
-
 
     },
     sticky: {
@@ -75,25 +57,18 @@ const useStyles = makeStyles((theme) => ({
         padding: 10,
     },
     content: {
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '5px',
+        marginBottom: '5px',
         marginLeft: '10px',
         marginRight: '10px',
     },
     list: {
         width: 250,
     },
-    options: {
-        fontFamily: 'Roboto',
-        fontSize: 14,
-    },
     fullList: {
         width: 'auto',
     },
-    menuitem: {
-        fontFamily: 'Kalam',
-        fontSize: 11,
-    },
+
     title: {
         flexGrow: 1,
     },
@@ -198,7 +173,7 @@ export default function Ciders() {
             })
     }, []);
 
-    
+
 
     return (
         <Container disableGutters maxWidth="xs" >
@@ -241,12 +216,27 @@ export default function Ciders() {
                     </Paper> */}
 
                     <Divider />
-                    <Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+                    <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} ciders found
-    </Typography>
-                    {currentRows.map(function (row) {
+    </h4>
+
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On tap
+    </h6>
+                    {currentRows.filter(row => row.form === "Tap")
+                        .map(function (row) {
+                            return (<MenuItem key={row._id} properties={row} />)
+                        })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle
+    </h6>
+                    {currentRows.filter(row => row.form === "Bottle")
+                        .map(function (row) {
+                            return (<MenuItem key={row._id} properties={row} />)
+                        })}
+                    {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
-                    })}
+                    })} */}
                     <Divider />
                     <Footer />
                 </div>
@@ -282,31 +272,37 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
-                            <Grid item xs={9}>
-                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
-                                    {props.properties.title}
-                                </Typography>
+                        <Grid item xs={1}>
+                            <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
+                        </Grid>
+                        <Grid item xs={9}>
 
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="inline">
-                                    {props.properties.brewery}
-                                </Typography>
-                                <img style={{ marginLeft: "5px", marginBottom: "-1px", }} alt="Country" src={countryFlag} height="12" />
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle2" display="block">
-                                    {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}
-                                </Typography>
-                                <Box style={{ marginLeft: "15px" }} borderColor="transparent">
-                                    <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
-                                    <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
-                                </Box>
-                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                            </Grid>
-                            <Grid style={{ textAlign: "center" }} item xs={2} >
-                                {props.properties.location.split('/').map(function (location) {
+                            <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
+                                {props.properties.title}
+                            </h6>
+                            <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
+                                {props.properties.brewery} <img style={{ marginLeft: "5px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                            </p>
+                            <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
+                                {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}
+                            </p>
+
+                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                        </Grid>
+                        <Grid style={{ textAlign: "center" }} item xs={2} >
+                            {props.properties.size.split(',').map(function (size) {
+                                return (<p style={{ fontSize: "0.8em" }} display="block">
+                                    {size} ml
+                                </p>)
+                            })}
+
+
+                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
+                            {/* {props.properties.location.split('/').map(function (location) {
                                     return (<Typography variant="body2" key={location} display="block">
                                         {location}
                                     </Typography>)
@@ -320,29 +316,29 @@ function MenuItem(props) {
                                     return (<Typography variant="body2" key={size} display="block">
                                         {size} ml
                                     </Typography>)
-                                })}
-                                
-                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                            </Grid>
+                                })} */}
 
-                            {showText ? (
+                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                        </Grid>
 
-                                <Typography display="inline" variant="body2">
-                                    {props.properties.description}
-                                    <Link color="inherit" onClick={handleTextButton}>
-                                        [Show less]
-                                     </Link>
-                                </Typography>
-                            ) : (<div>{(props.properties.description.length > 60) ? (<Typography display="inline" variant="body2">
+                        {showText ? (
+
+                            <p style={{ fontSize: "0.7em" }}>
+                                {props.properties.description}
+                                <Link color="inherit" onClick={handleTextButton}>
+                                    [Show less]
+                                    </Link>
+                            </p>
+                        ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
 
 
-                                {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
-                                    [Show more]
-                                     </Link></Typography>) : (<Typography display="inline" variant="body2">{props.properties.description}</Typography>)
+                            {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
+                                [Show more]
+                                </Link></p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
-                            }</div>)}
+                        }</div>)}
 
-                            {/* { showText ? (<Grid item xs={12}>
+                        {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>
                             <Typography variant="body1">
                                     {props.properties.description}
@@ -364,7 +360,6 @@ function MenuItem(props) {
                             </IconButton></Grid></Grid>)
                            
                             } */}
-                        </ThemeProvider>
                     </Grid >
                 </div>
             </Card>
