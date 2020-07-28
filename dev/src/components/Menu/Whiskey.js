@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,20 +20,6 @@ const axios = require('axios');
 const country        = require('country-data').lookup
 
 
-
-
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-
-        fontFamily: 'Roboto',
-        fontSize: 11,
-
-    },
-
-});
-
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: '2px 4px',
@@ -46,15 +31,14 @@ const useStyles = makeStyles((theme) => ({
     },
 
     appbar: {
-        fontFamily: 'roboto',
-        fontSize: 20,
+
         position: 'sticky',
 
     },
 
     content: {
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '5px',
+        marginBottom: '5px',
         marginLeft: '10px',
         marginRight: '10px',
     },
@@ -216,30 +200,25 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={1}>
+                            {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px"}} variant="h6" display="inline">
-                                    {props.properties.title}
-                                </Typography>
-                                <img style={{ marginLeft: "5px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
-                                    {props.properties.type} - {props.properties.alcohol}%
-                                </Typography>
+                                <h6 style={{ fontSize: "1em"}} display="inline">
+                                    {props.properties.title} <img style={{ marginLeft: "5px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                                </h6>
                                 
-                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                <p style={{ fontSize: "1em" }} display="block">
+                                    {props.properties.type} - {props.properties.alcohol}%
+                                </p>
+                                
+                                <p style={{ fontSize: "1em" }} display="block">
                                     {props.properties.description}
-                                </Typography>
+                                </p>
                                 </Grid>
                                 
 
-                                
-            
-    
-                        </ThemeProvider>
                     </Grid >
                 </div>
             </Card>

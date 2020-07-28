@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { Container, Box } from '@material-ui/core';
+import { Container, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+// import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Rating from '@material-ui/lab/Rating';
+// import Rating from '@material-ui/lab/Rating';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -18,15 +18,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
+// import Radio from '@material-ui/core/Radio';
+// import RadioGroup from '@material-ui/core/RadioGroup';
 import FormGroup from '@material-ui/core/FormGroup';
-import FormControl from '@material-ui/core/FormControl';
+// import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import Link from '@material-ui/core/Link';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import Popover from '@material-ui/core/Popover';
@@ -109,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     },
     label: {
         position: 'relative',
-        top: '5px',
+        marginTop: '10px',
         marginBottom: '4px',
     },
     // rating: {
@@ -207,6 +208,15 @@ function Sorter(sortVariable, array) {
 export default function Beers() {
     const classes = useStyles();
     const history = useHistory();
+    const [tapBeers, setTapBeers] = React.useState([]);
+    const [paleAleBeers, setPaleAleBeers] = React.useState([]);
+    const [lagerBeers, setLagerBeers] = React.useState([]);
+    const [aleBeers, setAleBeers] = React.useState([]);
+    const [stoutBeers, setStoutBeers] = React.useState([]);
+    const [belgianBeers, setBelgianBeers] = React.useState([]);
+    const [sourBeers, setSourBeers] = React.useState([]);
+    const [otherBeers, setOtherBeers] = React.useState([]);
+    const [alcoholFreeBeers, setAlcoholFreeBeers] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [rows, setRows] = React.useState([]);
     const [countries, setCountries] = React.useState([]);
@@ -253,44 +263,103 @@ export default function Beers() {
         setFilter({ ...filter, [event.target.name]: event.target.checked });
         let tempRows = [];
         let newRows = [];
+        // let originalRows = [...rows];
+
+        // let temparray = ({ ...filter, [event.target.name]: event.target.checked });
+        // for (var key in temparray) {
+        //     if (key === "checkedAlcoholFree" && temparray[key])
+        //         tempRows = tempRows.concat(originalRows.filter(row => row.alcohol <= 2.25))
+        //         originalRows = originalRows.filter(row => row.alcohol > 2.25)
+
+        //     if (key === "checkedGlutenFree" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => originalRows.type.includes("Gluten-Free")))
+
+        //     if (key === "checkedWheatBeer" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => (originalRows.type.includes("Wheat Beer")|| originalRows.type.includes("Hefeweizen"))))
+
+        //     if (key === "checkedAle" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => (originalRows.type.includes("Ale") || originalRows.type.includes("Barleywine") || originalRows.type.includes("Strong Bitter"))))
+
+        //     if (key === "checkedLager" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => (originalRows.type.includes("Lager") || originalRows.type.includes("Bock") || originalRows.type.includes("Pilsner"))))
+
+        //     if (key === "checkedBelgian" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => (originalRows.type.includes("Belgian") || originalRows.type.includes("Lambic") || originalRows.type.includes("Flanders"))))
+
+        //     if (key === "checkedSour" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => originalRows.type.includes("Sour")))
+
+        //     if (key === "checkedIPA" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))))
+
+        //     if (key === "checkedFruity" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
+
+        //     if (key === "checkedStout" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))))
+
+        //     if (key === "checkedOther" && temparray[key])
+        //         tempRows = tempRows.concat(rows.filter(row => row.type.includes("Rauchbier")))
+
+        //     countries.filter(country => (key === "checked"+country && temparray[key])).map(filteredCountry => {
+        //         tempRows = tempRows.concat(rows.filter(row => row.country.includes(filteredCountry))) }
+        //     )
+        // }
+        let originalRows = [...rows];
 
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
         for (var key in temparray) {
-            if (key === "checkedAlcoholFree" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.alcohol <= 2.25))
+            if (key === "checkedAlcoholFree" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => row.alcohol <= 2.25))
+                originalRows = originalRows.filter(row => row.alcohol > 2.25)
+            }
+            if (key === "checkedGlutenFree" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Gluten-Free")))
+                originalRows = originalRows.filter(row => !row.type.includes("Gluten-Free"))
+            }
 
-            if (key === "checkedGlutenFree" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Gluten-Free")))
+            if (key === "checkedWheatBeer" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))))
+                originalRows = originalRows.filter(row => (!row.type.includes("Wheat Beer")|| !row.type.includes("Hefeweizen")))
+            }
+                if (key === "checkedAle" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))))
+                originalRows = originalRows.filter(row =>  (!row.type.includes("Ale") && !row.type.includes("Barleywine") && !row.type.includes("Strong Bitter")))
+            }
+                if (key === "checkedLager" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))))
+                originalRows = originalRows.filter(row => (!row.type.includes("Lager") || !row.type.includes("Bock") || !row.type.includes("Pilsner")))
+            }
+                if (key === "checkedBelgian" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))))
+                originalRows = originalRows.filter(row => (!row.type.includes("Belgian") || !row.type.includes("Lambic") || !row.type.includes("Flanders")))
+            }
+                if (key === "checkedSour" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Sour")))
+                originalRows = originalRows.filter(row => !row.type.includes("Sour"))
+            }
+                if (key === "checkedIPA" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))))
+                originalRows = originalRows.filter(row => (!row.type.includes("IPA") || !row.type.includes("Pale Ale")))
+            }
+            
+                if (key === "checkedFruity" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Fruit")))
+                originalRows = originalRows.filter(row => !row.type.includes("Fruit"))
+            }
+            
+                if (key === "checkedStout" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))))
+                originalRows = originalRows.filter(row => (!row.type.includes("Stout") || !row.type.includes("Porter")))
+            }
+           
+                if (key === "checkedOther" && temparray[key]){
+                tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Rauchbier")))
+                originalRows = originalRows.filter(row => !row.type.includes("Rauchbier"))
 
-            if (key === "checkedWheatBeer" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))))
-
-            if (key === "checkedAle" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))))
-
-            if (key === "checkedLager" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))))
-
-            if (key === "checkedBelgian" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))))
-
-            if (key === "checkedSour" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Sour")))
-
-            if (key === "checkedIPA" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))))
-
-            if (key === "checkedFruity" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Fruit")))
-
-            if (key === "checkedStout" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))))
-
-            if (key === "checkedOther" && temparray[key])
-                tempRows = tempRows.concat(rows.filter(row => row.type.includes("Rauchbier")))
-
+                }
             countries.filter(country => (key === "checked"+country && temparray[key])).map(filteredCountry => {
-                tempRows = tempRows.concat(rows.filter(row => row.country.includes(filteredCountry))) }
+                tempRows = tempRows.concat(originalRows.filter(row => row.country.includes(filteredCountry))) }
             )
         }
 
@@ -344,12 +413,11 @@ export default function Beers() {
 
     };
     React.useEffect(() => {
-        console.log("c")
         axios.get("/api/get/beers")
             .then(function (response) {
                 // handle success
                 let importedRows = []
-
+                let originalRows = []
                 for (var prop in response.data) {
                     var item = response.data[prop];
 
@@ -359,19 +427,54 @@ export default function Beers() {
                     countries.push(item.country);
                     filter["checked"+item.country] = false
                     }
+                    if (item.form === "Tap" ){
+                        tapBeers.push(item);
+                    }
+                    else if (item.alcohol <= 2.25 ){
+                        alcoholFreeBeers.push(item);
+                    }
+                    else if (item.type.includes("Pale Ale") || item.type.includes("IPA") ){
+                        paleAleBeers.push(item);
+                    }
+                    else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner") ){
+                        lagerBeers.push(item);
+                    }
+                    else if (item.type.includes("Stout") || item.type.includes("Porter")  ){
+                        stoutBeers.push(item);
+                    }
+                    else if (item.type.includes("Sour")  ){
+                        sourBeers.push(item);
+                    }
+                    else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")  ){
+                        belgianBeers.push(item);
+                    } 
+                    else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")  ){
+                        aleBeers.push(item);
+                    }   
+                    else {
+                        otherBeers.push(item);
+                    }
 
                 }
+                setTapBeers(tapBeers)
+                setAlcoholFreeBeers(alcoholFreeBeers)
+                setPaleAleBeers(paleAleBeers)
+                setLagerBeers(lagerBeers)
+                setStoutBeers(stoutBeers)
+                setSourBeers(sourBeers)
+                setAleBeers(aleBeers)
+                setBelgianBeers(belgianBeers)
+                setOtherBeers(otherBeers)
+
+
                 setCountries(countries)
                 setFilter(filter)
-                console.log("a")
                 setRows(importedRows)
                 setSearchedRows([...importedRows])
                 setFilteredRows([...importedRows])
 
                 setCurrentRows(Sorter(value, [...importedRows]))
-                console.log("d")
                 setLoading(false)
-                console.log("b")
 
             })
             .catch(function (error) {
@@ -430,17 +533,20 @@ export default function Beers() {
                 onKeyDown={toggleDrawer("filter", true)}
             >
                 <FormGroup >
-                    <FormLabel className={classes.label} component="legend">Filter by</FormLabel>
-                    <FormControlLabel
+                {/* <h6 style={{ margin: "6px", textAlign: "center", fontSize: "1.2em" }} >
+                        Filter by
+    </h6> */}
+                    <FormLabel className={classes.label} component="legend">Categories</FormLabel>
+                    <FormControlLabel 
                         control={
-                            <Checkbox
+                            <Checkbox style={{ margin: "0px", fontSize: '1em' }}
                                 checked={filter.checkedAlcoholFree}
                                 onChange={handleFilterChange}
                                 name="checkedAlcoholFree"
                                 color="primary"
                             />
                         }
-                        label={"Alcohol Free (<2.25%) (" + currentRows.filter(row => row.alcohol <= 2.25).length + ")"}
+                        label={"Alcohol Free (<2.25%) (" + rows.filter(row => row.alcohol <= 2.25).length + ")"}
                     />
 
                     <FormControlLabel
@@ -452,7 +558,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Gluten Free (" + currentRows.filter(row => row.type.includes("Gluten-Free")).length + ")"}
+                        label={"Gluten Free (" + rows.filter(row => row.type.includes("Gluten-Free")).length + ")"}
                     />
                     <Divider />
                     <FormControlLabel
@@ -464,7 +570,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Ale (" + currentRows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))).length + ")"}
+                        label={"Ale (" + rows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -475,7 +581,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Lager (" + currentRows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))).length + ")"}
+                        label={"Lager (" + rows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -486,7 +592,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Sour (" + currentRows.filter(row => row.type.includes("Sour")).length + ")"}
+                        label={"Sour (" + rows.filter(row => row.type.includes("Sour")).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -497,7 +603,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Stout/Porter (" + currentRows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))).length + ")"}
+                        label={"Stout/Porter (" + rows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -508,7 +614,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Pale Ale (" + currentRows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))).length + ")"}
+                        label={"Pale Ale (" + rows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -519,7 +625,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Fruity (" + currentRows.filter(row => row.type.includes("Fruit")).length + ")"}
+                        label={"Fruity (" + rows.filter(row => row.type.includes("Fruit")).length + ")"}
                     />
 
                     <FormControlLabel
@@ -531,7 +637,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Wheat Beer (" + currentRows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))).length + ")"}
+                        label={"Wheat Beer (" + rows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -542,7 +648,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Belgian (" + currentRows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))).length + ")"}
+                        label={"Belgian (" + rows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))).length + ")"}
                     />
                                         <FormControlLabel
                         control={
@@ -553,7 +659,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Other (" + currentRows.filter(row => row.type.includes("Rauchbier")).length + ")"}
+                        label={"Other (" + rows.filter(row => row.type.includes("Rauchbier")).length + ")"}
                     />
 
                     <FormLabel className={classes.label} component="legend">Origins</FormLabel>
@@ -629,6 +735,8 @@ export default function Beers() {
       </Popover>
                         </Toolbar>
                     </AppBar>
+                    <Grid container > 
+                    <Grid item xs={9}  >
                     <Paper component="form" className={classes.root}>
                         <SearchIcon style={{ fontSize: 24 }} />
                         <InputBase
@@ -644,31 +752,85 @@ export default function Beers() {
                                 {sortList("left")}
                             </Drawer>
                         </React.Fragment> */}
-                        <React.Fragment key="filter">
-                            <Button onClick={toggleDrawer("filter", true)}>Filter</Button>
+                        
+
+                    </Paper>
+                    </Grid> 
+                    <Grid item xs={3}  >
+                    <React.Fragment key="filter">
+                            <Button fullWidth 
+                            variant="contained" 
+                            color="primary" 
+                            startIcon={<FilterListIcon />}
+                            onClick={toggleDrawer("filter", true)}>Filter</Button>
                             <Drawer anchor="left" open={state["filter"]} onClose={toggleDrawer("filter", false)}>
                                 {filterList("left")}
                             </Drawer>
                         </React.Fragment>
-
-                    </Paper>
+                        </Grid> 
+                        </Grid> 
 
                     <Divider />
                     <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} beers found
     </h4>
     <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On tap
+                        {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
+    On tap:
     </h6>
-    {currentRows.filter(row => row.form === "Tap")
+    {tapBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+    {/* {currentRows.filter(row => row.form === "Tap")
                     .map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })} */}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Pale Ale:
+    </h6>
+    {paleAleBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
                     <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle
+                    On bottle, Lager:
     </h6>
-                    {currentRows.filter(row => row.form === "Bottle")
-                    .map(function (row) {
+    {lagerBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Stout:
+    </h6>
+    {stoutBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Sour:
+    </h6>
+    {sourBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Ale:
+    </h6>
+    {aleBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Belgian:
+    </h6>
+    {belgianBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Other:
+    </h6>
+    {otherBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })}
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    On bottle, Alcohol Free:
+    </h6>
+    {alcoholFreeBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
                     {/* {currentRows.map(function (row) {
@@ -727,7 +889,7 @@ function MenuItem(props) {
                                     {props.properties.title}
                                 </h6>
                                 <p style={{ marginLeft: "15px", fontSize: "0.9em"}} display="inline">
-                                {props.properties.brewery} <img style={{ marginLeft: "5px", marginBottom: "-1px"  }} alt="Country" src={countryFlag} height="12" />
+                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px"  }} alt="Country" src={countryFlag} height="12" />
                                 </p>
                                 <p style={{ marginLeft: "15px", fontSize: "0.8em"}} display="block">
                                 {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
@@ -745,11 +907,11 @@ function MenuItem(props) {
                                 {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                             </Grid>
                             <Grid style={{ textAlign: "center"  }} item xs={2} >
-                            {props.properties.size.split(',').map(function (size) {
+                            { props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
                                     return (<p style={{ fontSize: "0.8em"}} display="block">
                                     {size} ml
                                 </p>)
-                                })}
+                                })): null}
                             
 
                                 {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}

@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,26 +13,13 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { useHistory } from "react-router-dom";
+// import Box from '@material-ui/core/Box';
+// import Chip from '@material-ui/core/Chip';
 import './Menu.css';
 
 
 const axios = require('axios');
 
-
-
-
-
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-
-        fontFamily: 'Roboto',
-        fontSize: 11,
-
-    },
-
-});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,15 +32,13 @@ const useStyles = makeStyles((theme) => ({
     },
 
     appbar: {
-        fontFamily: 'roboto',
-        fontSize: 20,
         position: 'sticky',
 
     },
 
     content: {
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '5px',
+        marginBottom: '5px',
         marginLeft: '10px',
         marginRight: '10px',
     },
@@ -134,7 +118,7 @@ export default function Drink() {
 
                     importedRows.push(item);
 
-                }            
+                }
                 setCurrentRows(Sorter('title-ascending', [...importedRows]))
                 setLoading(false)
 
@@ -142,7 +126,7 @@ export default function Drink() {
             .catch(function (error) {
                 // handle error
                 console.log(error);
-                
+
             })
             .then(function () {
 
@@ -151,7 +135,7 @@ export default function Drink() {
             })
     }, []);
 
-    
+
 
     return (
         <Container disableGutters maxWidth="xs" >
@@ -172,14 +156,14 @@ export default function Drink() {
 
 
                     <Divider />
-                    
+
     <Alert variant="filled" severity="info">
     All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert>
                     {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    
-                    
+
+
 
                 </div>
                 )}
@@ -201,28 +185,27 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={1}>
+                            {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
-                            <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
+                            </Grid> */}
+                            <Grid item xs={12}>
+                                <h6 style={{ fontSize: "1em" }} display="block">
                                     {props.properties.title}
-                                </Typography>
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
+                                </h6>
+                                {/* <Box style={{ marginLeft: "15px"}}>
+                                {props.properties.ingredients.split(',').map(function (ingredient) {
+                                    return (<Chip  size="small" style={{ marginRight: "3px", marginTop: "3px"}} label={ingredient} />)
+                                })}
+                                </Box> */}
+                                <p style={{ fontSize: "0.9em" }} display="block">
                                     {props.properties.ingredients}
-                                </Typography>
-                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                </p>
+                                <p style={{ fontSize: "0.7em" }} display="block">
                                     {props.properties.description}
-                                </Typography>
+                                </p>
                                 </Grid>
-                                
 
-                                
-            
-    
-                        </ThemeProvider>
                     </Grid >
                 </div>
             </Card>

@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
@@ -19,18 +18,6 @@ import './Menu.css';
 
 const axios = require('axios');
 
-
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-
-        fontFamily: 'Roboto',
-        fontSize: 11,
-
-    },
-
-});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -167,32 +154,32 @@ export default function Food() {
 
 
                     <Divider />
-                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                    <h3 style={{ color: 'white', margin: "8px", textAlign: "center" }}  >
                         Burgers (18:00-22:00)
-    </Typography>
+    </h3>
     <Alert variant="filled" severity="info">
     All burgers are served with a side of pommes or salad. You can ask for vegetarian or vegan option.</Alert>
                     {currentRows.filter(row => row.type === "Burger")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                    <h3 style={{ color: 'white', margin: "8px", textAlign: "center" }}  >
                         Salads (18:00-22:00)
-    </Typography>
+    </h3>
                     {currentRows.filter(row => row.type === "Salad")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                    <h3 style={{ color: 'white', margin: "8px", textAlign: "center" }}  >
                         Snacks (18:00-00:30)
-    </Typography>
+    </h3>
                     {currentRows.filter(row => row.type === "Snacks")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <Typography style={{ color: 'white', margin: "4px", textAlign: "center" }} variant="h6" >
+                    <h3 style={{ color: 'white', margin: "8px", textAlign: "center" }} >
                         Dessert (18:00-00:30)
-    </Typography>
+    </h3>
                     {currentRows.filter(row => row.type === "Dessert")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
@@ -219,36 +206,32 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
+                            <Grid item xs={2}>
+                                <img className={classes.img} src={props.properties.image} alt="logo" width="50" height="50" />
                             </Grid>
-                            <Grid item xs={9}>
-                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
+                            <Grid item xs={8}>
+                                <h6 style={{ fontSize: "1em" }} display="block">
                                     {props.properties.title}
-                                </Typography>
+                                </h6>
                                 {/* {props.properties.ingredients.split(',').map(function (ingredient) {
-                                    return (<Chip color="primary" size="small" style={{ marginRight: "3px"}} label={ingredient} />)
+                                    return (<Chip  size="small" style={{ marginRight: "3px", marginTop: "3px"}} label={ingredient} />)
                                 })} */}
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
+                                <p style={{ fontSize: "0.9em" }} display="block">
                                     {props.properties.ingredients}
-                                </Typography>
-                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                </p>
+                                <p style={{ fontSize: "0.8em" }} display="block">
                                     {props.properties.description}
-                                </Typography>
+                                </p>
                                 </Grid>
                                 <Grid item xs={2}>
-                                <Typography style={{ textAlign: "center" }} variant="h6" display="block">
+                                <h6 style={{ textAlign: "center", fontSize: "1em" }} display="block">
                                     {props.properties.price} kr
-                                </Typography>
+                                </h6>
                                 
                                 </Grid>
-
                                 
-            
     
-                        </ThemeProvider>
                     </Grid >
                 </div>
             </Card>

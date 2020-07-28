@@ -1,13 +1,11 @@
 
 import React from 'react';
-import { Container, Box } from '@material-ui/core';
+import { Container} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Rating from '@material-ui/lab/Rating';
 import IconButton from '@material-ui/core/IconButton';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -221,7 +219,7 @@ export default function Ciders() {
     </h4>
 
                     <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On tap
+                        On tap:
     </h6>
                     {currentRows.filter(row => row.form === "Tap")
                         .map(function (row) {

@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
@@ -20,17 +19,6 @@ import './Menu.css';
 const axios = require('axios');
 
 
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-
-        fontFamily: 'Roboto',
-        fontSize: 11,
-
-    },
-
-});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,15 +31,13 @@ const useStyles = makeStyles((theme) => ({
     },
 
     appbar: {
-        fontFamily: 'roboto',
-        fontSize: 20,
         position: 'sticky',
 
     },
 
     content: {
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '5px',
+        marginBottom: '5px',
         marginLeft: '10px',
         marginRight: '10px',
     },
@@ -193,22 +179,21 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={1}>
+                            {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
-                            <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px", marginTop: "10px" }} variant="h6" display="block">
+                            </Grid> */}
+                            <Grid item xs={12}>
+                            {/* <h6 style={{ marginLeft: "15px", marginTop: "12px", fontSize: "1em" }} variant="h6" display="block">
                                     {props.properties.title}
-                                </Typography>
+                                </h6> */}
+                                <h6 style={{ fontSize: "1em" }} variant="h6" display="block">
+                                    {props.properties.title}
+                                </h6>
 
                                 </Grid>
 
                                 
-            
-    
-                        </ThemeProvider>
                     </Grid >
                 </div>
             </Card>

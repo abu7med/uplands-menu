@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,18 +16,6 @@ import { useHistory } from "react-router-dom";
 import './Menu.css';
 
 const axios = require('axios');
-
-const fontTheme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-
-        fontFamily: 'Roboto',
-        fontSize: 11,
-
-    },
-
-});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     content: {
-        marginTop: '10px',
-        marginBottom: '10px',
+        marginTop: '5px',
+        marginBottom: '5px',
         marginLeft: '10px',
         marginRight: '10px',
     },
@@ -196,28 +183,22 @@ function MenuItem(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                        <ThemeProvider theme={fontTheme}>
 
-                            <Grid item xs={1}>
+                            {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
-                            <Grid item xs={11}>
-                                <Typography style={{ marginLeft: "15px" }} variant="h6" display="block">
+                            </Grid> */}
+                            <Grid item xs={12}>
+                                <h6 style={{ fontSize: "1em" }} display="block">
                                     {props.properties.title} {props.properties.language.length > 0 ? ("("+props.properties.language+")") : null}
-                                </Typography>
-                                <Typography style={{ marginLeft: "15px" }} variant="subtitle1" display="block">
+                                </h6>
+                                <p style={{ fontSize: "0.9em" }}  display="block">
                                 {props.properties.type} - {props.properties.playingtime} min - {props.properties.players} players
-                                </Typography>
-                                <Typography style={{ marginLeft: "15px" }} variant="body2" display="block">
+                                </p>
+                                <p style={{ fontSize: "0.7em" }} display="block">
                                     {props.properties.description}
-                                </Typography>
+                                </p>
                                 </Grid>
-                                
-
-                                
-            
-    
-                        </ThemeProvider>
+  
                     </Grid >
                 </div>
             </Card>
