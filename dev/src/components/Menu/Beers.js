@@ -367,44 +367,6 @@ export default function Beers() {
 
         if (tempRows.length === 0){
             tempRows = rows;
-            let newtapBeers = []
-            let newpaleAleBeers = []
-            let newlagerBeers = []
-            let newaleBeers = []
-            let newstoutBeers = []
-            let newbelgianBeers = []
-            let newsourBeers = []
-            let newotherBeers = []
-            let newalcoholFreeBeers = []
-            
-            rows.map(item => {
-                if (item.form === "Tap") {
-                    newtapBeers.push(item);
-                }
-                else if (item.alcohol <= 2.25) {
-                    newalcoholFreeBeers.push(item);
-                }
-                else if (item.type.includes("Pale Ale") || item.type.includes("IPA")) {
-                    newpaleAleBeers.push(item);
-                }
-                else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner")) {
-                    newlagerBeers.push(item);
-                }
-                else if (item.type.includes("Stout") || item.type.includes("Porter")) {
-                    newstoutBeers.push(item);
-                }
-                else if (item.type.includes("Sour")) {
-                    newsourBeers.push(item);
-                }
-                else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
-                    newbelgianBeers.push(item);
-                }
-                else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
-                    newaleBeers.push(item);
-                }
-                else {
-                    newotherBeers.push(item);
-                }})
         }
 
         setFilteredRows(tempRows);
@@ -471,6 +433,15 @@ export default function Beers() {
         setSearchValue(event.target.value.toLowerCase())
         let tempRows = [...rows]
         let newRows = []
+        let newtapBeers = []
+        let newpaleAleBeers = []
+        let newlagerBeers = []
+        let newaleBeers = []
+        let newstoutBeers = []
+        let newbelgianBeers = []
+        let newsourBeers = []
+        let newotherBeers = []
+        let newalcoholFreeBeers = []
         tempRows = rows.filter(row => (row.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
             row.brewery.toLowerCase().includes(event.target.value.toLowerCase())))
         setSearchedRows(tempRows);
@@ -483,6 +454,44 @@ export default function Beers() {
 
         )
         setCurrentRows(Sorter(value, newRows))
+        Sorter(value, newRows).map( item => {
+            if (item.form === "Tap") {
+                newtapBeers.push(item);
+            }
+            else if (item.alcohol <= 2.25) {
+                newalcoholFreeBeers.push(item);
+            }
+            else if (item.type.includes("Pale Ale") || item.type.includes("IPA")) {
+                newpaleAleBeers.push(item);
+            }
+            else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner")) {
+                newlagerBeers.push(item);
+            }
+            else if (item.type.includes("Stout") || item.type.includes("Porter")) {
+                newstoutBeers.push(item);
+            }
+            else if (item.type.includes("Sour")) {
+                newsourBeers.push(item);
+            }
+            else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
+                newbelgianBeers.push(item);
+            }
+            else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
+                newaleBeers.push(item);
+            }
+            else {
+                newotherBeers.push(item);
+            }})
+        
+        setTapBeers(newtapBeers)
+        setPaleAleBeers(newpaleAleBeers)
+        setLagerBeers(newlagerBeers)
+        setAleBeers(newaleBeers) 
+        setStoutBeers(newstoutBeers) 
+        setBelgianBeers(newbelgianBeers) 
+        setSourBeers(newsourBeers) 
+        setOtherBeers(newotherBeers) 
+        setAlcoholFreeBeers(newalcoholFreeBeers) 
         window.scrollTo(0, 0)
 
     };
