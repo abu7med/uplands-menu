@@ -832,9 +832,9 @@ export default function Beers() {
                             </Popover>
                         </Toolbar>
                     </AppBar>
-                    <Grid container >
+                    <Grid className={classes.root} style={{ background: '#282c34'}} container >
                         <Grid item xs={9}  >
-                            <Paper component="form" className={classes.root}>
+                            <Paper component="form" className={classes.root} >
                                 <SearchIcon style={{ fontSize: 24 }} />
                                 <InputBase
                                     className={classes.input}
