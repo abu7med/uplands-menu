@@ -139,7 +139,7 @@ export default function Wines() {
     return (
         <Container disableGutters maxWidth="xs" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
-                Loading wines
+                Loading wine
     </Typography></div>) : (<div>
                     <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                         <Toolbar variant="dense">
@@ -147,7 +147,7 @@ export default function Wines() {
                                 <ArrowBackIosIcon />
                             </IconButton>
                             <Typography variant="h6" className={classes.appbar}>
-                                Wines
+                                Wine
     </Typography>
 
                         </Toolbar>
@@ -198,19 +198,19 @@ function MenuItem(props) {
                 <div className={classes.content}>
                     <Grid container >
 
-                            <Grid item xs={1}>
+                            {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
-                            <Grid item xs={11}>
-                                <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="inline">
-                                    {props.properties.title} <img style={{ marginLeft: "5px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                            </Grid> */}
+                            <Grid item xs={12}>
+                                <h6 style={{ fontSize: "1em" }} display="inline">
+                                    {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country}  src={countryFlag} height="12" />
                                 </h6>
                                 
-                                <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="block">
+                                <p style={{ fontSize: "0.9em" }} display="block">
                                     {props.properties.type} - {props.properties.alcohol}%
                                 </p>
                                 
-                                <p style={{ marginLeft: "15px", fontSize: "0.7em"  }} display="block">
+                                <p style={{ fontSize: "0.7em"  }} display="block">
                                     {props.properties.description}
                                 </p>
                                 </Grid>

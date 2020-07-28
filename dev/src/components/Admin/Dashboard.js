@@ -33,6 +33,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
+import './Admin.css';
 
 
 const drawerWidth = 240;

@@ -553,15 +553,15 @@ export default function Beers() {
                     }
 
                 }
-                setTapBeers(tapBeers)
-                setAlcoholFreeBeers(alcoholFreeBeers)
-                setPaleAleBeers(paleAleBeers)
-                setLagerBeers(lagerBeers)
-                setStoutBeers(stoutBeers)
-                setSourBeers(sourBeers)
-                setAleBeers(aleBeers)
-                setBelgianBeers(belgianBeers)
-                setOtherBeers(otherBeers)
+                setTapBeers(Sorter(value, [...tapBeers]))
+                setAlcoholFreeBeers(Sorter(value, [...alcoholFreeBeers]))
+                setPaleAleBeers(Sorter(value, [...paleAleBeers]))
+                setLagerBeers(Sorter(value, [...lagerBeers]))
+                setStoutBeers(Sorter(value, [...stoutBeers]))
+                setSourBeers(Sorter(value, [...sourBeers]))
+                setAleBeers(Sorter(value, [...aleBeers]))
+                setBelgianBeers(Sorter(value, [...belgianBeers]))
+                setOtherBeers(Sorter(value, [...otherBeers]))
 
 
                 setCountries(countries)
@@ -987,7 +987,7 @@ function MenuItem(props) {
                                 {props.properties.title}
                             </h6>
                             <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
-                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                             </p>
                             <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
                                 {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}

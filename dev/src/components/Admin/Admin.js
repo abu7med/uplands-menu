@@ -3,6 +3,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import Dashboard from './Dashboard';
 import SignIn from './SignIn';
 import 'whatwg-fetch';
+import './Admin.css';
 
 import {
   apiURL

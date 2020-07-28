@@ -206,7 +206,7 @@ function MenuItem(props) {
                             </Grid> */}
                             <Grid item xs={11}>
                                 <h6 style={{ fontSize: "1em"}} display="inline">
-                                    {props.properties.title} <img style={{ marginLeft: "5px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                                    {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country}  src={countryFlag} height="12" />
                                 </h6>
                                 
                                 <p style={{ fontSize: "1em" }} display="block">

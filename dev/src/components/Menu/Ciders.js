@@ -280,7 +280,7 @@ function MenuItem(props) {
                                 {props.properties.title}
                             </h6>
                             <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
-                                {props.properties.brewery} <img style={{ marginLeft: "5px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                             </p>
                             <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
                                 {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}

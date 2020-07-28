@@ -135,31 +135,60 @@ const useStyles = makeStyles((theme) => ({
         left: 'calc(50% - 9px)',
         transition: theme.transitions.create('opacity'),
     },
+//     test1: {
+//         backgroundImage: 'url("https://upload.wikimedia.org/wikipedia/commons/5/53/Upplands_nation1.jpg")',
 
+//         filter: 'blur(8px)',
+//         WebkitFilter: 'blur(8px)',
+
+
+//         backgroundPosition: 'center',
+//         backgroundRepeat: 'no-repeat',
+//         backgroundSize: 'cover',
+//         zIndex: -1,
+//         width: '100%',
+//   height: '100%',
+ 
+//     },
+//     text2: {
+//         zIndex: '0',
+
+
+//       },
+    
 }));
 
 
 
 export default function Menu() {
     const classes = useStyles();
+    // document.body.style.background = 'url("https://upload.wikimedia.org/wikipedia/commons/5/53/Upplands_nation1.jpg") no-repeat center fixed'
+    // document.body.style.backgroundSize = 'cover'
+    // document.body.style.filter = 'blur(8px)'
+    // document.body.style.WebkitFilter = 'blur(8px)'
 
+    // document.body.style.height = '100%'
     return (
+        <div >
+            {/* <div className={classes.test1}></div> */}
+            <Container  disableGutters maxWidth="xs" >
+                <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
+                    <Toolbar variant="dense">
 
-        <Container  disableGutters maxWidth="xs" >
-            <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
-                        <Toolbar variant="dense">
-                            
-                            <Typography variant="h6" className={classes.appbar}>
-                                Menu
+                        <Typography variant="h6" className={classes.appbar}>
+                            Menu
     </Typography>
 
-                        </Toolbar>
-                    </AppBar>
+                    </Toolbar>
+                </AppBar>
 
-            <Box border={1} boxShadow={3}>
-                <ButtonBases />
-            </Box >
-        </Container>
+                <Box border={1} boxShadow={3}>
+                    <ButtonBases />
+                </Box >
+            </Container>
+        </div>
+        
+
     );
 
 
