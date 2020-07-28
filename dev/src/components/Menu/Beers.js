@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Container, Box} from '@material-ui/core';
+import { Container, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
@@ -37,7 +37,7 @@ import Footer from '../Footer/Footer';
 
 
 const axios = require('axios');
-const country        = require('country-data').lookup
+const country = require('country-data').lookup
 
 
 
@@ -252,17 +252,18 @@ export default function Beers() {
     // };
     const handleClickClock = (event) => {
         setAnchorEl(event.currentTarget);
-      };
-      const handleCloseClock = () => {
+    };
+    const handleCloseClock = () => {
         setAnchorEl(null);
-      };
-      const open = Boolean(anchorEl);
-      const id = open ? 'simple-popover' : undefined;
+    };
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
     const handleFilterChange = (event) => {
 
         setFilter({ ...filter, [event.target.name]: event.target.checked });
         let tempRows = [];
         let newRows = [];
+
         // let originalRows = [...rows];
 
         // let temparray = ({ ...filter, [event.target.name]: event.target.checked });
@@ -309,62 +310,102 @@ export default function Beers() {
 
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
         for (var key in temparray) {
-            if (key === "checkedAlcoholFree" && temparray[key]){
+            if (key === "checkedAlcoholFree" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.alcohol <= 2.25))
                 originalRows = originalRows.filter(row => row.alcohol > 2.25)
             }
-            if (key === "checkedGlutenFree" && temparray[key]){
+            if (key === "checkedGlutenFree" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Gluten-Free")))
                 originalRows = originalRows.filter(row => !row.type.includes("Gluten-Free"))
             }
 
-            if (key === "checkedWheatBeer" && temparray[key]){
-                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))))
-                originalRows = originalRows.filter(row => (!row.type.includes("Wheat Beer")|| !row.type.includes("Hefeweizen")))
+            if (key === "checkedWheatBeer" && temparray[key]) {
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Wheat Beer") || row.type.includes("Hefeweizen"))))
+                originalRows = originalRows.filter(row => (!row.type.includes("Wheat Beer") || !row.type.includes("Hefeweizen")))
             }
-                if (key === "checkedAle" && temparray[key]){
+            if (key === "checkedAle" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))))
-                originalRows = originalRows.filter(row =>  (!row.type.includes("Ale") && !row.type.includes("Barleywine") && !row.type.includes("Strong Bitter")))
+                originalRows = originalRows.filter(row => (!row.type.includes("Ale") && !row.type.includes("Barleywine") && !row.type.includes("Strong Bitter")))
             }
-                if (key === "checkedLager" && temparray[key]){
+            if (key === "checkedLager" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))))
                 originalRows = originalRows.filter(row => (!row.type.includes("Lager") || !row.type.includes("Bock") || !row.type.includes("Pilsner")))
             }
-                if (key === "checkedBelgian" && temparray[key]){
+            if (key === "checkedBelgian" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))))
                 originalRows = originalRows.filter(row => (!row.type.includes("Belgian") || !row.type.includes("Lambic") || !row.type.includes("Flanders")))
             }
-                if (key === "checkedSour" && temparray[key]){
+            if (key === "checkedSour" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Sour")))
                 originalRows = originalRows.filter(row => !row.type.includes("Sour"))
             }
-                if (key === "checkedIPA" && temparray[key]){
+            if (key === "checkedIPA" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("IPA") || row.type.includes("Pale Ale"))))
                 originalRows = originalRows.filter(row => (!row.type.includes("IPA") || !row.type.includes("Pale Ale")))
             }
-            
-                if (key === "checkedFruity" && temparray[key]){
+
+            if (key === "checkedFruity" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Fruit")))
                 originalRows = originalRows.filter(row => !row.type.includes("Fruit"))
             }
-            
-                if (key === "checkedStout" && temparray[key]){
+
+            if (key === "checkedStout" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Stout") || row.type.includes("Porter"))))
                 originalRows = originalRows.filter(row => (!row.type.includes("Stout") || !row.type.includes("Porter")))
             }
-           
-                if (key === "checkedOther" && temparray[key]){
+
+            if (key === "checkedOther" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Rauchbier")))
                 originalRows = originalRows.filter(row => !row.type.includes("Rauchbier"))
 
-                }
-            countries.filter(country => (key === "checked"+country && temparray[key])).map(filteredCountry => {
-                tempRows = tempRows.concat(originalRows.filter(row => row.country.includes(filteredCountry))) }
+            }
+            countries.filter(country => (key === "checked" + country && temparray[key])).map(filteredCountry => {
+                tempRows = tempRows.concat(originalRows.filter(row => row.country.includes(filteredCountry)))
+            }
             )
         }
 
-        if (tempRows.length === 0)
+        if (tempRows.length === 0){
             tempRows = rows;
+            let newtapBeers = []
+            let newpaleAleBeers = []
+            let newlagerBeers = []
+            let newaleBeers = []
+            let newstoutBeers = []
+            let newbelgianBeers = []
+            let newsourBeers = []
+            let newotherBeers = []
+            let newalcoholFreeBeers = []
+            
+            rows.map(item => {
+                if (item.form === "Tap") {
+                    newtapBeers.push(item);
+                }
+                else if (item.alcohol <= 2.25) {
+                    newalcoholFreeBeers.push(item);
+                }
+                else if (item.type.includes("Pale Ale") || item.type.includes("IPA")) {
+                    newpaleAleBeers.push(item);
+                }
+                else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner")) {
+                    newlagerBeers.push(item);
+                }
+                else if (item.type.includes("Stout") || item.type.includes("Porter")) {
+                    newstoutBeers.push(item);
+                }
+                else if (item.type.includes("Sour")) {
+                    newsourBeers.push(item);
+                }
+                else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
+                    newbelgianBeers.push(item);
+                }
+                else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
+                    newaleBeers.push(item);
+                }
+                else {
+                    newotherBeers.push(item);
+                }})
+        }
 
         setFilteredRows(tempRows);
         tempRows.map(tempRow =>
@@ -376,6 +417,53 @@ export default function Beers() {
 
         )
         setCurrentRows(Sorter(value, newRows))
+        let newtapBeers = []
+        let newpaleAleBeers = []
+        let newlagerBeers = []
+        let newaleBeers = []
+        let newstoutBeers = []
+        let newbelgianBeers = []
+        let newsourBeers = []
+        let newotherBeers = []
+        let newalcoholFreeBeers = []
+        Sorter(value, newRows).map( item => {
+            if (item.form === "Tap") {
+                newtapBeers.push(item);
+            }
+            else if (item.alcohol <= 2.25) {
+                newalcoholFreeBeers.push(item);
+            }
+            else if (item.type.includes("Pale Ale") || item.type.includes("IPA")) {
+                newpaleAleBeers.push(item);
+            }
+            else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner")) {
+                newlagerBeers.push(item);
+            }
+            else if (item.type.includes("Stout") || item.type.includes("Porter")) {
+                newstoutBeers.push(item);
+            }
+            else if (item.type.includes("Sour")) {
+                newsourBeers.push(item);
+            }
+            else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
+                newbelgianBeers.push(item);
+            }
+            else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
+                newaleBeers.push(item);
+            }
+            else {
+                newotherBeers.push(item);
+            }})
+        
+        setTapBeers(newtapBeers)
+        setPaleAleBeers(newpaleAleBeers)
+        setLagerBeers(newlagerBeers)
+        setAleBeers(newaleBeers) 
+        setStoutBeers(newstoutBeers) 
+        setBelgianBeers(newbelgianBeers) 
+        setSourBeers(newsourBeers) 
+        setOtherBeers(newotherBeers) 
+        setAlcoholFreeBeers(newalcoholFreeBeers) 
         window.scrollTo(0, 0)
 
     };
@@ -423,34 +511,34 @@ export default function Beers() {
 
                     importedRows.push(item);
 
-                    if (!countries.includes(item.country)){
-                    countries.push(item.country);
-                    filter["checked"+item.country] = false
+                    if (!countries.includes(item.country)) {
+                        countries.push(item.country);
+                        filter["checked" + item.country] = false
                     }
-                    if (item.form === "Tap" ){
+                    if (item.form === "Tap") {
                         tapBeers.push(item);
                     }
-                    else if (item.alcohol <= 2.25 ){
+                    else if (item.alcohol <= 2.25) {
                         alcoholFreeBeers.push(item);
                     }
-                    else if (item.type.includes("Pale Ale") || item.type.includes("IPA") ){
+                    else if (item.type.includes("Pale Ale") || item.type.includes("IPA")) {
                         paleAleBeers.push(item);
                     }
-                    else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner") ){
+                    else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner")) {
                         lagerBeers.push(item);
                     }
-                    else if (item.type.includes("Stout") || item.type.includes("Porter")  ){
+                    else if (item.type.includes("Stout") || item.type.includes("Porter")) {
                         stoutBeers.push(item);
                     }
-                    else if (item.type.includes("Sour")  ){
+                    else if (item.type.includes("Sour")) {
                         sourBeers.push(item);
                     }
-                    else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")  ){
+                    else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
                         belgianBeers.push(item);
-                    } 
-                    else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")  ){
+                    }
+                    else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                         aleBeers.push(item);
-                    }   
+                    }
                     else {
                         otherBeers.push(item);
                     }
@@ -533,11 +621,11 @@ export default function Beers() {
                 onKeyDown={toggleDrawer("filter", true)}
             >
                 <FormGroup >
-                {/* <h6 style={{ margin: "6px", textAlign: "center", fontSize: "1.2em" }} >
+                    {/* <h6 style={{ margin: "6px", textAlign: "center", fontSize: "1.2em" }} >
                         Filter by
     </h6> */}
                     <FormLabel className={classes.label} component="legend">Categories</FormLabel>
-                    <FormControlLabel 
+                    <FormControlLabel
                         control={
                             <Checkbox style={{ margin: "0px", fontSize: '1em' }}
                                 checked={filter.checkedAlcoholFree}
@@ -637,7 +725,7 @@ export default function Beers() {
                                 color="primary"
                             />
                         }
-                        label={"Wheat Beer (" + rows.filter(row => (row.type.includes("Wheat Beer")|| row.type.includes("Hefeweizen"))).length + ")"}
+                        label={"Wheat Beer (" + rows.filter(row => (row.type.includes("Wheat Beer") || row.type.includes("Hefeweizen"))).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -650,7 +738,7 @@ export default function Beers() {
                         }
                         label={"Belgian (" + rows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))).length + ")"}
                     />
-                                        <FormControlLabel
+                    <FormControlLabel
                         control={
                             <Checkbox
                                 checked={filter.checkedOther}
@@ -663,17 +751,17 @@ export default function Beers() {
                     />
 
                     <FormLabel className={classes.label} component="legend">Origins</FormLabel>
-{countries.map(function (country) {
+                    {countries.map(function (country) {
                         return (<FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={filter["checked"+country]}
+                                    checked={filter["checked" + country]}
                                     onChange={handleFilterChange}
-                                    name={"checked"+country}
+                                    name={"checked" + country}
                                     color="primary"
                                 />
                             }
-                            label={country + " ("+rows.filter(row => row.country.includes(country)).length + ")"}
+                            label={country + " (" + rows.filter(row => row.country.includes(country)).length + ")"}
                         />)
                     })}
                     {/* <FormLabel className={classes.label} component="legend">Breweries</FormLabel>
@@ -699,7 +787,7 @@ export default function Beers() {
     );
 
     return (
-        <Container style={{ backgroundColor: '#282c34'}} disableGutters maxWidth="xs" >
+        <Container style={{ backgroundColor: '#282c34' }} disableGutters maxWidth="xs" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading beers
     </Typography></div>) : (<div>
@@ -711,126 +799,127 @@ export default function Beers() {
                             <Typography variant="h6" className={classes.appbar}>
                                 Beers
     </Typography>
-    <IconButton color="inherit" aria-describedby={id} onClick={handleClickClock}>
+                            <IconButton color="inherit" aria-describedby={id} onClick={handleClickClock}>
                                 <ScheduleIcon />
                             </IconButton>
                             <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleCloseClock}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
-        <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
-        <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
-        <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px" , paddingLeft: "10px", paddingRight: "10px"}} >Last order 30 min before closing!</p>
-      </Popover>
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleCloseClock}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
+                                <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
+                                <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
+                                <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
+                            </Popover>
                         </Toolbar>
                     </AppBar>
-                    <Grid container > 
-                    <Grid item xs={9}  >
-                    <Paper component="form" className={classes.root}>
-                        <SearchIcon style={{ fontSize: 24 }} />
-                        <InputBase
-                            className={classes.input}
-                            placeholder="Search Beers and Breweries..."
-                            onChange={handleSearchChange}
-                            value={searchValue}
-                        />
+                    <Grid container >
+                        <Grid item xs={9}  >
+                            <Paper component="form" className={classes.root}>
+                                <SearchIcon style={{ fontSize: 24 }} />
+                                <InputBase
+                                    className={classes.input}
+                                    placeholder="Search Beers and Breweries..."
+                                    onChange={handleSearchChange}
+                                    value={searchValue}
+                                />
 
-                        {/* <React.Fragment key="sort">
+                                {/* <React.Fragment key="sort">
                             <Button onClick={toggleDrawer("sort", true)}>Sort</Button>
                             <Drawer anchor="left" open={state["sort"]} onClose={toggleDrawer("sort", false)}>
                                 {sortList("left")}
                             </Drawer>
                         </React.Fragment> */}
-                        
 
-                    </Paper>
-                    </Grid> 
-                    <Grid item xs={3}  >
-                    <React.Fragment key="filter">
-                            <Button fullWidth 
-                            variant="contained" 
-                            color="primary" 
-                            startIcon={<FilterListIcon />}
-                            onClick={toggleDrawer("filter", true)}>Filter</Button>
-                            <Drawer anchor="left" open={state["filter"]} onClose={toggleDrawer("filter", false)}>
-                                {filterList("left")}
-                            </Drawer>
-                        </React.Fragment>
-                        </Grid> 
-                        </Grid> 
+
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={3}  >
+                            <React.Fragment key="filter">
+                                <Button fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<FilterListIcon />}
+                                    onClick={toggleDrawer("filter", true)}>Filter</Button>
+                                <Drawer anchor="left" open={state["filter"]} onClose={toggleDrawer("filter", false)}>
+                                    {filterList("left")}
+                                </Drawer>
+                            </React.Fragment>
+                        </Grid>
+                    </Grid>
 
                     <Divider />
                     <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} beers found
     </h4>
-    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    {tapBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                         {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
-    On tap:
-    </h6>
-    {tapBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
+                        On tap:
+    </h6> : null}
     {/* {currentRows.filter(row => row.form === "Tap")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Pale Ale:
-    </h6>
-    {paleAleBeers.map(function (row) {
+                    {tapBeers.map(function (row) {
+                        return (<MenuItem key={row._id} properties={row} />)
+                    })} 
+                    
+                    {paleAleBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Pale Ale:
+    </h6>: null}
+                    {paleAleBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Lager:
-    </h6>
-    {lagerBeers.map(function (row) {
+                    {lagerBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Lager:
+    </h6> : null}
+                    {lagerBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Stout:
-    </h6>
-    {stoutBeers.map(function (row) {
+                    {stoutBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Stout:
+    </h6> : null}
+                    {stoutBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Sour:
-    </h6>
-    {sourBeers.map(function (row) {
+                    {sourBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Sour:
+    </h6> : null}
+                    {sourBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Ale:
-    </h6>
-    {aleBeers.map(function (row) {
+                    {aleBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Ale:
+    </h6> : null}
+                    {aleBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Belgian:
-    </h6>
-    {belgianBeers.map(function (row) {
+                    {belgianBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Belgian:
+    </h6> : null}
+                    {belgianBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Other:
-    </h6>
-    {otherBeers.map(function (row) {
+                    {otherBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Other:
+    </h6> : null}
+                    {otherBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                    On bottle, Alcohol Free:
-    </h6>
-    {alcoholFreeBeers.map(function (row) {
+                    {alcoholFreeBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        On bottle, Alcohol Free:
+    </h6> : null}
+                    {alcoholFreeBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}
                     {/* {currentRows.map(function (row) {
@@ -860,17 +949,17 @@ function MenuItem(props) {
     };
     React.useEffect(() => {
         if (props.properties.country === "England")
-        setFlag("../../images/flags/gb-eng.png")
+            setFlag("../../images/flags/gb-eng.png")
         else if (props.properties.country === "Scotland")
-        setFlag("../../images/flags/gb-sct.png")
+            setFlag("../../images/flags/gb-sct.png")
         else if (props.properties.country === "Northern Ireland")
-        setFlag("../../images/flags/gb-nir.png")
+            setFlag("../../images/flags/gb-nir.png")
         else if (props.properties.country === "Wales")
-        setFlag("../../images/flags/gb-wls.png")
+            setFlag("../../images/flags/gb-wls.png")
         else if (props.properties.country.length > 0)
-        setFlag('../../images/flags/' + country.countries({name: props.properties.country})[0].alpha2.toLowerCase() + ".png")
+            setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
 
-      }, [props.properties.country]);
+    }, [props.properties.country]);
 
     return (
         <div>
@@ -881,65 +970,65 @@ function MenuItem(props) {
                     <Grid container >
                         {/* <ThemeProvider theme={fontTheme}> */}
 
-                            <Grid item xs={1}  >
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid>
-                            <Grid item xs={9} >
-                                <h6 style={{ marginLeft: "15px", fontSize: "1em"}} display="block">
-                                    {props.properties.title}
-                                </h6>
-                                <p style={{ marginLeft: "15px", fontSize: "0.9em"}} display="inline">
-                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px"  }} alt="Country" src={countryFlag} height="12" />
-                                </p>
-                                <p style={{ marginLeft: "15px", fontSize: "0.8em"}} display="block">
+                        <Grid item xs={1}  >
+                            <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
+                        </Grid>
+                        <Grid item xs={9} >
+                            <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
+                                {props.properties.title}
+                            </h6>
+                            <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
+                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt="Country" src={countryFlag} height="12" />
+                            </p>
+                            <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
                                 {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
-                                </p>
-                                {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
+                            </p>
+                            {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography> */}
-                                {/* <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
+                            {/* <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box> */}
-                                {/* <Typography variant="body1" display="block">
+                            {/* <Typography variant="body1" display="block">
                                     {props.properties.location} bar: {props.properties.form}
                                 </Typography> */}
-                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                            </Grid>
-                            <Grid style={{ textAlign: "center"  }} item xs={2} >
-                            { props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
-                                    return (<p style={{ fontSize: "0.8em"}} display="block">
+                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                        </Grid>
+                        <Grid style={{ textAlign: "center" }} item xs={2} >
+                            {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                                return (<p style={{ fontSize: "0.8em" }} display="block">
                                     {size} ml
                                 </p>)
-                                })): null}
-                            
+                            })) : null}
 
-                                {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                                <h6 style={{ fontSize: "0.8em"}} display="block">
-                                    {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                                </h6>
-                            
-                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                            </Grid>
 
-                                {showText ? (
+                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
 
-                                    <p style={{ fontSize: "0.7em"}}>
-                                        {props.properties.description}
-                                        <Link  color="inherit" onClick={handleTextButton}>
-                                            [Show less]
+                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                        </Grid>
+
+                        {showText ? (
+
+                            <p style={{ fontSize: "0.7em" }}>
+                                {props.properties.description}
+                                <Link color="inherit" onClick={handleTextButton}>
+                                    [Show less]
                                      </Link>
-                                    </p>
-                                ) : (<div>{(props.properties.description.length > 60) ? (<p  style={{ fontSize: "0.7em"}} >
+                            </p>
+                        ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
 
 
-                                        {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
-                                            [Show more]
-                                     </Link></p>) : (<p style={{ fontSize: "0.7em"}} >{props.properties.description}</p>)
+                            {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
+                                [Show more]
+                                     </Link></p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
-                                    }</div>)}
+                        }</div>)}
 
-                            {/* { showText ? (<Grid item xs={12}>
+                        {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>
                             <Typography variant="body1">
                                     {props.properties.description}
