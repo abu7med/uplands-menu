@@ -6,14 +6,9 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import AppBar from '@material-ui/core/AppBar';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import Popover from '@material-ui/core/Popover';
-import { useHistory } from "react-router-dom";
+import {PersonalAppBar} from './menuUtils';
 // import Box from '@material-ui/core/Box';
 // import Chip from '@material-ui/core/Chip';
 import './Menu.css';
@@ -28,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         position: 'sticky',
-        top: '45px',
+        top: '40px',
         zIndex: '5'
     },
 
@@ -96,25 +91,10 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Drink() {
-    const classes = useStyles();
-    const history = useHistory();
+
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
-    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleClickClock = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleCloseClock = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
-
-    const handleClick = (event) => {
-        history.push("/");
-    }
 
 
     React.useEffect(() => {
@@ -152,48 +132,9 @@ export default function Drink() {
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading drinks
     </Typography></div>) : (<div>
-        <AppBar style={{ background: '#282c34', height: '45px' }} className={classes.appbar} >
-                        <Grid container >
-                            <Grid item xs={3}  >
-                                <IconButton style={{ textAlign: 'left' }} onClick={handleClick} color="inherit" aria-label="menu">
-                                    <ArrowBackIosIcon style={{ marginBottom: '20px' }} />
-                                    <p style={{ marginTop: '-15px', fontSize: '0.85em' }}>
-                                        Menu
-    </p>
-                                </IconButton>
-
-                            </Grid>
-                            <Grid item xs={6} style={{ textAlign: 'center', }} >
-                                <p style={{ fontSize: '1.3em', marginTop: "12px" }}>
-                                 Drinks
-    </p>
-                            </Grid>
-                            <Grid item xs={3} style={{ textAlign: 'right', marginTop: '0px' }} >
-                                <IconButton color="inherit" aria-describedby={id} onClick={handleClickClock}>
-                                    <ScheduleIcon />
-                                </IconButton>
-                                <Popover
-                                    id={id}
-                                    open={open}
-                                    anchorEl={anchorEl}
-                                    onClose={handleCloseClock}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                >
-                                    <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
-                                    <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
-                                    <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
-                                    <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
-                                </Popover>
-                            </Grid>
-                        </Grid>
-                    </AppBar>
+        <PersonalAppBar
+  category="Drinks"
+  />
 
 
                     <Divider />

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import './Menu.css';
+import {PersonalAppBar} from './menuUtils';
 
 const images = [
 
@@ -172,15 +173,10 @@ export default function Menu() {
         <div >
             {/* <div className={classes.test1}></div> */}
             <Container  disableGutters maxWidth="xs" >
-                <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
-                    <Toolbar variant="dense">
+            <PersonalAppBar
+  category=""
 
-                        <p variant="h6" style={{ marginTop: '5px', fontSize: '1em' }}>
-                            Menu
-    </p>
-
-                    </Toolbar>
-                </AppBar>
+  />
 
                 <Box border={1} boxShadow={3}>
                     <ButtonBases />

@@ -13,7 +13,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
-import AppBar from '@material-ui/core/AppBar';
 // import Toolbar from '@material-ui/core/Toolbar';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
@@ -25,15 +24,14 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Link from '@material-ui/core/Link';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import Popover from '@material-ui/core/Popover';
-import { useHistory } from "react-router-dom";
+
 import './Menu.css';
 import Footer from '../Footer/Footer';
+import {PersonalAppBar} from './menuUtils';
 
 
 const axios = require('axios');
@@ -70,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         position: 'sticky',
-        top: '45px',
+        top: '40px',
         zIndex: '5'
     },
 
@@ -207,7 +205,7 @@ function Sorter(sortVariable, array) {
 
 export default function Beers() {
     const classes = useStyles();
-    const history = useHistory();
+
     const [tapBeers, setTapBeers] = React.useState([]);
     const [paleAleBeers, setPaleAleBeers] = React.useState([]);
     const [lagerBeers, setLagerBeers] = React.useState([]);
@@ -241,7 +239,7 @@ export default function Beers() {
         checkedPorter: false,
         checkedOther: false,
     });
-    const [anchorEl, setAnchorEl] = React.useState(null);
+
     const [value, setValue] = React.useState('title-ascending');
     const [searchValue, setSearchValue] = React.useState('');
 
@@ -250,16 +248,7 @@ export default function Beers() {
     //     setCurrentRows(Sorter(event.target.value, currentRows))
     //     window.scrollTo(0, 0)
     // };
-    const handleClickClock = (event) => {
-        setAnchorEl(event.currentTarget);
-        // console.log(document.getElementById('tap-beers').style.top)
-        // window.scrollTo(0, 500);
-    };
-    const handleCloseClock = () => {
-        setAnchorEl(null);
-    };
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+
     const handleFilterChange = (event) => {
 
         setFilter({ ...filter, [event.target.name]: event.target.checked });
@@ -499,9 +488,7 @@ export default function Beers() {
         window.scrollTo(0, 0)
 
     };
-    const handleClick = (event) => {
-        history.push("/");
-    }
+
 
 
     const toggleDrawer = (anchor, open) => (event) => {
@@ -804,54 +791,14 @@ export default function Beers() {
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading beers
     </Typography></div>) : (<div>
-                    <AppBar style={{ background: '#282c34', height: '45px'  }} className={classes.appbar} >
-                            <Grid container >
-                                <Grid item xs={3}  >
-                                    <IconButton style={{ textAlign: 'left' }} onClick={handleClick}  color="inherit" aria-label="menu">
-                                        <ArrowBackIosIcon style={{ marginBottom: '20px'}}/>
-                                        <p  style={{ marginTop: '-15px', fontSize: '0.85em'}}>
-                                        Menu
-    </p>
-                                    </IconButton>
-                                    
-                                </Grid>
-                                <Grid item xs={6} style={{ textAlign: 'center',  }} >
-                                    <p style={{ fontSize: '1.3em', marginTop: "12px" }}>
-                                        Beers
-    </p>
-                                </Grid>
-                                <Grid item xs={3} style={{ textAlign: 'right', marginTop: '0px' }} >
-                                    <IconButton  color="inherit" aria-describedby={id} onClick={handleClickClock}>
-                                        <ScheduleIcon />
-                                    </IconButton>
-                                    <Popover
-                                        id={id}
-                                        open={open}
-                                        anchorEl={anchorEl}
-                                        onClose={handleCloseClock}
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'center',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'center',
-                                        }}
-                                    >
-                                        <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
-                                        <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
-                                        <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
-                                        <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
-                                    </Popover>
-                                </Grid>
-                            </Grid>
-
-                    </AppBar>
+  <PersonalAppBar
+  category="Beers"
+  />
                     <Grid className={classes.root} style={{ background: '#282c34' }} container >
                         <Grid item xs={9}  >
-                            <Paper component="form" className={classes.root} >
+                            <Paper component="form" className={classes.root} style={{ zIndex: 24 }} >
                                 <SearchIcon style={{ fontSize: 24 }} />
-                                <InputBase
+                                <InputBase style={{ zIndex: 24 }}
                                     className={classes.input}
                                     placeholder="Search Beers and Breweries..."
                                     onChange={handleSearchChange}
@@ -871,6 +818,7 @@ export default function Beers() {
                         <Grid item xs={3}  >
                             <React.Fragment key="filter">
                                 <Button fullWidth
+                                style={{ zIndex: 24 }}
                                     variant="contained"
                                     color="primary"
                                     startIcon={<FilterListIcon />}
@@ -1084,89 +1032,3 @@ function MenuItem(props) {
     );
 }
 
-
-
-// function ImgMediaCard() {
-//     const classes = useStyles();
-
-//     return (
-//         <Card className={classes.root}>
-//             <CardMedia
-//                 className={classes.image}
-//                 component="img"
-//                 alt="Contemplative Reptile"
-
-//                 image="../../images/beers/gehenna.jpeg"
-//                 title="Gehenna"
-//             />
-
-
-//             <div className={classes.details}>
-
-//                 <CardContent>
-//                     <div className={classes.names}>
-//                         <Typography variant="h5" component="h2" >
-//                             Gehenna
-//             </Typography>
-//                         <Typography className={classes.brewery} variant="subtitle1">
-//                             Tempel Brygghus
-//             </Typography>
-//                     </div>
-//                     <Typography variant="body2" color="textSecondary" component="p">
-//                     Sour ale dry hopped with the New Zealand hop Motueka. Updated recipe compared to the old edition, with different yeast used and more hops.
-//             </Typography>
-//                     <div className={classes.details}>
-//                         <Typography variant="button" >
-//                             Sour
-//             </Typography>
-//                         <Typography variant="button">
-//                             5.2% ABV
-//             </Typography>
-//                         <Typography variant="button">
-//                             No IBU
-//             </Typography>
-//                     </div>
-//                     <div className={classes.details}>
-
-//                         <Typography variant="h6">
-//                             3.48/5.00
-//             </Typography>
-//                         <Typography variant="h6">
-//                             50 kr
-//             </Typography>
-//                     </div>
-//                 </CardContent>
-//             </div>
-
-
-//         </Card>
-//     );
-// }
-
-// const useStyles = makeStyles({
-//     root: {
-//         display: 'flex',
-
-//     },
-//     image: {
-//         flex: '1 0 auto',
-//         width: 150,
-//         height: 150,
-//         margin: 10
-//     },
-//     details: {
-
-//         display: 'flex',
-//         flexDirection: 'row',
-//         justifyContent: 'space-between',
-//     },
-//     names: {
-//         display: 'flex',
-//         flexDirection: 'row',
-//         justifyContent: 'space-between',
-//         alignItems: 'baseline'
-//     },
-//     brewery: {
-
-//     },
-// });
