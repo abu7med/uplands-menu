@@ -226,9 +226,10 @@ class Admin extends Component {
       // signUpPassword,
       // signUpError,
     } = this.state;
+    document.body.style.background = "white"
 
     if (isLoading) {
-      return (<div><CircularProgress /><Typography variant="h6">
+      return (<div style={{ textAlign: 'center', margin: '10px'  }}><CircularProgress /><Typography variant="h6">
       Loading...
     </Typography>
         </div>);

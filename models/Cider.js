@@ -46,6 +46,10 @@ const CiderSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  stock: {
+    type: Boolean,
+    default: true
+  },
 
   size: {
     type: String,

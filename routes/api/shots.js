@@ -22,6 +22,7 @@ module.exports = (app) => {
       {title: req.body.shotTitle,
         type : req.body.shotType,
         price : req.body.shotPrice,
+        stock : req.body.shotStock,
         description : req.body.shotDescription,
         alcohol : req.body.shotAlcohol,
         ingredients : req.body.shotIngredients,
@@ -67,6 +68,7 @@ module.exports = (app) => {
     newShot.title = req.body.shotTitle;
     newShot.type = req.body.shotType;
     newShot.price = req.body.shotPrice;
+    newShot.stock = req.body.shotStock;
     newShot.location = req.body.shotLocation;
     newShot.description = req.body.shotDescription;
     newShot.alcohol = req.body.shotAlcohol;

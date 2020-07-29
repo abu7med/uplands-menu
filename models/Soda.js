@@ -23,6 +23,10 @@ const SodaSchema = new mongoose.Schema({
     default: ''
   },
 
+  stock: {
+    type: Boolean,
+    default: true
+  },
   form: {
     type: String,
     default: ''

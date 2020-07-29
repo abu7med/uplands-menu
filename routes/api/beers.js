@@ -38,6 +38,8 @@ module.exports = (app) => {
         form : req.body.beerForm,
         location : req.body.beerLocation,
         image : req.body.beerImage,
+        stock : req.body.beerStock,
+        new : req.body.beerNew,
         untappd : req.body.beerUntappd,
         country : req.body.beerCountry
 
@@ -107,6 +109,8 @@ module.exports = (app) => {
     newBeer.form = req.body.beerForm;
     newBeer.location = req.body.beerLocation;
     newBeer.size = req.body.beerSize;
+    newBeer.stock = req.body.beerStock;
+    newBeer.new = req.body.beerNew;
     newBeer.image = req.body.beerImage;
     newBeer.untappd = req.body.beerUntappd;
     newBeer.country = req.body.beerCountry;

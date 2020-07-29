@@ -50,7 +50,14 @@ const BeerSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-
+  new: {
+    type: Boolean,
+    default: false
+  },
+  stock: {
+    type: Boolean,
+    default: true
+  },
   size: {
     type: String,
     default: ''

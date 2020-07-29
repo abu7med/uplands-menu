@@ -7,18 +7,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
+import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,6 +25,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {getComparator, stableSort, useToolbarStyles, EnhancedTableHead} from './tableUtils';
+
 import {
   apiURL
 } from '../../utils/shared';
@@ -110,6 +111,7 @@ export default function Drinks() {
   const [drinkID, setID] = React.useState();
   const [drinkTitle, setTitle] = React.useState("");
   const [drinkType, setType] = React.useState("");
+  const [drinkStock, setStock] = React.useState(true);
   const [drinkPrice, setPrice] = React.useState("");
   const [drinkImage, setImage] = React.useState("");
   const [drinkLocation, setLocation] = React.useState("");
@@ -124,7 +126,7 @@ export default function Drinks() {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(initialrows.length);
 
   const classes = useStyles();
 
@@ -144,6 +146,7 @@ export default function Drinks() {
       }
   }
   setRows([...initialrows])
+  setRowsPerPage(initialrows.length)
   setSelected([])
 
   };
@@ -167,9 +170,11 @@ export default function Drinks() {
   };
 
   const handleCreate = () => {
+    console.log(drinkStock)
     let drinkItem = {
       drinkTitle: drinkTitle,
       drinkType: drinkType,
+      drinkStock: drinkStock,
       drinkPrice: drinkPrice,
       drinkImage: drinkImage,
       drinkLocation: drinkLocation,
@@ -179,24 +184,13 @@ export default function Drinks() {
     axios.post(apiURL + '/api/add/drinks', drinkItem)
       .then(function (response) {
         initialrows.push(response.data);
+        setRowsPerPage(initialrows.length)
         setRows([...initialrows])
       })
       .catch(function (error) {
         console.log(error);
       });
-      setTitle("")
-      setType("")
-      setPrice("")
-      setLocation("")
-      setImage("")
-      setIngredients("")
-    setDescription("")
-    setImageExists(false)
-
-    setOpen(false);
-    setEditOpen(false);
-
-
+      handleClose()
 
   };
 
@@ -206,6 +200,7 @@ export default function Drinks() {
       drinkID : drinkID,
       drinkTitle: drinkTitle,
       drinkType: drinkType,
+      drinkStock: drinkStock,
       drinkPrice: drinkPrice,
       drinkImage: drinkImage,
       drinkLocation: drinkLocation,
@@ -227,18 +222,7 @@ export default function Drinks() {
         console.log(error);
       });
     setID(0)
-    setTitle("")
-    setType("")
-    setPrice("")
-    setImage("")
-    setLocation("")
-    setIngredients("")
-    setDescription("")
-    setImageExists(false)
-    setEditOpen(false);
-    setOpen(false);
-
-
+    handleClose()
 
   };
 
@@ -279,6 +263,8 @@ export default function Drinks() {
     setTitle(row.title)
     if(row.type != null)
     setType(row.type)
+    if(row.stock != null)
+    setStock(row.stock)
     if(row.price != null)
     setPrice(row.price)
     if(row.location != null)
@@ -339,7 +325,7 @@ export default function Drinks() {
   <DialogContent>
   <div className={classes.root}>
     <Grid container spacing={1}>
-      <Grid item xs={12}>
+      <Grid item xs={4}>
         <TextField
           fullWidth
           value={drinkTitle}
@@ -349,6 +335,48 @@ export default function Drinks() {
           label="Title"
           variant="outlined"
         />
+      </Grid>
+      <Grid item xs={4}>
+        <TextField
+          fullWidth
+          select
+          value={drinkType}
+          onChange={(e) => setType(e.target.value)}
+          margin="dense"
+          id="type"
+          label="Type"
+          variant="outlined"
+        >{['Regular', 'Special' ].map((form) => (
+          <MenuItem key={form} value={form}>
+          {form}
+          </MenuItem>
+        ))}
+        </TextField>
+      </Grid>
+      <Grid item xs={4} style={{ textAlign: 'center' }}>
+      <FormControlLabel 
+        control={<Checkbox color="primary" checked={drinkStock} 
+        onChange={(e) => setStock(e.target.checked)} 
+        name="stock" />}
+        label="Available"
+        style={{ marginTop: '7px' }}
+
+      />
+        {/* <TextField
+          fullWidth
+          select
+          value={drinkStock}
+          onChange={(e) => setStock(e.target.value)}
+          margin="dense"
+          id="stock"
+          label="Available"
+          variant="outlined"
+        >{['Yes', 'No' ].map((form) => (
+          <MenuItem key={form} value={form}>
+          {form}
+          </MenuItem>
+        ))}
+        </TextField> */}
       </Grid>
 
       <Grid item xs={12}>
@@ -484,6 +512,7 @@ export default function Drinks() {
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
                 rowCount={rows.length}
+                headCells={headCells}
               />
               <TableBody>
                 {stableSort(rows, getComparator(order, orderBy))
@@ -517,7 +546,8 @@ export default function Drinks() {
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {row.title}
                         </TableCell>
-                        <TableCell align="right">{row.price}</TableCell>
+                        <TableCell >{row.type}</TableCell>
+                        <TableCell >{row.stock ? "Yes" : "No"}</TableCell>
                         <TableCell align="right">{moment(row.created).format('YYYY-MM-DD')}</TableCell>
                       </TableRow>
                     );
@@ -531,7 +561,7 @@ export default function Drinks() {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[10, 25]}
+            rowsPerPageOptions={[100]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
@@ -545,119 +575,13 @@ export default function Drinks() {
   );
 }
 
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
 const headCells = [
   { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
-  { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
+  { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
+  { id: 'stock', numeric: false, disablePadding: false, label: 'Available' },
   { id: 'date', numeric: true, disablePadding: false, label: 'Creation date' },
 ];
 
-function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell>
-        <TableCell padding="checkbox">
-          Edit
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-EnhancedTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-      }
-      : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark,
-      },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
-
-
-// EnhancedTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-// };
 
 
 

@@ -10,8 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 // import { secondaryListItems } from './listItems';
@@ -100,7 +98,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
+
+    marginLeft: '0.5vw',
+    marginRight: '0.5vw',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -258,8 +258,8 @@ export default function Dashboard(props) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+
+
           {display}
             {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
@@ -275,11 +275,11 @@ export default function Dashboard(props) {
                 <Orders />
               </Paper>
             </Grid> */}
-          </Grid>
+
           {/* <Box pt={4}>
             <Copyright />
           </Box> */}
-        </Container>
+
       </main>
     </div>
   );

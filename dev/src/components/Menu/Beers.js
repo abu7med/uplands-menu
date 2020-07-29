@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+// import Toolbar from '@material-ui/core/Toolbar';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         position: 'sticky',
-        top: '48px',
+        top: '45px',
         zIndex: '5'
     },
 
@@ -252,6 +252,8 @@ export default function Beers() {
     // };
     const handleClickClock = (event) => {
         setAnchorEl(event.currentTarget);
+        // console.log(document.getElementById('tap-beers').style.top)
+        // window.scrollTo(0, 500);
     };
     const handleCloseClock = () => {
         setAnchorEl(null);
@@ -365,7 +367,7 @@ export default function Beers() {
             )
         }
 
-        if (tempRows.length === 0){
+        if (tempRows.length === 0) {
             tempRows = rows;
         }
 
@@ -388,7 +390,7 @@ export default function Beers() {
         let newsourBeers = []
         let newotherBeers = []
         let newalcoholFreeBeers = []
-        Sorter(value, newRows).map( item => {
+        Sorter(value, newRows).map(item => {
             if (item.form === "Tap") {
                 newtapBeers.push(item);
             }
@@ -415,17 +417,18 @@ export default function Beers() {
             }
             else {
                 newotherBeers.push(item);
-            }})
-        
+            }
+        })
+
         setTapBeers(newtapBeers)
         setPaleAleBeers(newpaleAleBeers)
         setLagerBeers(newlagerBeers)
-        setAleBeers(newaleBeers) 
-        setStoutBeers(newstoutBeers) 
-        setBelgianBeers(newbelgianBeers) 
-        setSourBeers(newsourBeers) 
-        setOtherBeers(newotherBeers) 
-        setAlcoholFreeBeers(newalcoholFreeBeers) 
+        setAleBeers(newaleBeers)
+        setStoutBeers(newstoutBeers)
+        setBelgianBeers(newbelgianBeers)
+        setSourBeers(newsourBeers)
+        setOtherBeers(newotherBeers)
+        setAlcoholFreeBeers(newalcoholFreeBeers)
         window.scrollTo(0, 0)
 
     };
@@ -454,7 +457,7 @@ export default function Beers() {
 
         )
         setCurrentRows(Sorter(value, newRows))
-        Sorter(value, newRows).map( item => {
+        Sorter(value, newRows).map(item => {
             if (item.form === "Tap") {
                 newtapBeers.push(item);
             }
@@ -481,17 +484,18 @@ export default function Beers() {
             }
             else {
                 newotherBeers.push(item);
-            }})
-        
+            }
+        })
+
         setTapBeers(newtapBeers)
         setPaleAleBeers(newpaleAleBeers)
         setLagerBeers(newlagerBeers)
-        setAleBeers(newaleBeers) 
-        setStoutBeers(newstoutBeers) 
-        setBelgianBeers(newbelgianBeers) 
-        setSourBeers(newsourBeers) 
-        setOtherBeers(newotherBeers) 
-        setAlcoholFreeBeers(newalcoholFreeBeers) 
+        setAleBeers(newaleBeers)
+        setStoutBeers(newstoutBeers)
+        setBelgianBeers(newbelgianBeers)
+        setSourBeers(newsourBeers)
+        setOtherBeers(newotherBeers)
+        setAlcoholFreeBeers(newalcoholFreeBeers)
         window.scrollTo(0, 0)
 
     };
@@ -633,7 +637,7 @@ export default function Beers() {
                     {/* <h6 style={{ margin: "6px", textAlign: "center", fontSize: "1.2em" }} >
                         Filter by
     </h6> */}
-                    <FormLabel className={classes.label} component="legend">Categories</FormLabel>
+                    <h6 style={{ marginTop: "10px", marginBottom: "3px", fontSize: "1.1em" }}>Categories</h6>
                     <FormControlLabel
                         control={
                             <Checkbox style={{ margin: "0px", fontSize: '1em' }}
@@ -759,7 +763,7 @@ export default function Beers() {
                         label={"Other (" + rows.filter(row => row.type.includes("Rauchbier")).length + ")"}
                     />
 
-                    <FormLabel className={classes.label} component="legend">Origins</FormLabel>
+                    <h6 style={{ marginTop: "10px", marginBottom: "3px", fontSize: "1.1em" }}>Origins</h6>
                     {countries.map(function (country) {
                         return (<FormControlLabel
                             control={
@@ -800,39 +804,50 @@ export default function Beers() {
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading beers
     </Typography></div>) : (<div>
-                    <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
-                        <Toolbar variant="dense">
-                            <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                                <ArrowBackIosIcon />
-                            </IconButton>
-                            <Typography variant="h6" className={classes.appbar}>
-                                Beers
-    </Typography>
-                            <IconButton color="inherit" aria-describedby={id} onClick={handleClickClock}>
-                                <ScheduleIcon />
-                            </IconButton>
-                            <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}
-                                onClose={handleCloseClock}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
-                                <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
-                                <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
-                                <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
-                            </Popover>
-                        </Toolbar>
+                    <AppBar style={{ background: '#282c34', height: '45px'  }} className={classes.appbar} >
+                            <Grid container >
+                                <Grid item xs={3}  >
+                                    <IconButton style={{ textAlign: 'left' }} onClick={handleClick}  color="inherit" aria-label="menu">
+                                        <ArrowBackIosIcon style={{ marginBottom: '20px'}}/>
+                                        <p  style={{ marginTop: '-15px', fontSize: '0.85em'}}>
+                                        Menu
+    </p>
+                                    </IconButton>
+                                    
+                                </Grid>
+                                <Grid item xs={6} style={{ textAlign: 'center',  }} >
+                                    <p style={{ fontSize: '1.3em', marginTop: "12px" }}>
+                                        Beers
+    </p>
+                                </Grid>
+                                <Grid item xs={3} style={{ textAlign: 'right', marginTop: '0px' }} >
+                                    <IconButton  color="inherit" aria-describedby={id} onClick={handleClickClock}>
+                                        <ScheduleIcon />
+                                    </IconButton>
+                                    <Popover
+                                        id={id}
+                                        open={open}
+                                        anchorEl={anchorEl}
+                                        onClose={handleCloseClock}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                    >
+                                        <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
+                                        <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
+                                        <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
+                                        <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
+                                    </Popover>
+                                </Grid>
+                            </Grid>
+
                     </AppBar>
-                    <Grid className={classes.root} style={{ background: '#282c34'}} container >
+                    <Grid className={classes.root} style={{ background: '#282c34' }} container >
                         <Grid item xs={9}  >
                             <Paper component="form" className={classes.root} >
                                 <SearchIcon style={{ fontSize: 24 }} />
@@ -871,21 +886,21 @@ export default function Beers() {
                     <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} beers found
     </h4>
-                    {tapBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    {tapBeers.length > 0 ? <h6 id="tap-beers" style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                         {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
                         On tap:
     </h6> : null}
-    {/* {currentRows.filter(row => row.form === "Tap")
+                    {/* {currentRows.filter(row => row.form === "Tap")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
                     {tapBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
-                    })} 
-                    
+                    })}
+
                     {paleAleBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                         On bottle, Pale Ale:
-    </h6>: null}
+    </h6> : null}
                     {paleAleBeers.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })}

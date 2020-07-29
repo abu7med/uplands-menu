@@ -21,6 +21,10 @@ const ShotSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  stock: {
+    type: Boolean,
+    default: true
+  },
 
   location: {
     type: String,

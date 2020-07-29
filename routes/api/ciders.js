@@ -26,7 +26,7 @@ module.exports = (app) => {
         rating : req.body.ciderRating,
         price : req.body.ciderPrice,
         alcohol : req.body.ciderAlcohol,
-        ibu : req.body.ciderIBU,
+        stock : req.body.ciderStock,
         size : req.body.ciderSize,
         form : req.body.ciderForm,
         location : req.body.ciderLocation,
@@ -78,9 +78,9 @@ module.exports = (app) => {
     newCider.rating = req.body.ciderRating;
     newCider.price = req.body.ciderPrice;
     newCider.alcohol = req.body.ciderAlcohol;
-    newCider.ibu = req.body.ciderIBU;
     newCider.form = req.body.ciderForm;
     newCider.location = req.body.ciderLocation;
+    newCider.stock = req.body.ciderStock;
     newCider.size = req.body.ciderSize;
     newCider.image = req.body.ciderImage;
     newCider.untappd = req.body.ciderUntappd;

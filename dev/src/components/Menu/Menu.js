@@ -175,9 +175,9 @@ export default function Menu() {
                 <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
                     <Toolbar variant="dense">
 
-                        <Typography variant="h6" className={classes.appbar}>
+                        <p variant="h6" style={{ marginTop: '5px', fontSize: '1em' }}>
                             Menu
-    </Typography>
+    </p>
 
                     </Toolbar>
                 </AppBar>

@@ -21,6 +21,7 @@ module.exports = (app) => {
     Drink.findByIdAndUpdate(req.body.drinkID,
       {title: req.body.drinkTitle,
         type : req.body.drinkType,
+        stock : req.body.drinkStock,
         price : req.body.drinkPrice,
         description : req.body.drinkDescription,
         form : req.body.drinkForm,
@@ -66,6 +67,7 @@ module.exports = (app) => {
     const newDrink = new Drink();
     newDrink.title = req.body.drinkTitle;
     newDrink.type = req.body.drinkType;
+    newDrink.stock = req.body.drinkStock;
     newDrink.price = req.body.drinkPrice;
     newDrink.location = req.body.drinkLocation;
     newDrink.description = req.body.drinkDescription;

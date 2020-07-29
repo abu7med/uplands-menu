@@ -22,6 +22,7 @@ module.exports = (app) => {
       {title: req.body.foodTitle,
         type : req.body.foodType,
         price : req.body.foodPrice,
+        stock : req.body.foodStock,
         ingredients : req.body.foodIngredients,
         description : req.body.foodDescription,
         available : req.body.foodAvailable,
@@ -67,6 +68,7 @@ module.exports = (app) => {
     newFood.title = req.body.foodTitle;
     newFood.type = req.body.foodType;
     newFood.price = req.body.foodPrice;
+    newFood.stock = req.body.foodStock;
     newFood.ingredients = req.body.foodIngredients;
     newFood.description = req.body.foodDescription;
     newFood.available = req.body.foodAvailable;

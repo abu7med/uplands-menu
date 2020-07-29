@@ -24,6 +24,7 @@ module.exports = (app) => {
         price : req.body.sodaPrice,
         size : req.body.sodaSize,
         form : req.body.sodaForm,
+        stock : req.body.sodaStock,
         location : req.body.sodaLocation,
         image : req.body.sodaImage,
 
@@ -68,6 +69,7 @@ module.exports = (app) => {
     newSoda.type = req.body.sodaType;
     newSoda.price = req.body.sodaPrice;
     newSoda.form = req.body.sodaForm;
+    newSoda.stock = req.body.sodaStock;
     newSoda.location = req.body.sodaLocation;
     newSoda.size = req.body.sodaSize;
     newSoda.image = req.body.sodaImage;

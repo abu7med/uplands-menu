@@ -20,6 +20,10 @@ const WhiskeySchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  stock: {
+    type: Boolean,
+    default: true
+  },
 
   price: {
     type: Number,

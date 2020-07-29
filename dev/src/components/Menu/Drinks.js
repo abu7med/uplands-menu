@@ -8,10 +8,11 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import Popover from '@material-ui/core/Popover';
 import { useHistory } from "react-router-dom";
 // import Box from '@material-ui/core/Box';
 // import Chip from '@material-ui/core/Chip';
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         position: 'sticky',
-        top: '48px',
+        top: '45px',
         zIndex: '5'
     },
 
@@ -99,8 +100,17 @@ export default function Drink() {
     const history = useHistory();
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const handleClickClock = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleCloseClock = () => {
+        setAnchorEl(null);
+    };
 
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const handleClick = (event) => {
         history.push("/");
@@ -142,16 +152,47 @@ export default function Drink() {
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading drinks
     </Typography></div>) : (<div>
-                    <AppBar style={{ background: '#282c34' }} className={classes.appbar} >
-                        <Toolbar variant="dense">
-                            <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                                <ArrowBackIosIcon />
-                            </IconButton>
-                            <Typography variant="h6" className={classes.appbar}>
-                                Drinks
-    </Typography>
+        <AppBar style={{ background: '#282c34', height: '45px' }} className={classes.appbar} >
+                        <Grid container >
+                            <Grid item xs={3}  >
+                                <IconButton style={{ textAlign: 'left' }} onClick={handleClick} color="inherit" aria-label="menu">
+                                    <ArrowBackIosIcon style={{ marginBottom: '20px' }} />
+                                    <p style={{ marginTop: '-15px', fontSize: '0.85em' }}>
+                                        Menu
+    </p>
+                                </IconButton>
 
-                        </Toolbar>
+                            </Grid>
+                            <Grid item xs={6} style={{ textAlign: 'center', }} >
+                                <p style={{ fontSize: '1.3em', marginTop: "12px" }}>
+                                 Drinks
+    </p>
+                            </Grid>
+                            <Grid item xs={3} style={{ textAlign: 'right', marginTop: '0px' }} >
+                                <IconButton color="inherit" aria-describedby={id} onClick={handleClickClock}>
+                                    <ScheduleIcon />
+                                </IconButton>
+                                <Popover
+                                    id={id}
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    onClose={handleCloseClock}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center',
+                                    }}
+                                >
+                                    <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
+                                    <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
+                                    <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
+                                    <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
+                                </Popover>
+                            </Grid>
+                        </Grid>
                     </AppBar>
 
 
@@ -159,9 +200,24 @@ export default function Drink() {
 
     <Alert variant="filled" severity="info">
     All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert>
-                    {currentRows.map(function (row) {
+    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        Specials:
+    </h6>
+                    {currentRows.filter(row => row.type === "Special")
+                        .map(function (row) {
+                            return (<MenuItem key={row._id} properties={row} />)
+                        })}
+                        <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                        Regular:
+    </h6>
+                    {currentRows.filter(row => row.type === "Regular")
+                        .map(function (row) {
+                            return (<MenuItem key={row._id} properties={row} />)
+                        })}
+                    
+                    {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
-                    })}
+                    })} */}
 
 
 
