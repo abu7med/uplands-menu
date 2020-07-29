@@ -89,6 +89,7 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Boardgames() {
+    document.title = "Svantes menu - Board games"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
 

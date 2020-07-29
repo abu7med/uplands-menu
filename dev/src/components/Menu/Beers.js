@@ -204,6 +204,7 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Beers() {
+    document.title = "Svantes menu - Beers"
     const classes = useStyles();
 
     const [tapBeers, setTapBeers] = React.useState([]);

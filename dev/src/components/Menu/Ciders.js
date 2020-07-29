@@ -129,6 +129,7 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Ciders() {
+    document.title = "Svantes menu - Ciders"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
 

@@ -91,6 +91,7 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Food() {
+    document.title = "Svantes menu - Food"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
 

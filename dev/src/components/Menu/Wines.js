@@ -90,7 +90,7 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Wines() {
-
+    document.title = "Svantes menu - Wine"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
 

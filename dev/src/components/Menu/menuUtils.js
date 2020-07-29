@@ -46,25 +46,27 @@ const id = open ? 'simple-popover' : undefined;
   return (
     <div className={classes.appbar}>
       <Grid container >
-        <Grid item xs={3} style={{ textAlign: 'left' }} >
-        {props.category.length >0 ? (<IconButton onClick={handleClick} color="inherit" style={{ paddingTop: '5px' }} >
+        <Grid item xs={1} style={{ textAlign: 'right' }} >
+        {props.category.length >0 ? (<IconButton onClick={handleClick} color="inherit" style={{ paddingTop: '9px' }} >
             <ArrowBackIosIcon />
-            <p style={{ fontSize: '0.85em', marginTop: '4px' }}>
-              Menu
+           
+          </IconButton>): null}
+          </Grid>
+<Grid item xs={3} style={{ textAlign: 'left' }} >
+          <p style={{ fontSize: '1.3em', marginTop: '9px' }}>
+          Menu
 </p>
-          </IconButton>): <p style={{ fontSize: '1.3em', marginTop: '7px', marginLeft: '30px' }}>
-              Menu
-</p>}
+        </Grid>
           
 
-        </Grid>
-        <Grid item xs={6} style={{ textAlign: 'center' }} >
-          <p style={{ fontSize: '1.3em', marginTop: '7px' }}>
+        
+        <Grid item xs={4} style={{ textAlign: 'center' }} >
+          <p style={{ fontSize: '1.3em', marginTop: '9px' }}>
           {props.category}
 </p>
         </Grid>
-        <Grid item xs={3} style={{ textAlign: 'right' }} >
-          <IconButton style={{ paddingTop: '8px' }} color="inherit" aria-describedby={id} onClick={handleClickClock}>
+        <Grid item xs={4} style={{ textAlign: 'right' }} >
+          <IconButton style={{ paddingTop: '9px' }} color="inherit" aria-describedby={id} onClick={handleClickClock}>
             <ScheduleIcon />
           </IconButton>
           <Popover
