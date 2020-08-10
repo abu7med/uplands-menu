@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Container, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -28,10 +28,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Link from '@material-ui/core/Link';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import './Menu.css';
 import Footer from '../Footer/Footer';
-import {PersonalAppBar} from './menuUtils';
+import {PersonalAppBar, Background} from './menuUtils';
 
 
 const axios = require('axios');
@@ -204,6 +205,8 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Beers() {
+    document.body.style.background = Background
+    document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Beers"
     const classes = useStyles();
 
@@ -788,7 +791,7 @@ export default function Beers() {
     );
 
     return (
-        <Container style={{ backgroundColor: '#282c34' }} disableGutters maxWidth="xs" >
+        <Container style={{ backgroundColor: '#282c34' }} disableGutters maxWidth="sm" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading beers
     </Typography></div>) : (<div>
@@ -910,6 +913,10 @@ export default function Beers() {
 }
 
 function MenuItem(props) {
+    const theme = useTheme();
+
+    const sm = useMediaQuery(theme.breakpoints.up('sm'));
+    const xs = useMediaQuery(theme.breakpoints.up('xs'));
     const classes = useStyles();
     const [showText, setText] = React.useState(false);
     const [countryFlag, setFlag] = React.useState("");
@@ -943,8 +950,8 @@ function MenuItem(props) {
                     <Grid container >
                         {/* <ThemeProvider theme={fontTheme}> */}
 
-                        <Grid item xs={1}  >
-                            <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
+                        <Grid item xs={1} style={{ textAlign: "right" }} >
+                            <img  className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                         </Grid>
                         <Grid item xs={9} >
                             <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
@@ -995,9 +1002,14 @@ function MenuItem(props) {
                         ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
 
 
-                            {props.properties.description.substring(0, 60)}...  <Link color="inherit" onClick={handleTextButton}>
-                                [Show more]
-                                     </Link></p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+                           {sm ? (props.properties.description.substring(0, 90) + '...') : null}  
+                           {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null} 
+                           <Link color="inherit" onClick={handleTextButton}>
+                                [Show more] 
+                                     </Link>
+                                     
+                                     
+                                     </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
                         }</div>)}
 

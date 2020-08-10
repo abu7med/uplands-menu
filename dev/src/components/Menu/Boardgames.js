@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import {PersonalAppBar} from './menuUtils';
+import {PersonalAppBar, Background} from './menuUtils';
 import './Menu.css';
 
 const axios = require('axios');
@@ -89,6 +89,8 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Boardgames() {
+    document.body.style.background = Background
+    document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Board games"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
@@ -125,7 +127,7 @@ export default function Boardgames() {
     
 
     return (
-        <Container disableGutters maxWidth="xs" >
+        <Container disableGutters maxWidth="sm" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading board games
     </Typography></div>) : (<div>

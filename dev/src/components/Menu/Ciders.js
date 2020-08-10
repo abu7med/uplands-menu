@@ -11,7 +11,7 @@ import Link from '@material-ui/core/Link';
 
 import './Menu.css';
 import Footer from '../Footer/Footer';
-import {PersonalAppBar} from './menuUtils';
+import {PersonalAppBar, Background} from './menuUtils';
 
 
 const axios = require('axios');
@@ -129,6 +129,8 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Ciders() {
+    document.body.style.background = Background
+    document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Ciders"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
@@ -162,7 +164,7 @@ export default function Ciders() {
 
 
     return (
-        <Container disableGutters maxWidth="xs" >
+        <Container disableGutters maxWidth="sm" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading ciders
     </Typography></div>) : (<div>
@@ -171,11 +173,11 @@ export default function Ciders() {
   />
 
                     <Divider />
-                    <h4 style={{ color: 'white', margin: "5px" }} >
+                    {/* <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} ciders found
-    </h4>
+    </h4> */}
 
-                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                    <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em"}} >
                         On tap:
     </h6>
                     {currentRows.filter(row => row.form === "Tap")
@@ -228,7 +230,7 @@ function MenuItem(props) {
                 <div className={classes.content}>
                     <Grid container >
 
-                        <Grid item xs={1}>
+                        <Grid item xs={1} style={{ textAlign: "right" }}>
                             <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                         </Grid>
                         <Grid item xs={9}>

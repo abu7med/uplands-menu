@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import {PersonalAppBar} from './menuUtils';
+import {PersonalAppBar, Background} from './menuUtils';
 // import Box from '@material-ui/core/Box';
 // import Chip from '@material-ui/core/Chip';
 import './Menu.css';
@@ -91,6 +91,8 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Drink() {
+    document.body.style.background = Background
+    document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Drinks"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
@@ -128,7 +130,7 @@ export default function Drink() {
 
 
     return (
-        <Container disableGutters maxWidth="xs" >
+        <Container disableGutters maxWidth="sm" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading drinks
     </Typography></div>) : (<div>

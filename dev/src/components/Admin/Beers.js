@@ -31,9 +31,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {getComparator, stableSort, useToolbarStyles, EnhancedTableHead} from './tableUtils';
 
-import {
-  apiURL
-} from '../../utils/shared';
+
 const axios = require('axios');
 // const cheerio = require("cheerio")
 const moment = require('moment')
@@ -82,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let initialrows = []
-axios.get(apiURL + "/api/get/beers")
+axios.get("/api/get/beers")
   .then(function (response) {
     // handle success
 
@@ -98,7 +96,6 @@ axios.get(apiURL + "/api/get/beers")
     console.log(error);
   })
   .then(function () {
-
 
     // always executed
   });
@@ -162,7 +159,7 @@ export default function Beers() {
 
 
   const deleteRows = (event) => {
-    axios.delete(apiURL + "/api/delete/beers", {
+    axios.delete("/api/delete/beers", {
       data: selected
     });
     for (var i = 0; i < initialrows.length; i++) {
@@ -223,7 +220,7 @@ export default function Beers() {
       beerSize: beerSize,
       beerUntappd: untappdURL
     }
-    axios.post(apiURL + '/api/add/beers', beerItem)
+    axios.post('/api/add/beers', beerItem)
       .then(function (response) {
         initialrows.push(response.data);
         setRows([...initialrows])
@@ -259,7 +256,7 @@ export default function Beers() {
       beerUntappd: untappdURL
     }
     let initialrows = []
-    axios.post(apiURL + '/api/edit/beers', beerItem)
+    axios.post('/api/edit/beers', beerItem)
       .then(function (response) {
         for (var prop in response.data) {
           var item = response.data[prop];
@@ -280,6 +277,7 @@ export default function Beers() {
   };
   const handleImport = () => {
     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    
     setLoadingUntappd(true)
     const untappdID = untappdURL.substring(untappdURL.lastIndexOf('/') + 1)
 

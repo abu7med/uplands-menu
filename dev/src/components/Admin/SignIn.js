@@ -40,7 +40,7 @@ export default function SignIn(props) {
   // console.log(props.data.state.signInPassword)
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -62,7 +62,7 @@ export default function SignIn(props) {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Username"
             name="email"
             autoComplete="email"
             autoFocus

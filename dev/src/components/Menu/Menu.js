@@ -6,8 +6,13 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Beers from './Beers';
+import {
+    Route,
+    Switch
+  } from 'react-router-dom'
 import './Menu.css';
-import {PersonalAppBar} from './menuUtils';
+import {PersonalAppBar, Background} from './menuUtils';
 
 const images = [
 
@@ -161,10 +166,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Menu() {
+export default function Menu(props) {
     const classes = useStyles();
-    // document.body.style.background = 'url("https://upload.wikimedia.org/wikipedia/commons/5/53/Upplands_nation1.jpg") no-repeat center fixed'
-    // document.body.style.backgroundSize = 'cover'
+    document.body.style.background = Background
+    document.body.style.backgroundSize = 'cover'
     // document.body.style.filter = 'blur(8px)'
     // document.body.style.WebkitFilter = 'blur(8px)'
 
@@ -172,29 +177,15 @@ export default function Menu() {
     return (
         <div >
             {/* <div className={classes.test1}></div> */}
-            <Container  disableGutters maxWidth="xs" >
+            <Container  disableGutters maxWidth="sm" >
             <PersonalAppBar
   category=""
-
+logout={props.logout}
+admin={props.admin}
   />
 
                 <Box border={1} boxShadow={3}>
-                    <ButtonBases />
-                </Box >
-            </Container>
-        </div>
-        
-
-    );
-
-
-}
-
-function ButtonBases() {
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
+                <div className={classes.root}>
             {images.map((image) => (
                 <ButtonBase
                     focusRipple
@@ -220,12 +211,26 @@ function ButtonBases() {
                             color="inherit"
                             className={classes.imageTitle}
                         >
-                            {image.title.charAt(0).toUpperCase() + image.title.slice(1).toLowerCase()}
+                            {props.admin ? 
+                                ("Edit " + image.title.slice(0).toLowerCase())
+                                :(image.title.charAt(0).toUpperCase() + image.title.slice(1).toLowerCase())}
                             <span className={classes.imageMarked} />
                         </Typography>
                     </span>
                 </ButtonBase>
             ))}
         </div>
+                </Box >
+                <Switch>
+        <Route path="/beers" component={Beers}/>
+
+      </Switch>
+            </Container>
+        </div>
+        
+
     );
+
+
 }
+

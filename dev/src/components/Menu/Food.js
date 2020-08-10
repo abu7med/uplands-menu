@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 // import Chip from '@material-ui/core/Chip';
-import {PersonalAppBar} from './menuUtils';
+import {PersonalAppBar, Background} from './menuUtils';
 import './Menu.css';
 
 const axios = require('axios');
@@ -91,6 +91,8 @@ function Sorter(sortVariable, array) {
 }
 
 export default function Food() {
+    document.body.style.background = Background
+    document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Food"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
@@ -126,7 +128,7 @@ export default function Food() {
     
 
     return (
-        <Container disableGutters maxWidth="xs" >
+        <Container disableGutters maxWidth="sm" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading food
     </Typography></div>) : (<div>
@@ -189,10 +191,10 @@ function MenuItem(props) {
                 <div className={classes.content}>
                     <Grid container >
 
-                            <Grid item xs={2}>
+                            {/* <Grid item xs={2}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="50" height="50" />
-                            </Grid>
-                            <Grid item xs={8}>
+                            </Grid> */}
+                            <Grid item xs={10}>
                                 <h6 style={{ fontSize: "1em" }} display="block">
                                     {props.properties.title}
                                 </h6>

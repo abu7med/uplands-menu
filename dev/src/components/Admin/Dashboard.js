@@ -172,9 +172,9 @@ export default function Dashboard(props) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Signed in as: {props.data.state.signedInUser}
+            Signed in as: {props.signedin}
           </Typography>
-          <Button color="inherit" onClick={props.data.logout}>Log out</Button>
+          <Button color="inherit" onClick={props.logout}>Log out</Button>
 
         </Toolbar>
       </AppBar>

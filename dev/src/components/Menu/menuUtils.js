@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
 }));
+// export const Background = 'url("images/uplandsblur50.jpg") no-repeat center fixed'
+export const Background = ''
 
 export function PersonalAppBar(props) {
   const classes = useStyles();
@@ -65,8 +67,15 @@ const id = open ? 'simple-popover' : undefined;
           {props.category}
 </p>
         </Grid>
-        <Grid item xs={4} style={{ textAlign: 'right' }} >
-          <IconButton style={{ paddingTop: '9px' }} color="inherit" aria-describedby={id} onClick={handleClickClock}>
+        {props.admin ? (
+          <Grid item xs={4} style={{ textAlign: 'right' }} >
+          <p style={{ fontSize: '1.3em', marginTop: '9px', marginRight: '2vw' }}>Sign out</p>
+          
+        </Grid>
+        )
+        : (
+          <Grid item xs={4} style={{ textAlign: 'right' }} >
+          <IconButton style={{ paddingTop: '9px', marginRight: '2vw' }} color="inherit" aria-describedby={id} onClick={handleClickClock}>
             <ScheduleIcon />
           </IconButton>
           <Popover
@@ -88,7 +97,11 @@ const id = open ? 'simple-popover' : undefined;
             <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
             <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
           </Popover>
+          
         </Grid>
+        )
+        }
+        
       </Grid>
     </div>
 
