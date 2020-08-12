@@ -8,6 +8,14 @@ const ShotSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  country: {
+    type: String,
+    default: ''
+  },
+  brewery: {
+    type: String,
+    default: ''
+  },
   alcohol: {
     type: Number,
     default: 0
@@ -24,6 +32,10 @@ const ShotSchema = new mongoose.Schema({
   stock: {
     type: Boolean,
     default: true
+  },
+  new: {
+    type: Boolean,
+    default: false
   },
 
   location: {

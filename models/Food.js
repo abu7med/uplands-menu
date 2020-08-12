@@ -16,6 +16,10 @@ const FoodSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  new: {
+    type: Boolean,
+    default: false
+  },
 
   price: {
     type: Number,
@@ -26,11 +30,6 @@ const FoodSchema = new mongoose.Schema({
     default: ''
   },
   description: {
-    type: String,
-    default: ''
-  },
-
-  available: {
     type: String,
     default: ''
   },

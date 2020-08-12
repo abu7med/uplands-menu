@@ -4,6 +4,10 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AddIcon from '@material-ui/icons/Add';
+import Paper from '@material-ui/core/Paper';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { useHistory } from "react-router-dom";
 
@@ -15,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     // borderColor: 'black',
     height: '40px', 
     width: '100%', 
-    background: '#282c34', 
+    background: '#333842', 
     position: 'sticky', 
     top: '0px', 
     color: "white", 
@@ -40,13 +44,18 @@ const handleCloseClock = () => {
     setAnchorEl(null);
 };
 const handleClick = (event) => {
-  history.push("/");
+  if (props.admin){
+    history.go(0)
+  }else{
+    history.push("/");
+  }
+  
 }
 const open = Boolean(anchorEl);
 const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div className={classes.appbar}>
+    <Paper square={true} elevation={4} className={classes.appbar}>
       <Grid container >
         <Grid item xs={1} style={{ textAlign: 'right' }} >
         {props.category.length >0 ? (<IconButton onClick={handleClick} color="inherit" style={{ paddingTop: '9px' }} >
@@ -63,13 +72,33 @@ const id = open ? 'simple-popover' : undefined;
 
         
         <Grid item xs={4} style={{ textAlign: 'center' }} >
-          <p style={{ fontSize: '1.3em', marginTop: '9px' }}>
+        {props.admin && props.category.length >0  ? (<Button
+          style={{ marginTop: '6px', color: 'white' }}
+       
+        onClick={() => props.create()}
+        size="small"
+        startIcon={<AddIcon />}
+      >
+        Add new
+      </Button>)
+        :
+          (<p style={{ fontSize: '1.3em', marginTop: '9px' }}>
           {props.category}
-</p>
+</p>)}
         </Grid>
-        {props.admin ? (
+        {props.admin  ? (
           <Grid item xs={4} style={{ textAlign: 'right' }} >
-          <p style={{ fontSize: '1.3em', marginTop: '9px', marginRight: '2vw' }}>Sign out</p>
+          <Button
+          style={{ marginTop: '6px', marginRight: '1vw', color: 'white' }}
+        
+
+        size="small"
+        onClick={() => props.logout()}
+        startIcon={<ExitToAppIcon />}
+      >
+        Sign out
+      </Button>
+          {/* <p style={{ fontSize: '1.3em', marginTop: '9px', marginRight: '2vw' }}>Sign out</p> */}
           
         </Grid>
         )
@@ -103,9 +132,82 @@ const id = open ? 'simple-popover' : undefined;
         }
         
       </Grid>
-    </div>
+    </Paper>
 
   );
+}
+export function checkImageExists(imageUrl, callBack) {
+  var imageData = new Image();
+  imageData.onload = function () {
+    callBack(true);
+  };
+  imageData.onerror = function () {
+    callBack(false);
+  };
+  imageData.src = imageUrl;
+}
+export function Sorter(sortVariable, array) {
+  if (sortVariable === "title-ascending") {
+      array = array.sort(function (a, b) {
+          a = a.title.toLowerCase();
+          b = b.title.toLowerCase();
+
+          return a < b ? -1 : a > b ? 1 : 0;
+      });
+      return array
+  }
+  if (sortVariable === "title-descending") {
+      array = array.sort(function (a, b) {
+          a = a.title.toLowerCase();
+          b = b.title.toLowerCase();
+
+          return b < a ? -1 : b > a ? 1 : 0;
+      });
+      return array
+  }
+  // if (sortVariable === "brewery-ascending") {
+  //     array = array.sort(function (a, b) {
+  //         a = a.brewery.toLowerCase();
+  //         b = b.brewery.toLowerCase();
+
+  //         return a < b ? -1 : a > b ? 1 : 0;
+  //     });
+  //     return array
+  // }
+  // if (sortVariable === "brewery-descending") {
+  //     array = array.sort(function (a, b) {
+  //         a = a.brewery.toLowerCase();
+  //         b = b.brewery.toLowerCase();
+
+  //         return b < a ? -1 : b > a ? 1 : 0;
+  //     });
+  //     return array
+  // }
+  // if (sortVariable === "alcohol-descending") {
+  //     array = array.sort((c1, c2) => c2.alcohol - c1.alcohol)
+  //     return array
+  // }
+  // if (sortVariable === "alcohol-ascending") {
+  //     array = array.sort((c1, c2) => c1.alcohol - c2.alcohol)
+  //     return array
+  // }
+  // if (sortVariable === "rating-descending") {
+  //     array = array.sort((c1, c2) => c2.rating - c1.rating)
+  //     return array
+  // }
+  // if (sortVariable === "rating-ascending") {
+  //     array = array.sort((c1, c2) => c1.rating - c2.rating)
+  //     return array
+  // }
+  // if (sortVariable === "ibu-descending") {
+  //     array = array.sort((c1, c2) => c2.ibu - c1.ibu)
+  //     return array
+  // }
+  // if (sortVariable === "ibu-ascending") {
+  //     array = array.sort((c1, c2) => c1.ibu - c2.ibu)
+  //     return array
+  // }
+
 }
 
 {/* <AppBar style={{ background: '#282c34', height: '45px'  }} className={classes.appbar} >

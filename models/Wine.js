@@ -8,6 +8,10 @@ const WineSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  brewery: {
+    type: String,
+    default: ''
+  },
   alcohol: {
     type: Number,
     default: 0
@@ -29,7 +33,10 @@ const WineSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-
+  new: {
+    type: Boolean,
+    default: false
+  },
   location: {
     type: String,
     default: ''

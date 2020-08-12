@@ -13,9 +13,22 @@ import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 // import Toolbar from '@material-ui/core/Toolbar';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Skeleton from '@material-ui/lab/Skeleton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // import Radio from '@material-ui/core/Radio';
 // import RadioGroup from '@material-ui/core/RadioGroup';
@@ -29,14 +42,19 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Link from '@material-ui/core/Link';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import './Menu.css';
 import Footer from '../Footer/Footer';
-import {PersonalAppBar, Background} from './menuUtils';
+import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
+import { AdminContext } from '../Admin/Admin';
+import { useHistory } from "react-router-dom";
+
 
 
 const axios = require('axios');
 const country = require('country-data').lookup
+const moment = require('moment')
 
 
 
@@ -140,76 +158,35 @@ const useStyles = makeStyles((theme) => ({
     },
 
 }));
-function Sorter(sortVariable, array) {
-    if (sortVariable === "title-ascending") {
-        array = array.sort(function (a, b) {
-            a = a.title.toLowerCase();
-            b = b.title.toLowerCase();
 
-            return a < b ? -1 : a > b ? 1 : 0;
-        });
-        return array
-    }
-    if (sortVariable === "title-descending") {
-        array = array.sort(function (a, b) {
-            a = a.title.toLowerCase();
-            b = b.title.toLowerCase();
 
-            return b < a ? -1 : b > a ? 1 : 0;
-        });
-        return array
-    }
-    // if (sortVariable === "brewery-ascending") {
-    //     array = array.sort(function (a, b) {
-    //         a = a.brewery.toLowerCase();
-    //         b = b.brewery.toLowerCase();
-
-    //         return a < b ? -1 : a > b ? 1 : 0;
-    //     });
-    //     return array
-    // }
-    // if (sortVariable === "brewery-descending") {
-    //     array = array.sort(function (a, b) {
-    //         a = a.brewery.toLowerCase();
-    //         b = b.brewery.toLowerCase();
-
-    //         return b < a ? -1 : b > a ? 1 : 0;
-    //     });
-    //     return array
-    // }
-    // if (sortVariable === "alcohol-descending") {
-    //     array = array.sort((c1, c2) => c2.alcohol - c1.alcohol)
-    //     return array
-    // }
-    // if (sortVariable === "alcohol-ascending") {
-    //     array = array.sort((c1, c2) => c1.alcohol - c2.alcohol)
-    //     return array
-    // }
-    // if (sortVariable === "rating-descending") {
-    //     array = array.sort((c1, c2) => c2.rating - c1.rating)
-    //     return array
-    // }
-    // if (sortVariable === "rating-ascending") {
-    //     array = array.sort((c1, c2) => c1.rating - c2.rating)
-    //     return array
-    // }
-    // if (sortVariable === "ibu-descending") {
-    //     array = array.sort((c1, c2) => c2.ibu - c1.ibu)
-    //     return array
-    // }
-    // if (sortVariable === "ibu-ascending") {
-    //     array = array.sort((c1, c2) => c1.ibu - c2.ibu)
-    //     return array
-    // }
-
-}
-
-export default function Beers() {
+export default function Beers(props) {
+    //admin stuff
+    const [itemURL, setItemURL] = React.useState("");
+    const [itemID, setItemID] = React.useState();
+    const [itemTitle, setItemTitle] = React.useState("");
+    const [itemStock, setItemStock] = React.useState(true);
+    const [itemNew, setItemNew] = React.useState(false);
+    const [itemBrewery, setItemBrewery] = React.useState("");
+    const [itemDescription, setItemDescription] = React.useState("");
+    const [itemType, setItemType] = React.useState("");
+    const [itemRating, setItemRating] = React.useState("");
+    const [itemPrice, setItemPrice] = React.useState("");
+    const [itemAlcohol, setItemAlcohol] = React.useState("");
+    const [itemIBU, setItemIBU] = React.useState("");
+    const [itemImage, setItemImage] = React.useState("");
+    const [itemForm, setItemForm] = React.useState("Bottle");
+    const [itemSize, setItemSize] = React.useState("");
+    const [itemCountry, setItemCountry] = React.useState("");
+    const [itemLocation, setItemLocation] = React.useState("Inside");
+    const [imageExists, setItemImageExists] = React.useState(false);
+    const [createWindow, setCreateWindow] = React.useState(false);
+    const [editWindow, setEditWindow] = React.useState(false);
+    //
     document.body.style.background = Background
     document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Beers"
     const classes = useStyles();
-
     const [tapBeers, setTapBeers] = React.useState([]);
     const [paleAleBeers, setPaleAleBeers] = React.useState([]);
     const [lagerBeers, setLagerBeers] = React.useState([]);
@@ -232,6 +209,8 @@ export default function Beers() {
     const [filter, setFilter] = React.useState({
         checkedAlcoholFree: false,
         checkedGlutenFree: false,
+        checkedVegan: false,
+        checkedNew: false,
         checkedAle: false,
         checkedLager: false,
         checkedWheatBeer: false,
@@ -245,8 +224,576 @@ export default function Beers() {
     });
 
     const [value, setValue] = React.useState('title-ascending');
-    const [searchValue, setSearchValue] = React.useState('');
 
+    const [searchValue, setSearchValue] = React.useState('');
+    //admin stuff
+    const makeCreateWindowVisible = () => {
+        setCreateWindow(true);
+    };
+    const makeEditWindowVisible = (item) => {
+        if (item._id != null)
+            setItemID(item._id)
+        if (item.untappd != null)
+            setItemURL(item.untappd)
+        if (item.title != null)
+            setItemTitle(item.title)
+        if (item.brewery != null)
+            setItemBrewery(item.brewery)
+        if (item.description != null)
+            setItemDescription(item.description)
+        if (item.type != null)
+            setItemType(item.type)
+        if (item.stock != null)
+            setItemStock(item.stock)
+        if (item.new != null)
+            setItemNew(item.new)
+        if (item.rating != null)
+            setItemRating(item.rating)
+        if (item.country != null)
+            setItemCountry(item.country)
+        if (item.price != null)
+            setItemPrice(item.price)
+        if (item.alcohol != null)
+            setItemAlcohol(item.alcohol)
+        if (item.ibu != null)
+            setItemIBU(item.ibu)
+        if (item.form != null)
+            setItemForm(item.form)
+        if (item.location != null)
+            setItemLocation(item.location)
+        if (item.size != null)
+            setItemSize(item.size)
+        if (item.image != null)
+            setItemImage(item.image)
+        checkImageExists(item.image, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
+        setEditWindow(true);
+    };
+    const handleCloseWindow = () => {
+        setItemURL("")
+        setItemTitle("")
+        setItemBrewery("")
+        setItemDescription("")
+        setItemType("")
+        setItemRating("")
+        setItemPrice("")
+        setItemCountry("")
+        setItemAlcohol("")
+        setItemIBU("")
+        setItemImage("")
+        setItemForm("")
+        setItemSize("")
+        setItemLocation("")
+        setItemImageExists(false)
+        setCreateWindow(false)
+        setEditWindow(false)
+    };
+    const handleCreateItem = () => {
+        let object = {
+            beerTitle: itemTitle,
+            beerBrewery: itemBrewery,
+            beerDescription: itemDescription,
+            beerType: itemType,
+            beerStock: itemStock,
+            beerNew: itemNew,
+            beerRating: itemRating,
+            beerPrice: itemPrice,
+            beerCountry: itemCountry,
+            beerAlcohol: itemAlcohol,
+            beerIBU: itemIBU,
+            beerImage: itemImage,
+            beerForm: itemForm,
+            beerLocation: itemLocation,
+            beerSize: itemSize,
+            beerUntappd: itemURL
+        }
+        axios.post('/api/add/beers', object)
+            .then(function (response) {
+                let item = response.data
+                rows.push(item);
+                setRows([...rows])
+                currentRows.push(item);
+                setCurrentRows([...currentRows])
+
+                if (!countries.includes(item.country)) {
+                    countries.push(item.country);
+                    filter["checked" + item.country] = false
+                    setCountries(countries)
+                    setFilter(filter)
+                }
+                if (item.form === "Tap") {
+                    tapBeers.push(item);
+                    setTapBeers(Sorter(value, [...tapBeers]))
+                }
+                else if (item.alcohol <= 2.25) {
+                    alcoholFreeBeers.push(item);
+                    setAlcoholFreeBeers(Sorter(value, [...alcoholFreeBeers]))
+                }
+                else if (item.type.includes("Pale Ale") || item.type.includes("IPA")) {
+                    paleAleBeers.push(item);
+                    setPaleAleBeers(Sorter(value, [...paleAleBeers]))
+                }
+                else if (item.type.includes("Lager") || item.type.includes("Bock") || item.type.includes("Pilsner")) {
+                    lagerBeers.push(item);
+                    setLagerBeers(Sorter(value, [...lagerBeers]))
+                }
+                else if (item.type.includes("Stout") || item.type.includes("Porter")) {
+                    stoutBeers.push(item);
+                    setStoutBeers(Sorter(value, [...stoutBeers]))
+                }
+                else if (item.type.includes("Sour")) {
+                    sourBeers.push(item);
+                    setSourBeers(Sorter(value, [...sourBeers]))
+                }
+                else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
+                    belgianBeers.push(item);
+                    setBelgianBeers(Sorter(value, [...belgianBeers]))
+                }
+                else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
+                    aleBeers.push(item);
+                    setAleBeers(Sorter(value, [...aleBeers]))
+                }
+                else {
+                    otherBeers.push(item);
+                    setOtherBeers(Sorter(value, [...otherBeers]))
+                }
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        handleCloseWindow()
+
+    };
+
+
+    const handleEditItem = () => {
+        let item = {
+            beerID: itemID,
+            beerTitle: itemTitle,
+            beerBrewery: itemBrewery,
+            beerDescription: itemDescription,
+            beerType: itemType,
+            beerStock: itemStock,
+            beerNew: itemNew,
+            beerRating: itemRating,
+            beerPrice: itemPrice,
+            beerCountry: itemCountry,
+            beerAlcohol: itemAlcohol,
+            beerIBU: itemIBU,
+            beerImage: itemImage,
+            beerForm: itemForm,
+            beerLocation: itemLocation,
+            beerSize: itemSize,
+            beerUntappd: itemURL
+        }
+        axios.post('/api/edit/beers', item)
+            .then(function (response) {
+                let modifiedItem = response.data[itemID]
+                let oldItem = rows.filter(row => row._id === itemID)[0]
+                if (rows.indexOf(oldItem) > -1) {
+                    rows[rows.indexOf(oldItem)] = modifiedItem
+                    setRows([...rows])
+                }
+                if (currentRows.indexOf(oldItem) > -1) {
+                    currentRows[currentRows.indexOf(oldItem)] = modifiedItem
+                    setCurrentRows([...currentRows])
+                }
+                if (tapBeers.indexOf(oldItem) > -1) {
+                    tapBeers[tapBeers.indexOf(oldItem)] = modifiedItem
+                    setTapBeers([...tapBeers])
+                }
+                if (paleAleBeers.indexOf(oldItem) > -1) {
+                    paleAleBeers[paleAleBeers.indexOf(oldItem)] = modifiedItem
+                    setPaleAleBeers([...paleAleBeers])
+                }
+                if (lagerBeers.indexOf(oldItem) > -1) {
+                    lagerBeers[lagerBeers.indexOf(oldItem)] = modifiedItem
+                    setLagerBeers([...lagerBeers])
+                }
+                if (aleBeers.indexOf(oldItem) > -1) {
+                    aleBeers[aleBeers.indexOf(oldItem)] = item
+                    setAleBeers([...aleBeers])
+                }
+                if (stoutBeers.indexOf(oldItem) > -1) {
+                    stoutBeers[stoutBeers.indexOf(oldItem)] = item
+                    setStoutBeers([...stoutBeers])
+                }
+                if (belgianBeers.indexOf(oldItem) > -1) {
+                    belgianBeers[belgianBeers.indexOf(oldItem)] = item
+                    setBelgianBeers([...belgianBeers])
+                }
+                if (sourBeers.indexOf(oldItem) > -1) {
+                    sourBeers[sourBeers.indexOf(oldItem)] = item
+                    setSourBeers([...sourBeers])
+                }
+                if (otherBeers.indexOf(oldItem) > -1) {
+                    otherBeers[otherBeers.indexOf(oldItem)] = item
+                    setOtherBeers([...otherBeers])
+                }
+                if (alcoholFreeBeers.indexOf(oldItem) > -1) {
+                    alcoholFreeBeers[alcoholFreeBeers.indexOf(oldItem)] = item
+                    setAlcoholFreeBeers([...alcoholFreeBeers])
+                }
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        handleCloseWindow()
+
+
+
+    };
+    const deleteItem = (item) => {
+        axios.delete("/api/delete/beers", {
+            data: [item]
+        });
+        if (rows.indexOf(item) > -1) {
+            rows.splice(rows.indexOf(item), 1);
+            setRows([...rows])
+        }
+        if (currentRows.indexOf(item) > -1) {
+            currentRows.splice(currentRows.indexOf(item), 1);
+            setCurrentRows([...currentRows])
+        }
+        if (tapBeers.indexOf(item) > -1) {
+            tapBeers.splice(tapBeers.indexOf(item), 1);
+            setTapBeers([...tapBeers])
+        }
+        if (paleAleBeers.indexOf(item) > -1) {
+            paleAleBeers.splice(paleAleBeers.indexOf(item), 1);
+            setPaleAleBeers([...paleAleBeers])
+        }
+        if (lagerBeers.indexOf(item) > -1) {
+            lagerBeers.splice(lagerBeers.indexOf(item), 1);
+            setLagerBeers([...lagerBeers])
+        }
+        if (aleBeers.indexOf(item) > -1) {
+            aleBeers.splice(aleBeers.indexOf(item), 1);
+            setAleBeers([...aleBeers])
+        }
+        if (stoutBeers.indexOf(item) > -1) {
+            stoutBeers.splice(stoutBeers.indexOf(item), 1);
+            setStoutBeers([...stoutBeers])
+        }
+        if (belgianBeers.indexOf(item) > -1) {
+            belgianBeers.splice(belgianBeers.indexOf(item), 1);
+            setBelgianBeers([...belgianBeers])
+        }
+        if (sourBeers.indexOf(item) > -1) {
+            sourBeers.splice(sourBeers.indexOf(item), 1);
+            setSourBeers([...sourBeers])
+        }
+        if (otherBeers.indexOf(item) > -1) {
+            otherBeers.splice(otherBeers.indexOf(item), 1);
+            setOtherBeers([...otherBeers])
+        }
+        if (alcoholFreeBeers.indexOf(item) > -1) {
+            alcoholFreeBeers.splice(alcoholFreeBeers.indexOf(item), 1);
+            setAlcoholFreeBeers([...alcoholFreeBeers])
+        }
+
+
+        // for (var i = 0; i < currentRows.length; i++) {
+        //   var obj = currentRows[i];
+
+        //   if (selected.indexOf(obj._id) !== -1) {
+        //     initialrows.splice(i, 1);
+        //     i--;
+        //   }
+        // }
+        // // for (var i = 0; i < currentRows.length; i++) {
+        // //     var obj = currentRows[i];
+
+        // //     if (selected.indexOf(obj._id) !== -1) {
+        // //       initialrows.splice(i, 1);
+        // //       i--;
+        // //     }
+        // //   }
+        // setRows([...initialrows])
+        // setSelected([])
+
+    };
+
+    const handleImportInfo = () => {
+        // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+        const untappdID = itemURL.substring(itemURL.lastIndexOf('/') + 1)
+
+        axios.get("https://api.untappd.com/v4/beer/info/" + untappdID + "?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
+            .then(function (response) {
+                // handle success
+
+                setItemTitle(response.data.response.beer.beer_name);
+                setItemBrewery(response.data.response.beer.brewery.brewery_name);
+                setItemType(response.data.response.beer.beer_style);
+                setItemAlcohol(response.data.response.beer.beer_abv);
+                setItemIBU(response.data.response.beer.beer_ibu);
+                setItemRating(response.data.response.beer.weighted_rating_score);
+                setItemDescription(response.data.response.beer.beer_description);
+                setItemImage(response.data.response.beer.beer_label);
+                setItemCountry(response.data.response.beer.brewery.country_name);
+                checkImageExists(response.data.response.beer.beer_label, function (existsImage) {
+                    if (existsImage === true) {
+                        setItemImageExists(true)
+                    }
+                    else {
+                        setItemImageExists(false)
+                    }
+                });
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+
+
+
+    };
+    const createDialogContent = () => {
+        return (<DialogContent>
+            <div >
+                <Grid container spacing={1}>
+                    <Grid item xs={9}>
+                        <TextField
+                            fullWidth
+                            value={itemURL}
+                            onChange={(e) => setItemURL(e.target.value)}
+                            margin="dense"
+                            id="url"
+                            label="Untappd URL"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Button fullWidth
+                            style={{ marginTop: 9 }}
+                            onClick={handleImportInfo}
+                            variant="contained">
+                            Import</Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemTitle}
+                            onChange={(e) => setItemTitle(e.target.value)}
+                            margin="dense"
+                            id="title"
+                            label="Title"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemBrewery}
+                            onChange={(e) => setItemBrewery(e.target.value)}
+                            margin="dense"
+                            id="brewery"
+                            label="Brewery"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            value={itemDescription}
+                            onChange={(e) => setItemDescription(e.target.value)}
+                            margin="dense"
+                            id="description"
+                            label="Description"
+                            multiline
+                            rows={3}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemType}
+                            onChange={(e) => setItemType(e.target.value)}
+                            margin="dense"
+                            id="type"
+                            label="Type"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemRating}
+                            onChange={(e) => setItemRating(e.target.value)}
+                            margin="dense"
+                            id="rating"
+                            label="Rating"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemCountry}
+                            onChange={(e) => setItemCountry(e.target.value)}
+                            margin="dense"
+                            id="country"
+                            label="Country"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemPrice}
+                            onChange={(e) => setItemPrice(e.target.value)}
+                            margin="dense"
+                            id="price"
+                            label="Price"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemAlcohol}
+                            onChange={(e) => setItemAlcohol(e.target.value)}
+                            margin="dense"
+                            id="alcohol"
+                            label="Alcohol rate"
+                            variant="outlined"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">%</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemIBU}
+                            onChange={(e) => setItemIBU(e.target.value)}
+                            margin="dense"
+                            id="ibu"
+                            label="IBU"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            select
+                            value={itemLocation}
+                            onChange={(e) => setItemLocation(e.target.value)}
+                            margin="dense"
+                            id="location"
+                            label="Location"
+                            variant="outlined"
+                        >{['Inside', 'Outside', 'Inside/Outside'].map((location) => (
+                            <MenuItem key={location} value={location}>
+                                {location}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            select
+                            value={itemForm}
+                            onChange={(e) => setItemForm(e.target.value)}
+                            margin="dense"
+                            id="form"
+                            label="Form"
+                            variant="outlined"
+                        >        >{['Bottle', 'Tap'].map((form) => (
+                            <MenuItem key={form} value={form}>
+                                {form}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={4} xs={12}>
+                        <TextField
+                            fullWidth
+                            value={itemSize}
+                            onChange={(e) => setItemSize(e.target.value)}
+                            margin="dense"
+                            id="size"
+                            label="Sizes"
+                            variant="outlined"
+                            helperText="Ex: 400 or 400,500,1500"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemNew}
+                                onChange={(e) => setItemNew(e.target.checked)}
+                                name="stock" />}
+                            label="New beer"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemStock}
+                                onChange={(e) => setItemStock(e.target.checked)}
+                                name="stock" />}
+                            label="Available"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid container justify="center" item xs={12}>
+
+                        {imageExists ? (
+                            <img src={itemImage} alt="Beer" width="100" height="100" />
+                        ) : (
+                                <Skeleton variant="rect" width={100} height={100} />
+                            )}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            value={itemImage}
+                            onChange={handleImageChange}
+                            margin="dense"
+                            id="imageURL"
+                            label="Image URL"
+                            variant="outlined"
+                        />
+                    </Grid>
+                </Grid>
+            </div>
+        </DialogContent>)
+    }
+    const handleImageChange = (event) => {
+        setItemImage(event.target.value)
+        checkImageExists(event.target.value, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
+
+    };
+    //
     // const handleSortChange = (event) => {
     //     setValue(event.target.value);
     //     setCurrentRows(Sorter(event.target.value, currentRows))
@@ -312,6 +859,14 @@ export default function Beers() {
             if (key === "checkedGlutenFree" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Gluten-Free")))
                 originalRows = originalRows.filter(row => !row.type.includes("Gluten-Free"))
+            }
+            if (key === "checkedVegan" && temparray[key]) {
+                tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Vegan")))
+                originalRows = originalRows.filter(row => !row.type.includes("Vegan"))
+            }
+            if (key === "checkedNew" && temparray[key]) {
+                tempRows = tempRows.concat(originalRows.filter(row => row.new))
+                originalRows = originalRows.filter(row => !row.new)
             }
 
             if (key === "checkedWheatBeer" && temparray[key]) {
@@ -509,7 +1064,6 @@ export default function Beers() {
             .then(function (response) {
                 // handle success
                 let importedRows = []
-                let originalRows = []
                 for (var prop in response.data) {
                     var item = response.data[prop];
 
@@ -651,6 +1205,28 @@ export default function Beers() {
                             />
                         }
                         label={"Gluten Free (" + rows.filter(row => row.type.includes("Gluten-Free")).length + ")"}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedVegan}
+                                onChange={handleFilterChange}
+                                name="checkedVegan"
+                                color="primary"
+                            />
+                        }
+                        label={"Vegan (" + rows.filter(row => row.type.includes("Vegan")).length + ")"}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={filter.checkedNew}
+                                onChange={handleFilterChange}
+                                name="checkedNew"
+                                color="primary"
+                            />
+                        }
+                        label={"New in (" + rows.filter(row => row.new).length + ")"}
                     />
                     <Divider />
                     <FormControlLabel
@@ -795,9 +1371,12 @@ export default function Beers() {
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading beers
     </Typography></div>) : (<div>
-  <PersonalAppBar
-  category="Beers"
-  />
+                    <PersonalAppBar
+                        category="Beers"
+                        logout={props.logout}
+                        admin={props.admin}
+                        create={makeCreateWindowVisible}
+                    />
                     <Grid className={classes.root} style={{ background: '#282c34' }} container >
                         <Grid item xs={9}  >
                             <Paper component="form" className={classes.root} style={{ zIndex: 24 }} >
@@ -822,7 +1401,7 @@ export default function Beers() {
                         <Grid item xs={3}  >
                             <React.Fragment key="filter">
                                 <Button fullWidth
-                                style={{ zIndex: 24 }}
+                                    style={{ zIndex: 24 }}
                                     variant="contained"
                                     color="primary"
                                     startIcon={<FilterListIcon />}
@@ -835,69 +1414,166 @@ export default function Beers() {
                     </Grid>
 
                     <Divider />
-                    <h4 style={{ color: 'white', margin: "5px" }} >
+                    <Dialog open={createWindow} onClose={handleCloseWindow} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">New Beer</DialogTitle>
+
+                        {createDialogContent()}
+                        <DialogActions>
+                            <Button onClick={handleCloseWindow} color="primary">
+                                Cancel
+          </Button>
+                            <Button onClick={handleCreateItem} color="primary">
+                                Create
+          </Button>
+                        </DialogActions>
+                    </Dialog>
+
+                    <Dialog open={editWindow} onClose={handleCloseWindow} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Edit Beer</DialogTitle>
+                        {createDialogContent()}
+
+                        <DialogActions>
+                            <Button onClick={handleCloseWindow} color="primary">
+                                Cancel
+          </Button>
+                            <Button onClick={handleEditItem} color="primary">
+                                Edit
+          </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <h4 style={{ color: 'white', margin: "5px", textAlign: "center" }} >
                         {currentRows.length} beers found
     </h4>
-                    {tapBeers.length > 0 ? <h6 id="tap-beers" style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
-                        On tap:
-    </h6> : null}
+
+
+
+                    {tapBeers.length > 0 ?
+                        <Accordion elevation="4" defaultExpanded style={{ backgroundColor: '#333842' }}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+
+                            >
+                                <h6 id="tap-beers" style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                    {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
+                                    On tap ({tapBeers.length})
+    </h6></AccordionSummary>{tapBeers.map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                        </Accordion> : null}
                     {/* {currentRows.filter(row => row.form === "Tap")
                     .map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
-                    {tapBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
 
-                    {paleAleBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Pale Ale:
-    </h6> : null}
-                    {paleAleBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {lagerBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Lager:
-    </h6> : null}
-                    {lagerBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {stoutBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Stout:
-    </h6> : null}
-                    {stoutBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {sourBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Sour:
-    </h6> : null}
-                    {sourBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {aleBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Ale:
-    </h6> : null}
-                    {aleBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {belgianBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Belgian:
-    </h6> : null}
-                    {belgianBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {otherBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Other:
-    </h6> : null}
-                    {otherBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
-                    {alcoholFreeBeers.length > 0 ? <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
-                        On bottle, Alcohol Free:
-    </h6> : null}
-                    {alcoholFreeBeers.map(function (row) {
-                        return (<MenuItem key={row._id} properties={row} />)
-                    })}
+
+                    
+                            {paleAleBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Pale Ale ({paleAleBeers.length})
+    </h6></AccordionSummary>
+                        {paleAleBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}
+                    </Accordion> : null}
+                    
+                            {lagerBeers.length > 0 ? <Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        ><h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Lager ({lagerBeers.length})
+    </h6> </AccordionSummary>
+                        {lagerBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
+                    
+                            {stoutBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Stout ({stoutBeers.length})
+    </h6> </AccordionSummary>
+                        {stoutBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
+                   
+                            {sourBeers.length > 0 ?  <Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        ><h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Sour ({sourBeers.length})
+    </h6> </AccordionSummary>
+                        {sourBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
+                    
+
+                            {aleBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Ale ({aleBeers.length})
+    </h6> </AccordionSummary>
+                        {aleBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
+                    
+                            {belgianBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Belgian ({belgianBeers.length})
+    </h6> </AccordionSummary>
+                        {belgianBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
+                    
+                            {otherBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Other ({otherBeers.length})
+    </h6> </AccordionSummary>
+                        {otherBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
+                    
+                            {alcoholFreeBeers.length > 0 ? <Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        ><h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Alcohol Free ({alcoholFreeBeers.length})
+    </h6> </AccordionSummary>
+                        {alcoholFreeBeers.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion>: null}
                     {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
@@ -912,8 +1588,9 @@ export default function Beers() {
 
 }
 
-function MenuItem(props) {
+function MenuItemCard(props) {
     const theme = useTheme();
+    const admin = React.useContext(AdminContext)
 
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const xs = useMediaQuery(theme.breakpoints.up('xs'));
@@ -947,21 +1624,25 @@ function MenuItem(props) {
 
             <Card className={classes.card}>
                 <div className={classes.content}>
+                    {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
                     <Grid container >
                         {/* <ThemeProvider theme={fontTheme}> */}
 
                         <Grid item xs={1} style={{ textAlign: "right" }} >
-                            <img  className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
+                            <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                         </Grid>
                         <Grid item xs={9} >
                             <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
-                                {props.properties.title}
+                                {props.properties.title}  
+                                {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
                             </h6>
                             <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
                                 {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                             </p>
                             <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
-                                {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
+                                {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
+                                {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} 
+            
                             </p>
                             {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
@@ -990,7 +1671,7 @@ function MenuItem(props) {
 
                             {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                         </Grid>
-
+                        <Grid item xs={11} >
                         {showText ? (
 
                             <p style={{ fontSize: "0.7em" }}>
@@ -1002,16 +1683,37 @@ function MenuItem(props) {
                         ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
 
 
-                           {sm ? (props.properties.description.substring(0, 90) + '...') : null}  
-                           {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null} 
-                           <Link color="inherit" onClick={handleTextButton}>
-                                [Show more] 
+                            {sm ? (props.properties.description.substring(0, 90) + '...') : null}
+                            {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                            <Link color="inherit" onClick={handleTextButton}>
+                                [Show more]
                                      </Link>
-                                     
-                                     
-                                     </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+
+
+                        </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
                         }</div>)}
+                        </Grid>
+                        <Grid style={{ textAlign: "right" }} item xs={1} >
+                        <a href={props.properties.untappd}><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
+                        </Grid>
+
+
+                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                            <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                        </Grid>) : (null)}
+                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                            <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                        </Grid>) : (null)}
+                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                            <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
+                                Created: {moment(props.properties.created).format('YYYY-MM-DD')}
+                            </p>
+                        </Grid>) : (null)}
+
+
+
 
                         {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>

@@ -23,9 +23,11 @@ module.exports = (app) => {
         type : req.body.shotType,
         price : req.body.shotPrice,
         stock : req.body.shotStock,
+        country : req.body.shotCountry,
+        new : req.body.shotNew,
         description : req.body.shotDescription,
         alcohol : req.body.shotAlcohol,
-        ingredients : req.body.shotIngredients,
+        brewery : req.body.shotBrewery,
         image : req.body.shotImage,
 
     }, function(err, result){
@@ -69,9 +71,12 @@ module.exports = (app) => {
     newShot.type = req.body.shotType;
     newShot.price = req.body.shotPrice;
     newShot.stock = req.body.shotStock;
+    newShot.new = req.body.shotNew;
+    newShot.country = req.body.shotCountry;
     newShot.location = req.body.shotLocation;
     newShot.description = req.body.shotDescription;
     newShot.alcohol = req.body.shotAlcohol;
+    newShot.brewery = req.body.shotBrewery;
     newShot.image = req.body.shotImage;
     // newShot.image = '../../images/shots/' + req.body.shotTitle + '.jpeg';
     newShot.save((err, shot) => {

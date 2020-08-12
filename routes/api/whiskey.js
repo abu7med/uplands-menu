@@ -25,6 +25,7 @@ module.exports = (app) => {
         description : req.body.whiskeyDescription,
         alcohol : req.body.whiskeyAlcohol,
         stock : req.body.whiskeyStock,
+        new : req.body.whiskeyNew,
         country : req.body.whiskeyCountry,
         image : req.body.whiskeyImage,
 
@@ -71,6 +72,7 @@ module.exports = (app) => {
     newWhiskey.description = req.body.whiskeyDescription;
     newWhiskey.alcohol = req.body.whiskeyAlcohol;
     newWhiskey.stock = req.body.whiskeyStock;
+    newWhiskey.new = req.body.whiskeyNew;
     newWhiskey.image = req.body.whiskeyImage;
     newWhiskey.country = req.body.whiskeyCountry;
     // newWhiskey.image = '../../images/whiskeys/' + req.body.whiskeyTitle + '.jpeg';

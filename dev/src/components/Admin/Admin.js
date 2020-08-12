@@ -15,7 +15,7 @@
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Dashboard from './Dashboard';
+// import Dashboard from './Dashboard';
 import Menu from '../Menu/Menu';
 // import SignIn from './SignIn';
 import 'whatwg-fetch';
@@ -31,6 +31,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+
 
 
 import {
@@ -58,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+export const TokenContext = React.createContext()
+export const UsernameContext = React.createContext()
+export const LogoutContext = React.createContext()
+export const AdminContext = React.createContext()
 
 export default function Admin() {
   const classes = useStyles();
@@ -73,6 +78,7 @@ export default function Admin() {
 
   React.useEffect(() => {
     const obj = getFromStorage('the_main_app');
+    console.log(window.location.pathname)
     if (obj && obj.token) {
       // Verify token
       fetch('/api/account/verify?token=' + obj.token)
@@ -81,13 +87,13 @@ export default function Admin() {
           if (json.success) {
             setToken(obj.token)
             setIsLoading(false)
-            fetch('/api/account/getusername?token=' + obj.token)
-              .then(res => res.json())
-              .then(json => {
-                if (json.success) {
-                  setSignedInUser(json.username)
-                }
-              });
+            // fetch('/api/account/getusername?token=' + obj.token)
+            //   .then(res => res.json())
+            //   .then(json => {
+            //     if (json.success) {
+            //       setSignedInUser(json.username)
+            //     }
+            //   });
           } else {
             setIsLoading(false)
           }
@@ -161,6 +167,13 @@ export default function Admin() {
         if (json.success) {
           setInStorage('the_main_app', { token: json.token });
           setSignInError(json.message)
+          // fetch('/api/account/getusername?token=' + json.token)
+          //     .then(res => res.json())
+          //     .then(json => {
+          //       if (json.success) {
+          //         setSignedInUser(json.username)
+          //       }
+          //     });
           setIsLoading(false)
           setSignInEmail('')
           setSignInPassword('')
@@ -193,10 +206,9 @@ export default function Admin() {
   }
 
   if (isLoading) {
-    return (<div style={{ textAlign: 'center', margin: '10px' }}><CircularProgress /><Typography variant="h6">
-      Loading...
-    </Typography>
-    </div>);
+    return (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
+    Loading...
+</Typography></div>);
   } else if (!token) {
     return (
       <Container component="main" maxWidth="sm">
@@ -205,7 +217,7 @@ export default function Admin() {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography  component="h1" variant="h5">
             Sign in
     </Typography>
           {
@@ -214,7 +226,7 @@ export default function Admin() {
             ) : (null)
           }
 
-          <form className={classes.form} noValidate>
+          {/* <form className={classes.form} noValidate> */}
             <TextField
               variant="outlined"
               margin="normal"
@@ -272,7 +284,7 @@ export default function Admin() {
           </Link>
         </Grid>
       </Grid> */}
-          </form>
+          {/* </form> */}
         </div>
         <Box mt={8}>
           {/* <Copyright /> */}
@@ -281,8 +293,13 @@ export default function Admin() {
 
   } else {
     return (
-      <Dashboard logout={logout} signedin={signedInUser} />
-      // <Menu logout={logout} signedin={signedInUser} admin={true} />
+      // <Dashboard logout={logout} signedin={signedInUser} />
+      // <UsernameContext.Provider value={signedInUser}>
+      <AdminContext.Provider value={true}>
+      
+      <Menu logout={logout} signedin={signedInUser} admin={true} />
+      </AdminContext.Provider>
+      
     )
   }
 

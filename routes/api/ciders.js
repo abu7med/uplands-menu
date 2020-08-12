@@ -29,6 +29,7 @@ module.exports = (app) => {
         stock : req.body.ciderStock,
         size : req.body.ciderSize,
         form : req.body.ciderForm,
+        new : req.body.ciderNew,
         location : req.body.ciderLocation,
         image : req.body.ciderImage,
         untappd : req.body.ciderUntappd,
@@ -81,6 +82,7 @@ module.exports = (app) => {
     newCider.form = req.body.ciderForm;
     newCider.location = req.body.ciderLocation;
     newCider.stock = req.body.ciderStock;
+    newCider.new = req.body.ciderNew;
     newCider.size = req.body.ciderSize;
     newCider.image = req.body.ciderImage;
     newCider.untappd = req.body.ciderUntappd;

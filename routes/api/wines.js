@@ -21,11 +21,14 @@ module.exports = (app) => {
     Wine.findByIdAndUpdate(req.body.wineID,
       {title: req.body.wineTitle,
         type : req.body.wineType,
+        brewery : req.body.wineBrewery,
         price : req.body.winePrice,
+        size : req.body.wineSize,
         description : req.body.wineDescription,
         alcohol : req.body.wineAlcohol,
         stock : req.body.wineStock,
         country : req.body.wineCountry,
+        new : req.body.wineNew,
         image : req.body.wineImage,
         location : req.body.wineLocation,
 
@@ -68,11 +71,14 @@ module.exports = (app) => {
     const newWine = new Wine();
     newWine.title = req.body.wineTitle;
     newWine.type = req.body.wineType;
+    newWine.brewery = req.body.wineBrewery;
+    newWine.size = req.body.wineSize;
     newWine.price = req.body.winePrice;
     newWine.location = req.body.wineLocation;
     newWine.description = req.body.wineDescription;
     newWine.alcohol = req.body.wineAlcohol;
     newWine.stock = req.body.wineStock;
+    newWine.new = req.body.wineNew;
     newWine.image = req.body.wineImage;
     newWine.country = req.body.wineCountry;
     // newWine.image = '../../images/wines/' + req.body.wineTitle + '.jpeg';

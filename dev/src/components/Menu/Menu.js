@@ -7,12 +7,22 @@ import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Beers from './Beers';
+import Ciders from './Ciders';
+import Sodas from './Sodas';
+import Food from './Food';
+import Drinks from './Drinks';
+import Shots from './Shots';
+import Wines from './Wines';
+import Whiskey from './Whiskey';
+import Boardgames from './Boardgames';
 import {
     Route,
     Switch
   } from 'react-router-dom'
 import './Menu.css';
 import {PersonalAppBar, Background} from './menuUtils';
+
+
 
 const images = [
 
@@ -168,12 +178,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Menu(props) {
     const classes = useStyles();
+    const [activePage, setActivePage] = React.useState('menu')
     document.body.style.background = Background
     document.body.style.backgroundSize = 'cover'
     // document.body.style.filter = 'blur(8px)'
     // document.body.style.WebkitFilter = 'blur(8px)'
 
     // document.body.style.height = '100%'
+    if (activePage === 'menu'){
+
     return (
         <div >
             {/* <div className={classes.test1}></div> */}
@@ -183,7 +196,6 @@ export default function Menu(props) {
 logout={props.logout}
 admin={props.admin}
   />
-
                 <Box border={1} boxShadow={3}>
                 <div className={classes.root}>
             {images.map((image) => (
@@ -195,7 +207,8 @@ admin={props.admin}
                     style={{
                         width: image.width,
                     }}
-                    href={'/' + image.title.split(" ").join("")}
+                    href={props.admin ? (null): ('/' + image.title.split(" ").join(""))}
+                    onClick={() => props.admin ? (setActivePage(image.title)): (null)}
                 >
                     <span
                         className={classes.imageSrc}
@@ -221,15 +234,63 @@ admin={props.admin}
             ))}
         </div>
                 </Box >
-                <Switch>
-        <Route path="/beers" component={Beers}/>
-
-      </Switch>
+               
             </Container>
         </div>
         
 
     );
+}
+if (activePage === 'beers'){
+    return (
+        <Beers logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+if (activePage === 'ciders'){
+    return (
+        <Ciders logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+
+if (activePage === 'food'){
+    return (
+        <Food logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+
+if (activePage === 'sodas'){
+    return (
+        <Sodas logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+if (activePage === 'shots'){
+    return (
+        <Shots logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+
+if (activePage === 'drinks'){
+    return (
+        <Drinks logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+
+if (activePage === 'wine'){
+    return (
+        <Wines logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+if (activePage === 'whiskey'){
+    return (
+        <Whiskey logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
+
+if (activePage === 'board games'){
+    return (
+        <Boardgames logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
+    )
+}
 
 
 }

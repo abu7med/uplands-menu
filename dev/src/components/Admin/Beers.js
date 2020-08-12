@@ -32,6 +32,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {getComparator, stableSort, useToolbarStyles, EnhancedTableHead} from './tableUtils';
 
 
+
 const axios = require('axios');
 // const cheerio = require("cheerio")
 const moment = require('moment')
@@ -152,6 +153,7 @@ export default function Beers() {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(initialrows.length);
+  
 
   const classes = useStyles();
 

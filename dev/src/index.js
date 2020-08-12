@@ -26,7 +26,7 @@ render((
     <App>
       <Switch>
         <Route exact path="/" component={Menu}/>
-        <Route path="/admin" component={Admin}/>
+        <Route exact path="/admin" component={Admin}/>
         <Route path="/beers" component={Beers}/>
         <Route path="/ciders" component={Ciders}/>
         <Route path="/sodas" component={Sodas}/>

@@ -50,6 +50,10 @@ const CiderSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  new: {
+    type: Boolean,
+    default: false
+  },
 
   size: {
     type: String,
