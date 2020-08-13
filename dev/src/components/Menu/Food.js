@@ -74,7 +74,7 @@ export default function Food(props) {
     const [itemStock, setItemStock] = React.useState(true);
     const [itemNew, setItemNew] = React.useState(false);
     const [itemDescription, setItemDescription] = React.useState("");
-    const [itemType, setItemType] = React.useState("");
+    const [itemType, setItemType] = React.useState("Burger");
     const [itemIngredients, setItemIngredients] = React.useState("");
     const [itemImage, setItemImage] = React.useState("");
     const [imageExists, setItemImageExists] = React.useState(false);
@@ -116,7 +116,7 @@ export default function Food(props) {
     const handleCloseWindow = () => {
         setItemTitle("")
         setItemDescription("")
-        setItemType("")
+        setItemType("Burger")
         setItemIngredients("")
         setItemPrice("")
         setItemImage("")

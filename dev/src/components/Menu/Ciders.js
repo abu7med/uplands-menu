@@ -23,6 +23,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Popover from '@material-ui/core/Popover';
 
 import './Menu.css';
 import Footer from '../Footer/Footer';
@@ -69,6 +70,8 @@ export default function Ciders(props) {
     document.body.style.background = Background
     document.body.style.backgroundSize = 'cover'
     document.title = "Svantes menu - Ciders"
+    const [searchString, setSearchString] = React.useState("");
+    const [searchResults, setSearchResults] = React.useState([]);
     const [itemURL, setItemURL] = React.useState("");
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
@@ -91,6 +94,32 @@ export default function Ciders(props) {
 
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleSearchClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+    const handleSearchOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+        axios.get("https://api.untappd.com/v4/search/beer?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&limit=6&q=" + searchString)
+        .then(function (response) {
+            setSearchResults(response.data.response.beers.items)
+            
+            
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .then(function () {
+            
+            // always executed
+        });
+    };
+
 
     React.useEffect(() => {
         axios.get("/api/get/ciders")
@@ -164,6 +193,7 @@ export default function Ciders(props) {
         setEditWindow(true);
     };
     const handleCloseWindow = () => {
+        setSearchString("")
         setItemURL("")
         setItemTitle("")
         setItemBrewery("")
@@ -174,9 +204,9 @@ export default function Ciders(props) {
         setItemCountry("")
         setItemAlcohol("")
         setItemImage("")
-        setItemForm("")
+        setItemForm("Bottle")
         setItemSize("")
-        setItemLocation("")
+        setItemLocation("Inside")
         setItemImageExists(false)
         setCreateWindow(false)
         setEditWindow(false)
@@ -263,7 +293,27 @@ export default function Ciders(props) {
 
 
     };
+    const handleSearchImportInfo = (item) => {
+        setItemTitle(item.beer.beer_name);
+        setItemURL("https://untappd.com/b/cider/"+ item.beer.bid);
+        setItemBrewery(item.brewery.brewery_name);
+        setItemType(item.beer.beer_style);
+        setItemAlcohol(item.beer.beer_abv);
+        setItemRating(item.beer.weighted_rating_score);
+        setItemDescription(item.beer.beer_description);
+        setItemImage(item.beer.beer_label);
+        setItemCountry(item.brewery.country_name);
+        checkImageExists(item.beer.beer_label, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
+        setAnchorEl(null);
 
+    };
     const handleImportInfo = () => {
         // const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -305,6 +355,57 @@ export default function Ciders(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
+                <Grid item xs={9}>
+                        <TextField
+                            fullWidth
+                            value={searchString}
+                            onChange={(e) => setSearchString(e.target.value)}
+                            margin="dense"
+                            id="search"
+                            label="Search cider on Untappd"
+                            variant="outlined"
+                        />
+                        <Popover
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handleSearchClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                        >
+                        <div style={{ width: '300px' }}>
+                            {searchResults.map(result => 
+                                (<Paper style={{ paddingTop: '6px', paddingBottom: '6px', paddingRight: '6px' }} elevation={2} ><Grid container>
+                                <Grid style={{ textAlign: 'center' }} item xs={2}>
+                                <img style={{ marginTop: '2px' }} src={result.beer.beer_label} alt="logo" width="35" height="35" />
+ 
+                                </Grid >
+                                <Grid item xs={7}><p style={{fontSize: "0.9em"}} display="block">{result.beer.beer_name}</p>
+                                <p style={{fontSize: "0.8em"}} display="block">{result.brewery.brewery_name}</p> 
+                                </Grid >
+                                <Grid item xs={3}><Button fullWidth
+                            onClick={() => (handleSearchImportInfo(result))}
+                            variant="contained">
+                            Import</Button>
+                                </Grid >
+                                </Grid >
+                                </Paper>))}</div>
+                        </Popover>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                        <Button fullWidth
+                            style={{ marginTop: 9 }}
+                            onClick={handleSearchOpen}
+                            variant="contained">
+                            Search</Button>
+                    </Grid>
                     <Grid item xs={9}>
                         <TextField
                             fullWidth
@@ -462,7 +563,7 @@ export default function Ciders(props) {
                             id="size"
                             label="Sizes"
                             variant="outlined"
-                            helperText="Ex: 400 or 400,500,1500"
+                            helperText="Ex: 400 or 400,500,Pitcher"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
                             }}
@@ -581,7 +682,11 @@ export default function Ciders(props) {
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle
     </h6>
-                        {currentRows.filter(row => row.form === "Bottle")
+                        {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle")
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
@@ -656,7 +761,7 @@ function MenuItemCard(props) {
                         <Grid style={{ textAlign: "center" }} item xs={2} >
                             {props.properties.size.split(',').map(function (size) {
                                 return (<p style={{ fontSize: "0.8em" }} display="block">
-                                    {size} ml
+                                    {size} {size.includes("Pitcher") ? (null) : ("ml") }
                                 </p>)
                             })}
 

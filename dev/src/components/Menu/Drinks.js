@@ -116,7 +116,7 @@ export default function Drink(props) {
         setItemTitle("")
         setItemDescription("")
         setItemIngredients("")
-        setItemType("")
+        setItemType("Regular")
         setItemPrice("")
         setItemImage("")
         setItemImageExists(false)

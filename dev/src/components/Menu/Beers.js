@@ -29,6 +29,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Popover from '@material-ui/core/Popover';
 
 // import Radio from '@material-ui/core/Radio';
 // import RadioGroup from '@material-ui/core/RadioGroup';
@@ -162,6 +163,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Beers(props) {
     //admin stuff
+    const [searchString, setSearchString] = React.useState("");
+    const [searchResults, setSearchResults] = React.useState([]);
     const [itemURL, setItemURL] = React.useState("");
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
@@ -226,6 +229,68 @@ export default function Beers(props) {
     const [value, setValue] = React.useState('title-ascending');
 
     const [searchValue, setSearchValue] = React.useState('');
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleSearchOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+        axios.get("https://api.untappd.com/v4/search/beer?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&limit=6&q=" + searchString)
+        .then(function (response) {
+            setSearchResults(response.data.response.beers.items)
+            
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
+    };
+    // const handleImportInfo = () => {
+    //     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+    //     const untappdID = itemURL.substring(itemURL.lastIndexOf('/') + 1)
+
+    //     axios.get("https://api.untappd.com/v4/beer/info/" + untappdID + "?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&compact=true")
+    //         .then(function (response) {
+    //             // handle success
+
+    //             setItemTitle(response.data.response.beer.beer_name);
+    //             setItemBrewery(response.data.response.beer.brewery.brewery_name);
+    //             setItemType(response.data.response.beer.beer_style);
+    //             setItemAlcohol(response.data.response.beer.beer_abv);
+    //             setItemIBU(response.data.response.beer.beer_ibu);
+    //             setItemRating(response.data.response.beer.weighted_rating_score);
+    //             setItemDescription(response.data.response.beer.beer_description);
+    //             setItemImage(response.data.response.beer.beer_label);
+    //             setItemCountry(response.data.response.beer.brewery.country_name);
+    //             checkImageExists(response.data.response.beer.beer_label, function (existsImage) {
+    //                 if (existsImage === true) {
+    //                     setItemImageExists(true)
+    //                 }
+    //                 else {
+    //                     setItemImageExists(false)
+    //                 }
+    //             });
+    //         })
+    //         .catch(function (error) {
+    //             // handle error
+    //             console.log(error);
+    //         })
+    //         .then(function () {
+    //             // always executed
+    //         });
+
+
+
+    // };
+
+    const handleSearchClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
     //admin stuff
     const makeCreateWindowVisible = () => {
         setCreateWindow(true);
@@ -277,6 +342,7 @@ export default function Beers(props) {
     };
     const handleCloseWindow = () => {
         setItemURL("")
+        setSearchString("")
         setItemTitle("")
         setItemBrewery("")
         setItemDescription("")
@@ -287,9 +353,9 @@ export default function Beers(props) {
         setItemAlcohol("")
         setItemIBU("")
         setItemImage("")
-        setItemForm("")
+        setItemForm("Bottle")
         setItemSize("")
-        setItemLocation("")
+        setItemLocation("Inside")
         setItemImageExists(false)
         setCreateWindow(false)
         setEditWindow(false)
@@ -521,7 +587,28 @@ export default function Beers(props) {
         // setSelected([])
 
     };
+    const handleSearchImportInfo = (beer) => {
+        setItemTitle(beer.beer.beer_name);
+        setItemURL("https://untappd.com/b/beer/"+ beer.brewery.bid);
+        setItemBrewery(beer.brewery.brewery_name);
+        setItemType(beer.beer.beer_style);
+        setItemAlcohol(beer.beer.beer_abv);
+        setItemIBU(beer.beer.beer_ibu);
+        setItemRating(beer.beer.weighted_rating_score);
+        setItemDescription(beer.beer.beer_description);
+        setItemImage(beer.beer.beer_label);
+        setItemCountry(beer.brewery.country_name);
+        checkImageExists(beer.beer.beer_label, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
+        setAnchorEl(null);
 
+    };
     const handleImportInfo = () => {
         // const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -564,6 +651,58 @@ export default function Beers(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
+                    <Grid item xs={9}>
+                        <TextField
+                            fullWidth
+                            value={searchString}
+                            onChange={(e) => setSearchString(e.target.value)}
+                            margin="dense"
+                            id="search"
+                            label="Search beer on Untappd"
+                            variant="outlined"
+                        />
+                        <Popover
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handleSearchClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                        >
+                        <div style={{ width: '300px' }}>
+                            {searchResults.map(result => 
+                                (<Paper style={{ paddingTop: '6px', paddingBottom: '6px', paddingRight: '6px' }} elevation={2} ><Grid container>
+                                <Grid style={{ textAlign: 'center' }} item xs={2}>
+                                <img style={{ marginTop: '2px' }} src={result.beer.beer_label} alt="logo" width="35" height="35" />
+ 
+                                </Grid >
+                                <Grid item xs={7}><p style={{fontSize: "0.9em"}} display="block">{result.beer.beer_name}</p>
+                                <p style={{fontSize: "0.8em"}} display="block">{result.brewery.brewery_name}</p> 
+                                </Grid >
+                                <Grid item xs={3}><Button fullWidth
+                            onClick={() => (handleSearchImportInfo(result))}
+                            variant="contained">
+                            Import</Button>
+                                </Grid >
+                                </Grid >
+                                </Paper>))}</div>
+                        </Popover>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                        <Button fullWidth
+                            style={{ marginTop: 9 }}
+                            onClick={handleSearchOpen}
+                            variant="contained">
+                            Search</Button>
+                    </Grid>
+
                     <Grid item xs={9}>
                         <TextField
                             fullWidth
@@ -732,7 +871,7 @@ export default function Beers(props) {
                             id="size"
                             label="Sizes"
                             variant="outlined"
-                            helperText="Ex: 400 or 400,500,1500"
+                            helperText="Ex: 400 or 400,500,Pitcher"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
                             }}
@@ -1448,7 +1587,7 @@ export default function Beers(props) {
 
 
                     {tapBeers.length > 0 ?
-                        <Accordion elevation="4" defaultExpanded style={{ backgroundColor: '#333842' }}>
+                        <Accordion elevation={4} defaultExpanded style={{ backgroundColor: '#333842' }}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                                 aria-controls="panel1a-content"
@@ -1458,7 +1597,11 @@ export default function Beers(props) {
                                 <h6 id="tap-beers" style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                     {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
                                     On tap ({tapBeers.length})
-    </h6></AccordionSummary>{tapBeers.map(function (row) {
+    </h6></AccordionSummary>{tapBeers.filter(beer => (beer.new)).map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+
+                            {tapBeers.filter(beer => (!beer.new)).map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
                         </Accordion> : null}
@@ -1468,8 +1611,8 @@ export default function Beers(props) {
                     })} */}
 
 
-                    
-                            {paleAleBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+
+                    {paleAleBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1478,12 +1621,15 @@ export default function Beers(props) {
                         > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Pale Ale ({paleAleBeers.length})
     </h6></AccordionSummary>
-                        {paleAleBeers.map(function (row) {
+                        {paleAleBeers.filter(beer => (beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}
+                        {paleAleBeers.filter(beer => (!beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                         })}
                     </Accordion> : null}
-                    
-                            {lagerBeers.length > 0 ? <Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+
+                    {lagerBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1492,11 +1638,14 @@ export default function Beers(props) {
                         ><h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Lager ({lagerBeers.length})
     </h6> </AccordionSummary>
-                        {lagerBeers.map(function (row) {
+                        {lagerBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
-                    
-                            {stoutBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        })}
+                        {lagerBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
+
+                    {stoutBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1505,11 +1654,14 @@ export default function Beers(props) {
                         > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Stout ({stoutBeers.length})
     </h6> </AccordionSummary>
-                        {stoutBeers.map(function (row) {
+                        {stoutBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
-                   
-                            {sourBeers.length > 0 ?  <Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        })}
+                        {stoutBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
+
+                    {sourBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1518,12 +1670,15 @@ export default function Beers(props) {
                         ><h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Sour ({sourBeers.length})
     </h6> </AccordionSummary>
-                        {sourBeers.map(function (row) {
+                        {sourBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
-                    
+                        })}
+                        {sourBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
 
-                            {aleBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+
+                    {aleBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1532,11 +1687,14 @@ export default function Beers(props) {
                         > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Ale ({aleBeers.length})
     </h6> </AccordionSummary>
-                        {aleBeers.map(function (row) {
+                        {aleBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
-                    
-                            {belgianBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        })}
+                        {aleBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
+
+                    {belgianBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1545,11 +1703,14 @@ export default function Beers(props) {
                         > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Belgian ({belgianBeers.length})
     </h6> </AccordionSummary>
-                        {belgianBeers.map(function (row) {
+                        {belgianBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
-                    
-                            {otherBeers.length > 0 ?<Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        })}
+                        {belgianBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
+
+                    {otherBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1558,11 +1719,14 @@ export default function Beers(props) {
                         > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Other ({otherBeers.length})
     </h6> </AccordionSummary>
-                        {otherBeers.map(function (row) {
+                        {otherBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
-                    
-                            {alcoholFreeBeers.length > 0 ? <Accordion elevation="4" style={{ backgroundColor: '#333842' }}>
+                        })}
+                        {otherBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
+
+                    {alcoholFreeBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1571,9 +1735,12 @@ export default function Beers(props) {
                         ><h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
                                 On bottle, Alcohol Free ({alcoholFreeBeers.length})
     </h6> </AccordionSummary>
-                        {alcoholFreeBeers.map(function (row) {
+                        {alcoholFreeBeers.filter(beer => (beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Accordion>: null}
+                        })}
+                        {alcoholFreeBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
                     {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
@@ -1619,59 +1786,57 @@ function MenuItemCard(props) {
     }, [props.properties.country]);
 
     return (
-        <div>
 
+        <Card className={classes.card}>
+            <div className={classes.content}>
+                {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
+                <Grid container >
+                    {/* <ThemeProvider theme={fontTheme}> */}
 
-            <Card className={classes.card}>
-                <div className={classes.content}>
-                    {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
-                    <Grid container >
-                        {/* <ThemeProvider theme={fontTheme}> */}
+                    <Grid item xs={1} style={{ textAlign: "right" }} >
+                        <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
+                    </Grid>
+                    <Grid item xs={9} >
+                        <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
+                            {props.properties.title}
+                            {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                        </h6>
+                        <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
+                            {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                        </p>
+                        <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
+                            {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
+                            {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}
 
-                        <Grid item xs={1} style={{ textAlign: "right" }} >
-                            <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                        </Grid>
-                        <Grid item xs={9} >
-                            <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
-                                {props.properties.title}  
-                                {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
-                            </h6>
-                            <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
-                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
-                            </p>
-                            <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
-                                {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
-                                {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} 
-            
-                            </p>
-                            {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
+                        </p>
+                        {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography> */}
-                            {/* <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
+                        {/* <Box style={{ marginLeft: "15px" }} display="inline" borderColor="transparent">
                                     <Rating name="read-only" value={props.properties.rating} precision={0.1} readOnly />
                                     <Typography className={classes.rating}>({props.properties.rating.toFixed(1)})</Typography>
                                 </Box> */}
-                            {/* <Typography variant="body1" display="block">
+                        {/* <Typography variant="body1" display="block">
                                     {props.properties.location} bar: {props.properties.form}
                                 </Typography> */}
-                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                        </Grid>
-                        <Grid style={{ textAlign: "center" }} item xs={2} >
-                            {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
-                                return (<p style={{ fontSize: "0.8em" }} display="block">
-                                    {size} ml
-                                </p>)
-                            })) : null}
+                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                    </Grid>
+                    <Grid style={{ textAlign: "center" }} item xs={2} >
+                        {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                            return (<p style={{ fontSize: "0.8em" }} display="block">
+                                {size} {size.includes("Pitcher") ? (null) : ("ml")}
+                            </p>)
+                        })) : null}
 
 
-                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                            <h6 style={{ fontSize: "0.8em" }} display="block">
-                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                            </h6>
+                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                        <h6 style={{ fontSize: "0.8em" }} display="block">
+                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                        </h6>
 
-                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                        </Grid>
-                        <Grid item xs={11} >
+                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                    </Grid>
+                    <Grid item xs={11} >
                         {showText ? (
 
                             <p style={{ fontSize: "0.7em" }}>
@@ -1693,29 +1858,29 @@ function MenuItemCard(props) {
                         </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
                         }</div>)}
-                        </Grid>
-                        <Grid style={{ textAlign: "right" }} item xs={1} >
+                    </Grid>
+                    <Grid style={{ textAlign: "right" }} item xs={1} >
                         <a href={props.properties.untappd}><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
-                        </Grid>
+                    </Grid>
 
 
-                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
-                                Created: {moment(props.properties.created).format('YYYY-MM-DD')}
-                            </p>
-                        </Grid>) : (null)}
+                    {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                    {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                        <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                    </Grid>) : (null)}
+                    {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                        <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                    </Grid>) : (null)}
+                    {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                        <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
+                            Created: {moment(props.properties.created).format('YYYY-MM-DD')}
+                        </p>
+                    </Grid>) : (null)}
 
 
 
 
-                        {/* { showText ? (<Grid item xs={12}>
+                    {/* { showText ? (<Grid item xs={12}>
                                 <Grid item xs={8}>
                             <Typography variant="body1">
                                     {props.properties.description}
@@ -1737,11 +1902,10 @@ function MenuItemCard(props) {
                             </IconButton></Grid></Grid>)
 
                             } */}
-                        {/* </ThemeProvider> */}
-                    </Grid >
-                </div>
-            </Card>
-        </div>
+                    {/* </ThemeProvider> */}
+                </Grid >
+            </div>
+        </Card>
 
 
     );
