@@ -197,6 +197,7 @@ export default function Beers(props) {
     const [stoutBeers, setStoutBeers] = React.useState([]);
     const [belgianBeers, setBelgianBeers] = React.useState([]);
     const [sourBeers, setSourBeers] = React.useState([]);
+    const [wheatBeers, setWheatBeers] = React.useState([]);
     const [otherBeers, setOtherBeers] = React.useState([]);
     const [alcoholFreeBeers, setAlcoholFreeBeers] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
@@ -421,6 +422,10 @@ export default function Beers(props) {
                     belgianBeers.push(item);
                     setBelgianBeers(Sorter(value, [...belgianBeers]))
                 }
+                else if (item.type.includes("Wheat Beer") || item.type.includes("Hefeweizen")) {
+                    wheatBeers.push(item);
+                    setWheatBeers(Sorter(value, [...wheatBeers]))
+                }
                 else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                     aleBeers.push(item);
                     setAleBeers(Sorter(value, [...aleBeers]))
@@ -503,6 +508,10 @@ export default function Beers(props) {
                     otherBeers[otherBeers.indexOf(oldItem)] = item
                     setOtherBeers([...otherBeers])
                 }
+                if (wheatBeers.indexOf(oldItem) > -1) {
+                   wheatBeers[wheatBeers.indexOf(oldItem)] = item
+                    setWheatBeers([...wheatBeers])
+                }
                 if (alcoholFreeBeers.indexOf(oldItem) > -1) {
                     alcoholFreeBeers[alcoholFreeBeers.indexOf(oldItem)] = item
                     setAlcoholFreeBeers([...alcoholFreeBeers])
@@ -560,6 +569,10 @@ export default function Beers(props) {
         if (otherBeers.indexOf(item) > -1) {
             otherBeers.splice(otherBeers.indexOf(item), 1);
             setOtherBeers([...otherBeers])
+        }
+        if (wheatBeers.indexOf(item) > -1) {
+            wheatBeers.splice(wheatBeers.indexOf(item), 1);
+            setWheatBeers([...wheatBeers])
         }
         if (alcoholFreeBeers.indexOf(item) > -1) {
             alcoholFreeBeers.splice(alcoholFreeBeers.indexOf(item), 1);
@@ -1076,6 +1089,7 @@ export default function Beers(props) {
         let newbelgianBeers = []
         let newsourBeers = []
         let newotherBeers = []
+        let newwheatBeers = []
         let newalcoholFreeBeers = []
         Sorter(value, newRows).map(item => {
             if (item.form === "Tap") {
@@ -1099,6 +1113,9 @@ export default function Beers(props) {
             else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
                 newbelgianBeers.push(item);
             }
+            else if (item.type.includes("Hefeweizen") || item.type.includes("Wheat Beer")) {
+                newbelgianBeers.push(item);
+            }
             else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                 newaleBeers.push(item);
             }
@@ -1114,6 +1131,7 @@ export default function Beers(props) {
         setStoutBeers(newstoutBeers)
         setBelgianBeers(newbelgianBeers)
         setSourBeers(newsourBeers)
+        setWheatBeers(newwheatBeers)
         setOtherBeers(newotherBeers)
         setAlcoholFreeBeers(newalcoholFreeBeers)
         window.scrollTo(0, 0)
@@ -1130,6 +1148,7 @@ export default function Beers(props) {
         let newstoutBeers = []
         let newbelgianBeers = []
         let newsourBeers = []
+        let newwheatBeers = []
         let newotherBeers = []
         let newalcoholFreeBeers = []
         tempRows = rows.filter(row => (row.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
@@ -1166,6 +1185,9 @@ export default function Beers(props) {
             else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
                 newbelgianBeers.push(item);
             }
+            else if (item.type.includes("Hefeweizen") || item.type.includes("Wheat Beer")) {
+                newbelgianBeers.push(item);
+            }
             else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                 newaleBeers.push(item);
             }
@@ -1182,6 +1204,7 @@ export default function Beers(props) {
         setBelgianBeers(newbelgianBeers)
         setSourBeers(newsourBeers)
         setOtherBeers(newotherBeers)
+        setWheatBeers(newwheatBeers)
         setAlcoholFreeBeers(newalcoholFreeBeers)
         window.scrollTo(0, 0)
 
@@ -1233,6 +1256,9 @@ export default function Beers(props) {
                     else if (item.type.includes("Belgian") || item.type.includes("Lambic") || item.type.includes("Flanders")) {
                         belgianBeers.push(item);
                     }
+                    else if (item.type.includes("Hefeweizen") || item.type.includes("Wheat Beer")) {
+                        wheatBeers.push(item);
+                    }
                     else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                         aleBeers.push(item);
                     }
@@ -1249,6 +1275,7 @@ export default function Beers(props) {
                 setSourBeers(Sorter(value, [...sourBeers]))
                 setAleBeers(Sorter(value, [...aleBeers]))
                 setBelgianBeers(Sorter(value, [...belgianBeers]))
+                setWheatBeers(Sorter(value, [...wheatBeers]))
                 setOtherBeers(Sorter(value, [...otherBeers]))
 
 
@@ -1587,7 +1614,7 @@ export default function Beers(props) {
 
 
                     {tapBeers.length > 0 ?
-                        <Accordion elevation={4} defaultExpanded style={{ backgroundColor: '#333842' }}>
+                        <Accordion square={false} elevation={4} defaultExpanded style={{ backgroundColor: '#333842' }}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                                 aria-controls="panel1a-content"
@@ -1709,6 +1736,21 @@ export default function Beers(props) {
                         {belgianBeers.filter(beer => (!beer.new)).map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                         })}</Accordion> : null}
+                                            {wheatBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+
+                        > <h6 style={{ color: 'white', margin: "6px", textAlign: "center", fontSize: "1em" }} >
+                                On bottle, Wheat Beer ({wheatBeers.length})
+    </h6> </AccordionSummary>
+                        {wheatBeers.filter(beer => (beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}
+                        {wheatBeers.filter(beer => (!beer.new)).map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Accordion> : null}
 
                     {otherBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
@@ -1789,8 +1831,13 @@ function MenuItemCard(props) {
 
         <Card className={classes.card}>
             <div className={classes.content}>
-                {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
+                {/* {!props.properties.stock ? (<img style={{ position: 'relative', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)} */}
+                <div style={{ textAlign: "center", height: "0px" }}>
+                {!props.properties.stock ? (<img style={{ position: 'relative',  textAlign: "center", height:"50px" }} alt="new" src="../../images/soldout.png" />) : (null)}
+                </div>
+
                 <Grid container >
+
                     {/* <ThemeProvider theme={fontTheme}> */}
 
                     <Grid item xs={1} style={{ textAlign: "right" }} >
