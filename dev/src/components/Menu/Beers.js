@@ -1114,7 +1114,7 @@ export default function Beers(props) {
                 newbelgianBeers.push(item);
             }
             else if (item.type.includes("Hefeweizen") || item.type.includes("Wheat Beer")) {
-                newbelgianBeers.push(item);
+                newwheatBeers.push(item);
             }
             else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                 newaleBeers.push(item);
@@ -1186,7 +1186,7 @@ export default function Beers(props) {
                 newbelgianBeers.push(item);
             }
             else if (item.type.includes("Hefeweizen") || item.type.includes("Wheat Beer")) {
-                newbelgianBeers.push(item);
+                newwheatBeers.push(item);
             }
             else if (item.type.includes("Ale") || item.type.includes("Barleywine") || item.type.includes("Strong Bitter")) {
                 newaleBeers.push(item);
