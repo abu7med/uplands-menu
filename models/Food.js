@@ -20,6 +20,23 @@ const FoodSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  extra: {
+    type: Boolean,
+    default: false
+  },
+  vegan: {
+    type: Boolean,
+    default: false
+  },
+  vegetarian: {
+    type: Boolean,
+    default: false
+  },
+  glutenfree: {
+    type: Boolean,
+    default: false
+  },
+
 
   price: {
     type: Number,
@@ -30,6 +47,14 @@ const FoodSchema = new mongoose.Schema({
     default: ''
   },
   description: {
+    type: String,
+    default: ''
+  },
+  vegandescription: {
+    type: String,
+    default: ''
+  },
+  glutenfreedescription: {
     type: String,
     default: ''
   },

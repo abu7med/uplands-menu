@@ -22,6 +22,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
+import AddIcon from '@material-ui/icons/Add';
 // import Chip from '@material-ui/core/Chip';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
@@ -72,7 +73,13 @@ export default function Food(props) {
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemPrice, setItemPrice] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
+    const [itemExtra, setItemExtra] = React.useState(false);
+    const [itemVegan, setItemVegan] = React.useState(false);
+    const [itemVegetarian, setItemVegetarian] = React.useState(false);
+    const [itemGlutenfree, setItemGlutenfree] = React.useState(false);
     const [itemNew, setItemNew] = React.useState(false);
+    const [itemVegandescription, setItemVegandescription] = React.useState("");
+    const [itemGlutenfreedescription, setItemGlutenfreedescription] = React.useState("");
     const [itemDescription, setItemDescription] = React.useState("");
     const [itemType, setItemType] = React.useState("Burger");
     const [itemIngredients, setItemIngredients] = React.useState("");
@@ -91,6 +98,10 @@ export default function Food(props) {
             setItemTitle(item.title)
         if (item.description != null)
             setItemDescription(item.description)
+        if (item.glutenfreedescription != null)
+            setItemGlutenfreedescription(item.glutenfreedescription)
+        if (item.vegandescription != null)
+            setItemVegandescription(item.vegandescription)
         if (item.type != null)
             setItemType(item.type)
         if (item.price != null)
@@ -99,6 +110,14 @@ export default function Food(props) {
             setItemStock(item.stock)
         if (item.new != null)
             setItemNew(item.new)
+        if (item.extra != null)
+            setItemExtra(item.extra)
+        if (item.vegan != null)
+            setItemVegan(item.vegan)
+        if (item.vegetarian != null)
+            setItemVegetarian(item.vegetarian)
+        if (item.glutenfree != null)
+            setItemGlutenfree(item.glutenfree)
         if (item.ingredients != null)
             setItemIngredients(item.ingredients)
         if (item.image != null)
@@ -118,6 +137,8 @@ export default function Food(props) {
         setItemDescription("")
         setItemType("Burger")
         setItemIngredients("")
+        setItemGlutenfreedescription("")
+        setItemVegandescription("")
         setItemPrice("")
         setItemImage("")
         setItemImageExists(false)
@@ -129,9 +150,15 @@ export default function Food(props) {
             foodTitle: itemTitle,
             foodDescription: itemDescription,
             foodIngredients: itemIngredients,
+            foodGlutenfreedescription: itemGlutenfreedescription,
+            foodVegandescription: itemVegandescription,
+            foodExtra: itemExtra,
+            foodVegan: itemVegan,
+            foodVegetarian: itemVegetarian,
+            foodGlutenfree: itemGlutenfree,
             foodType: itemType,
             foodStock: itemStock,
-            foodNew: itemNew,     
+            foodNew: itemNew,
             foodPrice: itemPrice,
             foodImage: itemImage,
         }
@@ -154,10 +181,16 @@ export default function Food(props) {
             foodID: itemID,
             foodTitle: itemTitle,
             foodDescription: itemDescription,
+            foodGlutenfreedescription: itemGlutenfreedescription,
+            foodVegandescription: itemVegandescription,
+            foodExtra: itemExtra,
+            foodVegan: itemVegan,
+            foodVegetarian: itemVegetarian,
+            foodGlutenfree: itemGlutenfree,
             foodIngredients: itemIngredients,
             foodType: itemType,
             foodStock: itemStock,
-            foodNew: itemNew,     
+            foodNew: itemNew,
             foodPrice: itemPrice,
             foodImage: itemImage,
         }
@@ -218,12 +251,12 @@ export default function Food(props) {
                             id="type"
                             label="Type"
                             variant="outlined"
-                            >        >{['Burger', 'Salad', 'Dessert', 'Snacks'].map((form) => (
-                                <MenuItem key={form} value={form}>
+                        >        >{['Burger', 'Salad', 'Dessert', 'Snacks'].map((form) => (
+                            <MenuItem key={form} value={form}>
                                 {form}
-                                </MenuItem>
-                              ))}
-                              </TextField>
+                            </MenuItem>
+                        ))}
+                        </TextField>
                     </Grid>
                     <Grid item sm={4} xs={12}>
                         <TextField
@@ -236,10 +269,10 @@ export default function Food(props) {
                             variant="outlined"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">Kr</InputAdornment>,
-                              }}
+                            }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <TextField
                             fullWidth
                             value={itemIngredients}
@@ -251,7 +284,7 @@ export default function Food(props) {
                             rows={2}
                             variant="outlined"
                         />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
@@ -261,11 +294,77 @@ export default function Food(props) {
                             id="description"
                             label="Description"
                             multiline
-                            rows={3}
+                            rows={2}
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            value={itemVegandescription}
+                            onChange={(e) => setItemVegandescription(e.target.value)}
+                            margin="dense"
+                            id="vegandescription"
+                            label="Optional vegan description"
+                            multiline
+                            rows={2}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            value={itemGlutenfreedescription}
+                            onChange={(e) => setItemGlutenfreedescription(e.target.value)}
+                            margin="dense"
+                            id="glutenfreedescription"
+                            label="Optional gluten free description"
+                            multiline
+                            rows={2}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemVegetarian}
+                                onChange={(e) => setItemVegetarian(e.target.checked)}
+                                name="stock" />}
+                            label="Vegetarian"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemVegan}
+                                onChange={(e) => setItemVegan(e.target.checked)}
+                                name="stock" />}
+                            label="Vegan"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemGlutenfree}
+                                onChange={(e) => setItemGlutenfree(e.target.checked)}
+                                name="stock" />}
+                            label="Gluten free"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemExtra}
+                                onChange={(e) => setItemExtra(e.target.checked)}
+                                name="stock" />}
+                            label="Side item"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemNew}
                                 onChange={(e) => setItemNew(e.target.checked)}
@@ -275,7 +374,7 @@ export default function Food(props) {
 
                         />
                     </Grid>
-                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemStock}
                                 onChange={(e) => setItemStock(e.target.checked)}
@@ -285,6 +384,8 @@ export default function Food(props) {
 
                         />
                     </Grid>
+
+
                     <Grid container justify="center" item xs={12}>
 
                         {imageExists ? (
@@ -393,40 +494,44 @@ export default function Food(props) {
                         </DialogActions>
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    <h3 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
-                        Burgers (18:00-22:00)
+                        <h3 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
+                            Burgers (18:00-22:00)
     </h3>
-                    <Alert variant="filled" severity="info">
-                        All burgers are served with a side of pommes or salad. You can ask for vegetarian or vegan option.</Alert>
-                    {currentRows.filter(row => row.type === "Burger")
-                        .map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}
-                        </Paper >
-                        <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    <h3 style={{ color: 'white',marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
-                        Salads (18:00-22:00)
+                        <Alert variant="filled" severity="info">
+                            All burgers are served on a brioche bun with a side of pommes or salad. </Alert>
+                        {currentRows.filter(row => (row.type === "Burger" && !row.extra))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                        {currentRows.filter(row => (row.type === "Burger" && row.extra))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                    </Paper >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
+                            Salads (18:00-22:00)
     </h3>
-                    {currentRows.filter(row => row.type === "Salad")
-                        .map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Paper >
-                        <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    <h3 style={{ color: 'white',marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
-                        Snacks (18:00-30 min before closing)
+                        {currentRows.filter(row => row.type === "Salad")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
+                            Snacks (18:00-30 min before closing)
     </h3>
-                    {currentRows.filter(row => row.type === "Snacks")
-                        .map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Paper >
-                        <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    <h3 style={{ color: 'white',marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
-                        Dessert (18:00-30 min before closing)
+                        {currentRows.filter(row => row.type === "Snacks")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                            Dessert (18:00-30 min before closing)
     </h3>
-                    {currentRows.filter(row => row.type === "Dessert")
-                        .map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                        })}</Paper >
+                        {currentRows.filter(row => row.type === "Dessert")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper >
 
 
                 </div>
@@ -449,25 +554,64 @@ function MenuItemCard(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                    {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
+                        {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
 
                         {/* <Grid item xs={2}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="50" height="50" />
                             </Grid> */}
                         <Grid item xs={10}>
-                            <h6 style={{ fontSize: "1em" }} display="block">
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
+                                {props.properties.extra ? (<AddIcon style={{ marginRight: "2px" }}/>) : (null)}
+                                <h6 style={{ fontSize: "1em" }}>
+                                    {props.properties.title}
+
+                                    {props.properties.new ? (<img style={{  float: 'right', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                                    {/* {props.properties.vegan ? (<p><img style={{  float: 'left', marginLeft: "5px" }} alt="new" src="../../images/vegan2.png" height="18" /><i> Vegan </i> </p>) : (null)} */}
+
+                                </h6>
+                                {props.properties.vegan ? (<span style={{ fontSize: "1em", marginLeft: "10px" }} >
+                                <i>Vegan</i>
+                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegan.png" height="18" />
+                            </span>) : (null)}
+                            {!props.properties.vegan && props.properties.vegetarian ? (<span style={{ fontSize: "1em", marginLeft: "10px" }} >
+                                <i>Vegetarian</i>
+                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegetarian.png" height="18" />
+                            </span>) : (null)}
+                            {props.properties.glutenfree ? (<span style={{ fontSize: "1em", marginLeft: "10px" }} >
+                                <i>Gluten-Free</i>
+                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="18" />
+                            </span>) : (null)}
+                            </div>
+
+                            {/* <h6 style={{fontSize: "1em" }}>
+                            <AddIcon style={{ margin: "0px" }}   />
                                 {props.properties.title}
                                 {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
-                            </h6>
+
+                            </h6> */}
                             {/* {props.properties.ingredients.split(',').map(function (ingredient) {
                                     return (<Chip  size="small" style={{ marginRight: "3px", marginTop: "3px"}} label={ingredient} />)
                                 })} */}
+                                
+                                {/* {props.properties.vegan ? (<p><img style={{  marginRight: "2px"}} alt="vegan" src="../../images/vegan.png"  height="15"/ ><span style={{ fontSize: "0.8em", marginRight: "5px"}}  ><i> Vegan</i></span></p>) : (null)}
+                             */}
                             <p style={{ fontSize: "0.9em" }} display="block">
-                                {props.properties.ingredients}
-                            </p>
-                            <p style={{ fontSize: "0.8em" }} display="block">
                                 {props.properties.description}
                             </p>
+                            {props.properties.vegandescription.length > 0 ? <p style={{ fontSize: "0.9em" }} display="block">
+                            <img style={{  float: 'left', marginRight: "4px" }} alt="new" src="../../images/vegan.png" height="18" />
+                                <b>Vegan option: </b>{props.properties.vegandescription}
+                            </p> : (null)}
+                            {props.properties.glutenfreedescription.length > 0 ? <p style={{ fontSize: "0.9em" }} display="block">
+                            <img style={{  float: 'left', marginRight: "4px" }} alt="new" src="../../images/glutenfree.png" height="18" />
+                            <b>Gluten free option: </b>{props.properties.glutenfreedescription}
+                            </p> : (null)}
+                            {/* <p style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.description}
+                            </p> */}
                         </Grid>
                         <Grid item xs={2}>
                             <h6 style={{ textAlign: "center", fontSize: "1em" }} display="block">

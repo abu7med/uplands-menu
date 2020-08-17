@@ -433,8 +433,8 @@ export default function Shots(props) {
                         </DialogActions>
                     </Dialog>
 
-                    <Alert variant="filled" severity="info">
-                        All shots are served in 4 cl cups.</Alert>
+                    {/* <Alert variant="filled" severity="info">
+                        All shots are served in 4 cl cups.</Alert> */}
                     {currentRows.map(function (row) {
                         return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                     })}

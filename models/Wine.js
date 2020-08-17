@@ -12,6 +12,18 @@ const WineSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  year: {
+    type: String,
+    default: ''
+  },
+  grapes: {
+    type: String,
+    default: ''
+  },
+  region: {
+    type: String,
+    default: ''
+  },
   alcohol: {
     type: Number,
     default: 0
@@ -28,6 +40,10 @@ const WineSchema = new mongoose.Schema({
   price: {
     type: Number,
     default: 0
+  },
+  size: {
+    type: String,
+    default: ''
   },
   stock: {
     type: Boolean,

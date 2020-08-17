@@ -23,9 +23,15 @@ module.exports = (app) => {
         type : req.body.foodType,
         price : req.body.foodPrice,
         stock : req.body.foodStock,
+        extra : req.body.foodExtra,
+        vegan : req.body.foodVegan,
+        vegetarian : req.body.foodVegetarian,
+        glutenfree : req.body.foodGlutenfree,
         new : req.body.foodNew,
         ingredients : req.body.foodIngredients,
         description : req.body.foodDescription,
+        vegandescription : req.body.foodVegandescription,
+        glutenfreedescription : req.body.foodGlutenfreedescription,
         available : req.body.foodAvailable,
         image : req.body.foodImage,
 
@@ -70,9 +76,15 @@ module.exports = (app) => {
     newFood.type = req.body.foodType;
     newFood.price = req.body.foodPrice;
     newFood.stock = req.body.foodStock;
+    newFood.extra = req.body.foodExtra;
+    newFood.vegan = req.body.foodVegan;
+    newFood.vegetarian = req.body.foodVegetarian;
+    newFood.glutenfree = req.body.foodGlutenfree;
     newFood.new = req.body.foodNew;
     newFood.ingredients = req.body.foodIngredients;
     newFood.description = req.body.foodDescription;
+    newFood.vegandescription = req.body.foodVegandescription;
+    newFood.glutenfreedescription = req.body.foodGlutenfreedescription;
     newFood.available = req.body.foodAvailable;
     newFood.image = req.body.foodImage;
     // newFood.image = '../../images/foods/' + req.body.foodTitle + '.jpeg';

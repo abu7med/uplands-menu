@@ -22,6 +22,9 @@ module.exports = (app) => {
       {title: req.body.wineTitle,
         type : req.body.wineType,
         brewery : req.body.wineBrewery,
+        year : req.body.wineYear,
+        region : req.body.wineRegion,
+        grapes : req.body.wineGrapes,
         price : req.body.winePrice,
         size : req.body.wineSize,
         description : req.body.wineDescription,
@@ -74,6 +77,9 @@ module.exports = (app) => {
     newWine.brewery = req.body.wineBrewery;
     newWine.size = req.body.wineSize;
     newWine.price = req.body.winePrice;
+    newWine.year = req.body.wineYear;
+    newWine.region = req.body.wineRegion;
+    newWine.grapes = req.body.wineGrapes;
     newWine.location = req.body.wineLocation;
     newWine.description = req.body.wineDescription;
     newWine.alcohol = req.body.wineAlcohol;

@@ -23,6 +23,8 @@ module.exports = (app) => {
         type : req.body.drinkType,
         stock : req.body.drinkStock,
         price : req.body.drinkPrice,
+        size : req.body.drinkSize,
+        location: req.body.drinkLocation,
         description : req.body.drinkDescription,
         form : req.body.drinkForm,
         ingredients : req.body.drinkIngredients,
@@ -69,6 +71,7 @@ module.exports = (app) => {
     newDrink.type = req.body.drinkType;
     newDrink.stock = req.body.drinkStock;
     newDrink.price = req.body.drinkPrice;
+    newDrink.size = req.body.drinkSize;
     newDrink.location = req.body.drinkLocation;
     newDrink.description = req.body.drinkDescription;
     newDrink.ingredients = req.body.drinkIngredients;

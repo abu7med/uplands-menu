@@ -23,6 +23,7 @@ module.exports = (app) => {
         type : req.body.whiskeyType,
         price : req.body.whiskeyPrice,
         description : req.body.whiskeyDescription,
+        location : req.body.whiskeyLocation,
         alcohol : req.body.whiskeyAlcohol,
         stock : req.body.whiskeyStock,
         new : req.body.whiskeyNew,
@@ -70,6 +71,7 @@ module.exports = (app) => {
     newWhiskey.type = req.body.whiskeyType;
     newWhiskey.price = req.body.whiskeyPrice;
     newWhiskey.description = req.body.whiskeyDescription;
+    newWhiskey.location = req.body.whiskeyLocation;
     newWhiskey.alcohol = req.body.whiskeyAlcohol;
     newWhiskey.stock = req.body.whiskeyStock;
     newWhiskey.new = req.body.whiskeyNew;

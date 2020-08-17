@@ -21,7 +21,10 @@ const DrinkSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-
+  size: {
+    type: String,
+    default: ''
+  },
   location: {
     type: String,
     default: ''

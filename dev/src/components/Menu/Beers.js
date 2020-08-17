@@ -211,6 +211,7 @@ export default function Beers(props) {
         filter: false
     });
     const [filter, setFilter] = React.useState({
+        checkedAllBeers: true,
         checkedAlcoholFree: false,
         checkedGlutenFree: false,
         checkedVegan: false,
@@ -954,7 +955,12 @@ export default function Beers(props) {
 
     const handleFilterChange = (event) => {
 
-        setFilter({ ...filter, [event.target.name]: event.target.checked });
+        let temparray = ({ ...filter, [event.target.name]: event.target.checked });
+        if (!event.target.name.includes("checkedAllBeers") && temparray[event.target.name]){
+            temparray = ({ ...temparray, ["checkedAllBeers"]: false });
+        }
+
+        setFilter(temparray);
         let tempRows = [];
         let newRows = [];
 
@@ -1002,7 +1008,7 @@ export default function Beers(props) {
         // }
         let originalRows = [...rows];
 
-        let temparray = ({ ...filter, [event.target.name]: event.target.checked });
+        
         for (var key in temparray) {
             if (key === "checkedAlcoholFree" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.alcohol <= 2.25))
@@ -1067,7 +1073,9 @@ export default function Beers(props) {
             )
         }
 
-        if (tempRows.length === 0) {
+        if (tempRows.length === 0 || temparray["checkedAllBeers"]) {
+            temparray = Object.keys(temparray).forEach(v => temparray[v] = false)
+            setFilter({ ...temparray, ["checkedAllBeers"]: true });
             tempRows = rows;
         }
 
@@ -1348,7 +1356,20 @@ export default function Beers(props) {
                     {/* <h6 style={{ margin: "6px", textAlign: "center", fontSize: "1.2em" }} >
                         Filter by
     </h6> */}
+    <FormControlLabel
+                        control={
+                            <Checkbox style={{ margin: "0px", fontSize: '1em' }}
+                                checked={filter.checkedAllBeers}
+                                onChange={handleFilterChange}
+                                name="checkedAllBeers"
+                                color="primary"
+                            />
+                        }
+                        label={"Show all beers (" + rows.length + ")"}
+                    />
+                    <Divider />
                     <h6 style={{ marginTop: "10px", marginBottom: "3px", fontSize: "1.1em" }}>Categories</h6>
+                    
                     <FormControlLabel
                         control={
                             <Checkbox style={{ margin: "0px", fontSize: '1em' }}

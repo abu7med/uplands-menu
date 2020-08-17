@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -71,8 +72,11 @@ export default function Wines(props) {
     const [itemNew, setItemNew] = React.useState(false);
     const [itemBrewery, setItemBrewery] = React.useState("");
     const [itemDescription, setItemDescription] = React.useState("");
-    const [itemType, setItemType] = React.useState("");
+    const [itemType, setItemType] = React.useState("Red");
     const [itemPrice, setItemPrice] = React.useState("");
+    const [itemRegion, setItemRegion] = React.useState("");
+    const [itemGrapes, setItemGrapes] = React.useState("");
+    const [itemYear, setItemYear] = React.useState("");
     const [itemAlcohol, setItemAlcohol] = React.useState("");
     const [itemImage, setItemImage] = React.useState("");
     const [itemSize, setItemSize] = React.useState("");
@@ -97,6 +101,12 @@ export default function Wines(props) {
             setItemDescription(item.description)
         if (item.type != null)
             setItemType(item.type)
+            if (item.region != null)
+            setItemRegion(item.region)
+            if (item.grapes != null)
+            setItemGrapes(item.grapes)
+            if (item.year != null)
+            setItemYear(item.year)
         if (item.stock != null)
             setItemStock(item.stock)
         if (item.new != null)
@@ -125,7 +135,10 @@ export default function Wines(props) {
         setItemTitle("")
         setItemBrewery("")
         setItemDescription("")
-        setItemType("")
+        setItemType("Red")
+        setItemYear("")
+        setItemRegion("")
+        setItemGrapes("")
         setItemCountry("")
         setItemAlcohol("")
         setItemImage("")
@@ -143,6 +156,9 @@ export default function Wines(props) {
             wineType: itemType,
             wineStock: itemStock,
             wineNew: itemNew,
+            wineYear: itemYear,
+            wineRegion: itemRegion,
+            wineGrapes: itemGrapes,
             wineCountry: itemCountry,
             wineAlcohol: itemAlcohol,
             wineImage: itemImage,
@@ -171,6 +187,9 @@ export default function Wines(props) {
             wineDescription: itemDescription,
             wineType: itemType,
             wineStock: itemStock,
+            wineYear: itemYear,
+            wineRegion: itemRegion,
+            wineGrapes: itemGrapes,
             wineNew: itemNew,
             wineCountry: itemCountry,
             wineAlcohol: itemAlcohol,
@@ -214,7 +233,7 @@ export default function Wines(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
-                    <Grid item sm={6} xs={12}>
+                    <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
                             value={itemTitle}
@@ -228,15 +247,43 @@ export default function Wines(props) {
                     <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
+                            select
                             value={itemType}
                             onChange={(e) => setItemType(e.target.value)}
                             margin="dense"
                             id="type"
                             label="Type"
                             variant="outlined"
+                            >{['Red', 'White', 'Rose','Sparkling', 'Dessert'].map((location) => (
+                                <MenuItem key={location} value={location}>
+                                    {location}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemGrapes}
+                            onChange={(e) => setItemGrapes(e.target.value)}
+                            margin="dense"
+                            id="grapes"
+                            label="Grapes"
+                            variant="outlined"
                         />
                     </Grid>
                     <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemYear}
+                            onChange={(e) => setItemYear(e.target.value)}
+                            margin="dense"
+                            id="year"
+                            label="Year"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             value={itemBrewery}
@@ -247,7 +294,18 @@ export default function Wines(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={6} xs={6}>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemRegion}
+                            onChange={(e) => setItemRegion(e.target.value)}
+                            margin="dense"
+                            id="region"
+                            label="Region"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             value={itemCountry}
@@ -447,12 +505,66 @@ export default function Wines(props) {
           </Button>
                         </DialogActions>
                     </Dialog>
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    
+                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            Red
+    </h6>
+                        {currentRows.filter(row => row.type === "Red")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper>
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    {/* <Alert variant="filled" severity="info">
+                            All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                    <Alert variant="filled" severity="info">
-                        Choose to buy the bottle or a glass of the wine.</Alert>
-                    {currentRows.map(function (row) {
-                        return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                    })}
+                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            White
+    </h6>
+                        {currentRows.filter(row => row.type === "White")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper>
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    {/* <Alert variant="filled" severity="info">
+                            All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
+
+                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            Rosé
+    </h6>
+                        {currentRows.filter(row => row.type === "Rose")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper>
+
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    {/* <Alert variant="filled" severity="info">
+                            All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
+
+                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            Sparkling
+    </h6>
+                        {currentRows.filter(row => row.type === "Sparkling")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper>
+
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    {/* <Alert variant="filled" severity="info">
+                            All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
+
+                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            Dessert
+    </h6>
+                        {currentRows.filter(row => row.type === "Dessert")
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper>
+
+
+                    {/* <Alert variant="filled" severity="info">
+                        Choose to buy the bottle or a glass of the wine.</Alert> */}
+                    
 
 
 
@@ -506,16 +618,35 @@ function MenuItemCard(props) {
                         {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
-                        <Grid item xs={12}>
+                        <Grid item xs={10}>
                             <h6 style={{ fontSize: "1em" }} display="inline">
-                                {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                                {props.properties.title} 
+                                <span style={{ fontSize: "0.9em" }}><i> {props.properties.brewery}</i></span>
                                 {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
                             </h6>
-
                             <p style={{ fontSize: "0.9em" }} display="block">
-                                {props.properties.type} - {props.properties.alcohol}%
+                            {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                                 </p>
+                            <p style={{ fontSize: "0.8em" }} display="block">
+                            {props.properties.grapes} - {props.properties.alcohol}%
+                                </p>
+                                </Grid>
+                        <Grid style={{ textAlign: "center" }} item xs={2} >
+                        {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                            return (<p style={{ fontSize: "0.8em" }} display="block">
+                                {size} ml
+                            </p>)
+                        })) : null}
+
+
+                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                        <h6 style={{ fontSize: "0.8em" }} display="block">
+                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                        </h6>
+
+                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                    </Grid>
                             {showText ? (
 
                                 <p style={{ fontSize: "0.7em" }}>
@@ -556,7 +687,7 @@ function MenuItemCard(props) {
                             {/* <p style={{ fontSize: "0.7em" }} display="block">
                                 {props.properties.description}
                             </p> */}
-                        </Grid>
+                        
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                             <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>

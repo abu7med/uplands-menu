@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -103,7 +104,7 @@ export default function Sodas(props) {
             .catch(function (error) {
                 // handle error
                 console.log(error);
-                
+
             })
             .then(function () {
 
@@ -126,6 +127,10 @@ export default function Sodas(props) {
             setItemType(item.type)
         if (item.stock != null)
             setItemStock(item.stock)
+        if (item.size != null)
+            setItemSize(item.size)
+        if (item.location != null)
+            setItemLocation(item.location)
         if (item.price != null)
             setItemPrice(item.price)
         if (item.image != null)
@@ -145,6 +150,8 @@ export default function Sodas(props) {
         setItemDescription("")
         setItemType("")
         setItemPrice("")
+        setItemSize("")
+        setItemLocation("Inside")
         setItemImage("")
         setItemImageExists(false)
         setCreateWindow(false)
@@ -155,6 +162,8 @@ export default function Sodas(props) {
             sodaTitle: itemTitle,
             sodaDescription: itemDescription,
             sodaType: itemType,
+            sodaSize: itemSize,
+            sodaLocation: itemLocation,
             sodaStock: itemStock,
             sodaPrice: itemPrice,
             sodaImage: itemImage,
@@ -178,6 +187,8 @@ export default function Sodas(props) {
             sodaID: itemID,
             sodaTitle: itemTitle,
             sodaDescription: itemDescription,
+            sodaSize: itemSize,
+            sodaLocation: itemLocation,
             sodaType: itemType,
             sodaStock: itemStock,
             sodaPrice: itemPrice,
@@ -217,86 +228,118 @@ export default function Sodas(props) {
 
     const createDialogContent = () => {
         return (<DialogContent>
-                <Grid container spacing={1}>
-                    <Grid item sm={4} xs={12}>
-                        <TextField
-                            fullWidth
-                            value={itemTitle}
-                            onChange={(e) => setItemTitle(e.target.value)}
-                            margin="dense"
-                            id="title"
-                            label="Title"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemType}
-                            onChange={(e) => setItemType(e.target.value)}
-                            margin="dense"
-                            id="type"
-                            label="Type"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemPrice}
-                            onChange={(e) => setItemPrice(e.target.value)}
-                            margin="dense"
-                            id="price"
-                            label="Price"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            value={itemDescription}
-                            onChange={(e) => setItemDescription(e.target.value)}
-                            margin="dense"
-                            id="description"
-                            label="Description"
-                            multiline
-                            rows={3}
-                            variant="outlined"
-                        />
-                    </Grid>
-
-                    
-
-                    <Grid item xs={12} style={{ textAlign: 'center' }}>
-                        <FormControlLabel
-                            control={<Checkbox color="primary" checked={itemStock}
-                                onChange={(e) => setItemStock(e.target.checked)}
-                                name="stock" />}
-                            label="Available"
-                            style={{ marginTop: '7px' }}
-
-                        />
-                    </Grid>
-                    <Grid container justify="center" item xs={12}>
-
-                        {imageExists ? (
-                            <img src={itemImage} alt="Soda" width="100" height="100" />
-                        ) : (
-                                <Skeleton variant="rect" width={100} height={100} />
-                            )}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            value={itemImage}
-                            onChange={handleImageChange}
-                            margin="dense"
-                            id="imageURL"
-                            label="Image URL"
-                            variant="outlined"
-                        />
-                    </Grid>
+            <Grid container spacing={1}>
+                <Grid item sm={4} xs={12}>
+                    <TextField
+                        fullWidth
+                        value={itemTitle}
+                        onChange={(e) => setItemTitle(e.target.value)}
+                        margin="dense"
+                        id="title"
+                        label="Title"
+                        variant="outlined"
+                    />
                 </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemType}
+                        onChange={(e) => setItemType(e.target.value)}
+                        margin="dense"
+                        id="type"
+                        label="Type"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemPrice}
+                        onChange={(e) => setItemPrice(e.target.value)}
+                        margin="dense"
+                        id="price"
+                        label="Price"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item sm={6} xs={6}>
+                    <TextField
+                        fullWidth
+                        select
+                        value={itemLocation}
+                        onChange={(e) => setItemLocation(e.target.value)}
+                        margin="dense"
+                        id="location"
+                        label="Location"
+                        variant="outlined"
+                    >{['Inside', 'Outside', 'Inside/Outside'].map((location) => (
+                        <MenuItem key={location} value={location}>
+                            {location}
+                        </MenuItem>
+                    ))}
+                    </TextField>
+                </Grid>
+                <Grid item sm={6} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemSize}
+                        onChange={(e) => setItemSize(e.target.value)}
+                        margin="dense"
+                        id="size"
+                        label="Size"
+                        variant="outlined"
+                        helperText=""
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        value={itemDescription}
+                        onChange={(e) => setItemDescription(e.target.value)}
+                        margin="dense"
+                        id="description"
+                        label="Description"
+                        multiline
+                        rows={3}
+                        variant="outlined"
+                    />
+                </Grid>
+
+
+
+                <Grid item xs={12} style={{ textAlign: 'center' }}>
+                    <FormControlLabel
+                        control={<Checkbox color="primary" checked={itemStock}
+                            onChange={(e) => setItemStock(e.target.checked)}
+                            name="stock" />}
+                        label="Available"
+                        style={{ marginTop: '7px' }}
+
+                    />
+                </Grid>
+                <Grid container justify="center" item xs={12}>
+
+                    {imageExists ? (
+                        <img src={itemImage} alt="Soda" width="100" height="100" />
+                    ) : (
+                            <Skeleton variant="rect" width={100} height={100} />
+                        )}
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        value={itemImage}
+                        onChange={handleImageChange}
+                        margin="dense"
+                        id="imageURL"
+                        label="Image URL"
+                        variant="outlined"
+                    />
+                </Grid>
+            </Grid>
         </DialogContent>)
     }
     const handleImageChange = (event) => {
@@ -311,19 +354,19 @@ export default function Sodas(props) {
         });
 
     };
-    
+
 
     return (
         <Container disableGutters maxWidth="sm" >
             {loading ? (<div style={{ textAlign: 'center', margin: "2px" }}><CircularProgress /><Typography style={{ color: 'white', margin: "2px" }} variant="h6" >
                 Loading sodas
     </Typography></div>) : (<div>
-        <PersonalAppBar
-  category="Sodas"
-  logout={props.logout}
-  admin={props.admin}
-  create={makeCreateWindowVisible}
-  />
+                    <PersonalAppBar
+                        category="Sodas"
+                        logout={props.logout}
+                        admin={props.admin}
+                        create={makeCreateWindowVisible}
+                    />
 
 
                     <Divider />
@@ -354,11 +397,15 @@ export default function Sodas(props) {
           </Button>
                         </DialogActions>
                     </Dialog>
-                    <Alert variant="filled" severity="info">
-    10 kr per 330 ml bottle. Served in both bars.</Alert>
-                    {currentRows.map(function (row) {
-                        return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible}/>)
-                    })}
+                    {/* <Alert variant="filled" severity="info">
+                        10 kr per 330 ml bottle. Served in both bars.</Alert> */}
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            On bottle
+    </h6>
+                        {currentRows.map(function (row) {
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                        })}</Paper>
 
                 </div>
                 )}
@@ -381,21 +428,42 @@ function MenuItemCard(props) {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <Grid container >
-                    {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="25" />) : (null)}
+                        {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="25" />) : (null)}
 
-                            {/* <Grid item xs={1}>
+                        {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={2}>
+                                <img style={{ maxWidth: '90%',  height: 'auto', maxHeight: '50px', padding: "5px" }}  src={props.properties.image} alt="logo" sty />
+                            </Grid> */}
+                        <Grid item xs={10}>
                             {/* <h6 style={{ marginLeft: "15px", marginTop: "12px", fontSize: "1em" }} variant="h6" display="block">
                                     {props.properties.title}
                                 </h6> */}
-                                <h6 style={{ fontSize: "1em" }} variant="h6" display="block">
-                                    {props.properties.title}
-                                </h6>
+                            <h6 style={{ fontSize: "1em" }} variant="h6" display="block">
+                                {props.properties.title}
+                            </h6>
 
-                                </Grid>
-                                {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                        </Grid>
+                        <Grid style={{ textAlign: "center" }} item xs={2} >
+                        <h6 style={{ fontSize: "1em" }} variant="h6" display="block">
+                                {props.properties.price} kr
+                            </h6>
+
+                            {props.properties.size.split(',').map(function (size) {
+                                return (<p style={{ fontSize: "0.8em" }} display="block">
+                                    {size} ml
+                                </p>)
+                            })}
+
+
+                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
+
+                        </Grid>
+                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                             <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
@@ -408,7 +476,7 @@ function MenuItemCard(props) {
                             </p>
                         </Grid>) : (null)}
 
-                                
+
                     </Grid >
                 </div>
             </Card>

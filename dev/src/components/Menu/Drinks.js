@@ -75,6 +75,8 @@ export default function Drink(props) {
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
     const [itemNew, setItemNew] = React.useState(false);
+    const [itemLocation, setItemLocation] = React.useState("Inside");
+    const [itemSize, setItemSize] = React.useState("");
     const [itemDescription, setItemDescription] = React.useState("");
     const [itemIngredients, setItemIngredients] = React.useState("");
     const [itemType, setItemType] = React.useState("Regular");
@@ -92,6 +94,10 @@ export default function Drink(props) {
             setItemID(item._id)
         if (item.title != null)
             setItemTitle(item.title)
+            if (item.location != null)
+            setItemLocation(item.location)
+            if (item.size != null)
+            setItemSize(item.size)
         if (item.description != null)
             setItemDescription(item.description)
         if (item.ingredients != null)
@@ -117,6 +123,8 @@ export default function Drink(props) {
         setItemDescription("")
         setItemIngredients("")
         setItemType("Regular")
+        setItemLocation("Inside")
+        setItemSize("")
         setItemPrice("")
         setItemImage("")
         setItemImageExists(false)
@@ -128,6 +136,8 @@ export default function Drink(props) {
             drinkTitle: itemTitle,
             drinkDescription: itemDescription,
             drinkIngredients: itemIngredients,
+            drinkLocation: itemLocation,
+            drinkSize: itemSize,
             drinkType: itemType,
             drinkStock: itemStock,
             drinkNew: itemNew,
@@ -154,6 +164,8 @@ export default function Drink(props) {
             drinkTitle: itemTitle,
             drinkDescription: itemDescription,
             drinkIngredients: itemIngredients,
+            drinkLocation: itemLocation,
+            drinkSize: itemSize,
             drinkType: itemType,
             drinkStock: itemStock,
             drinkNew: itemNew,
@@ -196,7 +208,7 @@ export default function Drink(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                    <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
                             value={itemTitle}
@@ -207,7 +219,7 @@ export default function Drink(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
                             select
@@ -223,6 +235,38 @@ export default function Drink(props) {
                             </MenuItem>
                         ))}
                         </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            select
+                            value={itemLocation}
+                            onChange={(e) => setItemLocation(e.target.value)}
+                            margin="dense"
+                            id="location"
+                            label="Location"
+                            variant="outlined"
+                        >{['Inside', 'Outside', 'Inside/Outside'].map((location) => (
+                            <MenuItem key={location} value={location}>
+                                {location}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemSize}
+                            onChange={(e) => setItemSize(e.target.value)}
+                            margin="dense"
+                            id="size"
+                            label="Alcohol sizes"
+                            variant="outlined"
+                            helperText="Ex: 4 or 4,6"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Cl</InputAdornment>,
+                            }}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -369,8 +413,9 @@ export default function Drink(props) {
                         </DialogActions>
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <Alert variant="filled" severity="info">
-                            All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert>
+                    {/* <Alert variant="filled" severity="info">
+                            All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
+
                         <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Specials
     </h6>
@@ -431,7 +476,7 @@ function MenuItemCard(props) {
                         {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
-                        <Grid item xs={12}>
+                        <Grid item xs={10}>
                             <h6 style={{ fontSize: "1em" }} display="block">
                                 {props.properties.title}
                             </h6>
@@ -464,6 +509,20 @@ function MenuItemCard(props) {
                             </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
                             }</div>)}
+                        </Grid>
+                        <Grid style={{ textAlign: "center" }} item xs={2} >
+                            {props.properties.size.split(',').map(function (size) {
+                                return (<p style={{ fontSize: "0.8em" }} display="block">
+                                    {size.length > 0 ? (size + " cl") : (null)} 
+                                </p>)
+                            })}
+
+
+                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
+
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>

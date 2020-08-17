@@ -101,6 +101,8 @@ export default function Whiskey(props) {
             setItemTitle(item.title)
         if (item.brewery != null)
             setItemBrewery(item.brewery)
+            if (item.location != null)
+            setItemLocation(item.location)
         if (item.description != null)
             setItemDescription(item.description)
         if (item.type != null)
@@ -129,6 +131,7 @@ export default function Whiskey(props) {
         setItemTitle("")
         setItemBrewery("")
         setItemDescription("")
+        setItemLocation("Inside")
         setItemType("")
         setItemCountry("")
         setItemAlcohol("")
@@ -143,6 +146,7 @@ export default function Whiskey(props) {
             whiskeyTitle: itemTitle,
             whiskeyBrewery: itemBrewery,
             whiskeyDescription: itemDescription,
+            whiskeyLocation: itemLocation,
             whiskeyType: itemType,
             whiskeyStock: itemStock,
             whiskeyNew: itemNew,
@@ -170,6 +174,7 @@ export default function Whiskey(props) {
             whiskeyTitle: itemTitle,
             whiskeyBrewery: itemBrewery,
             whiskeyDescription: itemDescription,
+            whiskeyLocation: itemLocation,
             whiskeyType: itemType,
             whiskeyStock: itemStock,
             whiskeyNew: itemNew,
@@ -213,7 +218,7 @@ export default function Whiskey(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
-                    <Grid item sm={6} xs={12}>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             value={itemTitle}
@@ -224,7 +229,7 @@ export default function Whiskey(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={6} xs={6}>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             value={itemType}
@@ -270,6 +275,23 @@ export default function Whiskey(props) {
                                 startAdornment: <InputAdornment position="start">%</InputAdornment>,
                             }}
                         />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            select
+                            value={itemLocation}
+                            onChange={(e) => setItemLocation(e.target.value)}
+                            margin="dense"
+                            id="location"
+                            label="Location"
+                            variant="outlined"
+                        >{['Inside', 'Outside', 'Inside/Outside'].map((location) => (
+                            <MenuItem key={location} value={location}>
+                                {location}
+                            </MenuItem>
+                        ))}
+                        </TextField>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -414,7 +436,7 @@ export default function Whiskey(props) {
                         </DialogActions>
                     </Dialog>
                     <Alert variant="filled" severity="info">
-                        All whiskey are priced per cl and can be bought at the inside bar.</Alert>
+                        All whiskey is priced per Cl.</Alert>
                     {currentRows.map(function (row) {
                         return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                     })}
@@ -434,6 +456,7 @@ function MenuItemCard(props) {
     const theme = useTheme();
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const xs = useMediaQuery(theme.breakpoints.up('xs'));
+    const [imageExists, setItemImageExists] = React.useState(false);
     const classes = useStyles();
     const admin = React.useContext(AdminContext)
     const [showText, setText] = React.useState(false);
@@ -446,6 +469,15 @@ function MenuItemCard(props) {
 
     };
     React.useEffect(() => {
+        checkImageExists(props.properties.image, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
+
         if (props.properties.country === "England")
             setFlag("../../images/flags/gb-eng.png")
         else if (props.properties.country === "Scotland")
@@ -471,13 +503,16 @@ function MenuItemCard(props) {
                         {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
-                        <Grid item xs={11}>
+                            <Grid style={{ textAlign: "center" }} item xs={2}>
+                               {imageExists ? ( <img style={{ maxWidth: '90%',  height: 'auto', maxHeight: '40px', paddingTop: "2px" }}  src={props.properties.image} alt="logo" />) : (null)}
+                            </Grid>
+                        <Grid item xs={8}>
                             <h6 style={{ fontSize: "1em" }} display="inline">
                                 {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                                 {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
                             </h6>
 
-                            <p style={{ fontSize: "1em" }} display="block">
+                            <p style={{ fontSize: "0.9em" }} display="block">
                                 {props.properties.type} - {props.properties.alcohol}%
                                 </p>
 
@@ -502,6 +537,15 @@ function MenuItemCard(props) {
                             </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
                             }</div>)}
+                        </Grid>
+                        <Grid style={{ textAlign: "center" }} item xs={2} >
+ 
+
+                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
+
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
