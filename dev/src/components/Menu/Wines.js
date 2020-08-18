@@ -75,6 +75,7 @@ export default function Wines(props) {
     const [itemType, setItemType] = React.useState("Red");
     const [itemPrice, setItemPrice] = React.useState("");
     const [itemRegion, setItemRegion] = React.useState("");
+    const [itemHouse, setItemHouse] = React.useState(false);
     const [itemGrapes, setItemGrapes] = React.useState("");
     const [itemYear, setItemYear] = React.useState("");
     const [itemAlcohol, setItemAlcohol] = React.useState("");
@@ -109,6 +110,8 @@ export default function Wines(props) {
             setItemYear(item.year)
         if (item.stock != null)
             setItemStock(item.stock)
+            if (item.house != null)
+            setItemHouse(item.house)
         if (item.new != null)
             setItemNew(item.new)
         if (item.country != null)
@@ -157,6 +160,7 @@ export default function Wines(props) {
             wineStock: itemStock,
             wineNew: itemNew,
             wineYear: itemYear,
+            wineHouse: itemHouse,
             wineRegion: itemRegion,
             wineGrapes: itemGrapes,
             wineCountry: itemCountry,
@@ -189,6 +193,7 @@ export default function Wines(props) {
             wineStock: itemStock,
             wineYear: itemYear,
             wineRegion: itemRegion,
+            wineHouse: itemHouse,
             wineGrapes: itemGrapes,
             wineNew: itemNew,
             wineCountry: itemCountry,
@@ -378,17 +383,27 @@ export default function Wines(props) {
 
 
 
-                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemNew}
                                 onChange={(e) => setItemNew(e.target.checked)}
-                                name="stock" />}
+                                name="new" />}
                             label="New wine"
                             style={{ marginTop: '7px' }}
 
                         />
                     </Grid>
-                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemHouse}
+                                onChange={(e) => setItemHouse(e.target.checked)}
+                                name="housewine" />}
+                            label="House wine"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemStock}
                                 onChange={(e) => setItemStock(e.target.checked)}
@@ -510,56 +525,82 @@ export default function Wines(props) {
                         <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Red
     </h6>
-                        {currentRows.filter(row => row.type === "Red")
+                        {currentRows.filter(row => (row.type === "Red" && row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                            })}</Paper>
+                            })}
+                            {currentRows.filter(row => (row.type === "Red" && !row.house))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            
+                            </Paper>
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                     {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             White
     </h6>
-                        {currentRows.filter(row => row.type === "White")
+                        {currentRows.filter(row => (row.type === "White" && row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                            })}</Paper>
+                            })}
+                            {currentRows.filter(row => (row.type === "White" && !row.house))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            </Paper>
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                     {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Rosé
     </h6>
-                        {currentRows.filter(row => row.type === "Rose")
+                        {currentRows.filter(row => (row.type === "Rose" && row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                            })}</Paper>
+                            })}
+                            {currentRows.filter(row => (row.type === "Rose" && !row.house))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            </Paper>
 
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                     {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Sparkling
     </h6>
-                        {currentRows.filter(row => row.type === "Sparkling")
+                        {currentRows.filter(row => (row.type === "Sparkling" && row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                            })}</Paper>
+                            })}
+                            {currentRows.filter(row => (row.type === "White" && !row.house))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            </Paper>
 
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                     {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Dessert
     </h6>
-                        {currentRows.filter(row => row.type === "Dessert")
+                        {currentRows.filter(row => (row.type === "Dessert" && row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                            })}</Paper>
+                            })}
+                            {currentRows.filter(row => (row.type === "Dessert" && !row.house))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            </Paper>
 
 
                     {/* <Alert variant="filled" severity="info">
@@ -619,14 +660,23 @@ function MenuItemCard(props) {
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
                         <Grid item xs={10}>
+                        <div style={{
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
                             <h6 style={{ fontSize: "1em" }} display="inline">
                                 {props.properties.title} 
-                                <span style={{ fontSize: "0.9em" }}><i> {props.properties.brewery}</i></span>
+                                {/* {props.properties.house ? <span style={{ fontSize: "0.9em" }}><i> House Wine</i></span> : (null)} */}
                                 {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
                             </h6>
+                            {props.properties.house ? (<span style={{ fontSize: "0.9em", marginLeft: "10px" }} >
+                                <i>House Wine</i>
+                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/housewine.png" height="18" />
+                            </span>) : (null)}
+                            </div>
                             <p style={{ fontSize: "0.9em" }} display="block">
-                            {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                            {props.properties.brewery} - {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                                 </p>
                             <p style={{ fontSize: "0.8em" }} display="block">
                             {props.properties.grapes} - {props.properties.alcohol}%
@@ -690,13 +740,13 @@ function MenuItemCard(props) {
                         
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
+                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
                                 Created: {moment(props.properties.created).format('YYYY-MM-DD')}
                             </p>
                         </Grid>) : (null)}

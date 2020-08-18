@@ -29,46 +29,55 @@ const images = [
     {
         url: '../../images/food.jpg',
         title: 'food',
+        display: 'Food',
         width: '100%',
     },
     {
         url: '../../images/beers.jpg',
         title: 'beers',
+        display: 'Beers',
         width: '100%',
     },
     {
         url: '../../images/ciders.jpg',
         title: 'ciders',
+        display: 'Ciders',
         width: '100%',
     },
     {
         url: '../../images/soda.jpg',
         title: 'sodas',
+        display: 'Sodas',
         width: '100%',
     },
     {
         url: '../../images/drinks.jpg',
         title: 'drinks',
+        display: 'Drinks',
         width: '100%',
     },
     {
         url: '../../images/wine.jpg',
         title: 'wine',
+        display: 'Wine',
         width: '100%',
     },
     {
         url: '../../images/whiskey.jpg',
         title: 'whiskey',
+        display: 'Whiskey/Rum',
         width: '100%',
     },
     {
         url: '../../images/shots.jpg',
         title: 'shots',
+        display: 'Shots',
         width: '100%',
     },
     {
         url: '../../images/boardgames.jpeg',
-        title: 'board games',
+        title: 'boardgames',
+        display: 'Board games',
         width: '100%',
     },
 ];
@@ -225,8 +234,8 @@ admin={props.admin}
                             className={classes.imageTitle}
                         >
                             {props.admin ? 
-                                ("Edit " + image.title.slice(0).toLowerCase())
-                                :(image.title.charAt(0).toUpperCase() + image.title.slice(1).toLowerCase())}
+                                ("Edit " + image.display.slice(0).toLowerCase())
+                                :(image.display)}
                             <span className={classes.imageMarked} />
                         </Typography>
                     </span>
@@ -286,7 +295,7 @@ if (activePage === 'whiskey'){
     )
 }
 
-if (activePage === 'board games'){
+if (activePage === 'boardgames'){
     return (
         <Boardgames logout={props.logout} signedin={props.signedIn} admin={props.admin}/>
     )

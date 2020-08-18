@@ -682,11 +682,23 @@ export default function Ciders(props) {
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle
     </h6>
-                        {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle")
+                        {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle")
+                            {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper>
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            On bottle, Alcohol free
+    </h6>
+                        {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}
+                            {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
@@ -816,13 +828,13 @@ function MenuItemCard(props) {
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
+                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
                                 Created: {moment(props.properties.created).format('YYYY-MM-DD')}
                             </p>
                         </Grid>) : (null)}

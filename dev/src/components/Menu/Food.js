@@ -621,13 +621,13 @@ function MenuItemCard(props) {
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button  style={{ color: 'white' }}  size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button  style={{ color: 'white' }}  size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
+                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
                                 Created: {moment(props.properties.created).format('YYYY-MM-DD')}
                             </p>
                         </Grid>) : (null)}

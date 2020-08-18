@@ -53,6 +53,10 @@ const WineSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  house: {
+    type: Boolean,
+    default: false
+  },
   location: {
     type: String,
     default: ''

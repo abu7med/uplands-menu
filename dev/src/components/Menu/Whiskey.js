@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-
+import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import TextField from '@material-ui/core/TextField';
@@ -400,7 +400,7 @@ export default function Whiskey(props) {
                 Loading whiskey
     </Typography></div>) : (<div>
                     <PersonalAppBar
-                        category="Whiskey"
+                        category="Whiskey/Rum"
                         logout={props.logout}
                         admin={props.admin}
                         create={makeCreateWindowVisible}
@@ -436,10 +436,34 @@ export default function Whiskey(props) {
                         </DialogActions>
                     </Dialog>
                     <Alert variant="filled" severity="info">
-                        All whiskey is priced per Cl.</Alert>
-                    {currentRows.map(function (row) {
+                        All items are priced per Cl.</Alert>
+                        <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                            Rum
+    </h3>
+                        {currentRows.filter(row => row.type.includes("Rum"))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper >
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                            Cognac
+    </h3>
+                        {currentRows.filter(row => row.type.includes("Cognac"))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper >
+                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                            Whiskey
+    </h3>
+                        {currentRows.filter(row => !row.type.includes("Rum") && !row.type.includes("Cognac"))
+                            .map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            })}</Paper >
+                    {/* {currentRows.map(function (row) {
                         return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
-                    })}
+                    })} */}
 
 
 
@@ -503,10 +527,10 @@ function MenuItemCard(props) {
                         {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
-                            <Grid style={{ textAlign: "center" }} item xs={2}>
+                            {/* <Grid style={{ textAlign: "center" }} item xs={2}>
                                {imageExists ? ( <img style={{ maxWidth: '90%',  height: 'auto', maxHeight: '40px', paddingTop: "2px" }}  src={props.properties.image} alt="logo" />) : (null)}
-                            </Grid>
-                        <Grid item xs={8}>
+                            </Grid> */}
+                        <Grid item xs={10}>
                             <h6 style={{ fontSize: "1em" }} display="inline">
                                 {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                                 {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
@@ -549,13 +573,13 @@ function MenuItemCard(props) {
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "black", paddingTop: "3px" }} display="inline">
+                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
                                 Created: {moment(props.properties.created).format('YYYY-MM-DD')}
                             </p>
                         </Grid>) : (null)}
