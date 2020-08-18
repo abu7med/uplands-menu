@@ -676,15 +676,17 @@ function MenuItemCard(props) {
                                 <Grid  item xs={10}>
                                     <div style={{
                                         display: 'flex',
-                                        alignItems: 'center'
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap'
+                                        
                                     }}>
-                                        <h6 style={{ fontSize: "1em" }} display="inline">
+                                        <h6 style={{ fontSize: "1em", marginRight: "10px" }} display="inline">
                                             {props.properties.title}
                                             {/* {props.properties.house ? <span style={{ fontSize: "0.9em" }}><i> House Wine</i></span> : (null)} */}
                                             {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
                                         </h6>
-                                        {props.properties.house ? (<span style={{ fontSize: "0.9em", marginLeft: "10px" }} >
+                                        {props.properties.house ? (<span style={{ fontSize: "0.9em" }} >
                                             <i>House Wine</i>
                                             <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/housewine.png" height="18" />
                                         </span>) : (null)}
@@ -722,8 +724,8 @@ function MenuItemCard(props) {
                                 ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
 
 
-                                    {sm ? (props.properties.description.substring(0, 70) + '...') : null}
-                                    {xs && !sm ? (props.properties.description.substring(0, 40) + '...') : null}
+                                    {sm ? (props.properties.description.substring(0, 90) + '...') : null}
+                                    {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
                                     <Link color="inherit" onClick={handleTextButton}>
                                         [Show more]
 </Link>

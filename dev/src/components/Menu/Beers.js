@@ -170,6 +170,7 @@ export default function Beers(props) {
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
     const [itemNew, setItemNew] = React.useState(false);
+    const [itemGlutenfree, setItemGlutenfree] = React.useState(false);
     const [itemBrewery, setItemBrewery] = React.useState("");
     const [itemDescription, setItemDescription] = React.useState("");
     const [itemType, setItemType] = React.useState("");
@@ -306,6 +307,8 @@ export default function Beers(props) {
             setItemTitle(item.title)
         if (item.brewery != null)
             setItemBrewery(item.brewery)
+            if (item.glutenfree != null)
+            setItemGlutenfree(item.glutenfree)
         if (item.description != null)
             setItemDescription(item.description)
         if (item.type != null)
@@ -373,6 +376,7 @@ export default function Beers(props) {
             beerRating: itemRating,
             beerPrice: itemPrice,
             beerCountry: itemCountry,
+            beerGlutenfree: itemGlutenfree,
             beerAlcohol: itemAlcohol,
             beerIBU: itemIBU,
             beerImage: itemImage,
@@ -456,6 +460,7 @@ export default function Beers(props) {
             beerNew: itemNew,
             beerRating: itemRating,
             beerPrice: itemPrice,
+            beerGlutenfree: itemGlutenfree,
             beerCountry: itemCountry,
             beerAlcohol: itemAlcohol,
             beerIBU: itemIBU,
@@ -490,31 +495,31 @@ export default function Beers(props) {
                     setLagerBeers([...lagerBeers])
                 }
                 if (aleBeers.indexOf(oldItem) > -1) {
-                    aleBeers[aleBeers.indexOf(oldItem)] = item
+                    aleBeers[aleBeers.indexOf(oldItem)] = modifiedItem
                     setAleBeers([...aleBeers])
                 }
                 if (stoutBeers.indexOf(oldItem) > -1) {
-                    stoutBeers[stoutBeers.indexOf(oldItem)] = item
+                    stoutBeers[stoutBeers.indexOf(oldItem)] = modifiedItem
                     setStoutBeers([...stoutBeers])
                 }
                 if (belgianBeers.indexOf(oldItem) > -1) {
-                    belgianBeers[belgianBeers.indexOf(oldItem)] = item
+                    belgianBeers[belgianBeers.indexOf(oldItem)] = modifiedItem
                     setBelgianBeers([...belgianBeers])
                 }
                 if (sourBeers.indexOf(oldItem) > -1) {
-                    sourBeers[sourBeers.indexOf(oldItem)] = item
+                    sourBeers[sourBeers.indexOf(oldItem)] = modifiedItem
                     setSourBeers([...sourBeers])
                 }
                 if (otherBeers.indexOf(oldItem) > -1) {
-                    otherBeers[otherBeers.indexOf(oldItem)] = item
+                    otherBeers[otherBeers.indexOf(oldItem)] = modifiedItem
                     setOtherBeers([...otherBeers])
                 }
                 if (wheatBeers.indexOf(oldItem) > -1) {
-                   wheatBeers[wheatBeers.indexOf(oldItem)] = item
+                   wheatBeers[wheatBeers.indexOf(oldItem)] = modifiedItem
                     setWheatBeers([...wheatBeers])
                 }
                 if (alcoholFreeBeers.indexOf(oldItem) > -1) {
-                    alcoholFreeBeers[alcoholFreeBeers.indexOf(oldItem)] = item
+                    alcoholFreeBeers[alcoholFreeBeers.indexOf(oldItem)] = modifiedItem
                     setAlcoholFreeBeers([...alcoholFreeBeers])
                 }
 
@@ -603,7 +608,7 @@ export default function Beers(props) {
     };
     const handleSearchImportInfo = (beer) => {
         setItemTitle(beer.beer.beer_name);
-        setItemURL("https://untappd.com/b/beer/"+ beer.brewery.bid);
+        setItemURL("https://untappd.com/b/beer/"+ beer.beer.bid);
         setItemBrewery(beer.brewery.brewery_name);
         setItemType(beer.beer.beer_style);
         setItemAlcohol(beer.beer.beer_abv);
@@ -891,7 +896,7 @@ export default function Beers(props) {
                             }}
                         />
                     </Grid>
-                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemNew}
                                 onChange={(e) => setItemNew(e.target.checked)}
@@ -901,7 +906,17 @@ export default function Beers(props) {
 
                         />
                     </Grid>
-                    <Grid item xs={6} style={{ textAlign: 'center' }}>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
+                        <FormControlLabel
+                            control={<Checkbox color="primary" checked={itemGlutenfree}
+                                onChange={(e) => setItemGlutenfree(e.target.checked)}
+                                name="glutenfree" />}
+                            label="Gluten free"
+                            style={{ marginTop: '7px' }}
+
+                        />
+                    </Grid>
+                    <Grid item xs={4} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemStock}
                                 onChange={(e) => setItemStock(e.target.checked)}
@@ -1015,8 +1030,8 @@ export default function Beers(props) {
                 originalRows = originalRows.filter(row => row.alcohol > 2.25)
             }
             if (key === "checkedGlutenFree" && temparray[key]) {
-                tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Gluten-Free")))
-                originalRows = originalRows.filter(row => !row.type.includes("Gluten-Free"))
+                tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Gluten-Free") || row.glutenfree)))
+                originalRows = originalRows.filter(row => (!row.type.includes("Gluten-Free") || !row.glutenfree))
             }
             if (key === "checkedVegan" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.type.includes("Vegan")))
@@ -1033,7 +1048,7 @@ export default function Beers(props) {
             }
             if (key === "checkedAle" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Ale") || row.type.includes("Barleywine") || row.type.includes("Strong Bitter"))))
-                originalRows = originalRows.filter(row => (!row.type.includes("Ale") && !row.type.includes("Barleywine") && !row.type.includes("Strong Bitter")))
+                originalRows = originalRows.filter(row => (!row.type.includes("Ale") || !row.type.includes("Barleywine") || !row.type.includes("Strong Bitter")))
             }
             if (key === "checkedLager" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => (row.type.includes("Lager") || row.type.includes("Bock") || row.type.includes("Pilsner"))))
@@ -1391,7 +1406,7 @@ export default function Beers(props) {
                                 color="primary"
                             />
                         }
-                        label={"Gluten Free (" + rows.filter(row => row.type.includes("Gluten-Free")).length + ")"}
+                        label={"Gluten Free (" + rows.filter(row => (row.type.includes("Gluten-Free") || row.glutenfree)).length + ")"}
                     />
                     <FormControlLabel
                         control={
@@ -1872,11 +1887,21 @@ function MenuItemCard(props) {
                         <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
                             {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                         </p>
-                        <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
+                        <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap'
+                                    }}>
+                        <p style={{ marginLeft: "15px", fontSize: "0.8em", marginRight: "10px" }} display="block">
                             {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
-                            {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}
+                            {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} 
 
                         </p>
+                        {props.properties.glutenfree ? (<span style={{ fontSize: "0.8em" }} >
+                                <i>Gluten-Free</i>
+                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="15" />
+                            </span>) : (null)}
+                            </div>
                         {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography> */}

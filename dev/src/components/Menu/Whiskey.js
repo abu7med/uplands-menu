@@ -441,7 +441,7 @@ export default function Whiskey(props) {
                         <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Rum
     </h3>
-                        {currentRows.filter(row => row.type.includes("Rum"))
+                        {currentRows.filter(row => row.type.toLowerCase().includes("rum"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
@@ -449,7 +449,7 @@ export default function Whiskey(props) {
                         <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Cognac
     </h3>
-                        {currentRows.filter(row => row.type.includes("Cognac"))
+                        {currentRows.filter(row => row.type.toLowerCase().includes("cognac"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
@@ -457,7 +457,7 @@ export default function Whiskey(props) {
                         <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Whiskey
     </h3>
-                        {currentRows.filter(row => !row.type.includes("Rum") && !row.type.includes("Cognac"))
+                        {currentRows.filter(row => !row.type.toLowerCase().includes("rum") && !row.type.toLowerCase().includes("cognac"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >

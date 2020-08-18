@@ -30,6 +30,7 @@ module.exports = (app) => {
         brewery : req.body.beerBrewery, 
         description : req.body.beerDescription,
         type : req.body.beerType,
+        glutenfree : req.body.beerGlutenfree,
         rating : req.body.beerRating,
         price : req.body.beerPrice,
         alcohol : req.body.beerAlcohol,
@@ -101,6 +102,7 @@ module.exports = (app) => {
     newBeer.title = req.body.beerTitle;
     newBeer.brewery = req.body.beerBrewery; 
     newBeer.description = req.body.beerDescription;
+    newBeer.glutenfree = req.body.beerGlutenfree;
     newBeer.type = req.body.beerType;
     newBeer.rating = req.body.beerRating;
     newBeer.price = req.body.beerPrice;

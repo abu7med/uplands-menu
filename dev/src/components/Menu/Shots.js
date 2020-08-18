@@ -442,7 +442,7 @@ export default function Shots(props) {
                         <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                            Tequila
     </h6>
-                        {currentRows.filter(row => row.type.includes("Tequila"))
+                        {currentRows.filter(row => row.type.toLowerCase().includes("tequila"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
@@ -451,7 +451,7 @@ export default function Shots(props) {
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Vodka
     </h6>
-                        {currentRows.filter(row => row.type.includes("Vodka"))
+                        {currentRows.filter(row => row.type.toLowerCase().includes("vodka"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
@@ -461,7 +461,7 @@ export default function Shots(props) {
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                         Liqueur 
     </h6>
-                        {currentRows.filter(row => !row.type.includes("Tequila") && !row.type.includes("Vodka"))
+                        {currentRows.filter(row => !row.type.toLowerCase().includes("tequila") && !row.type.toLowerCase().includes("vodka"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>

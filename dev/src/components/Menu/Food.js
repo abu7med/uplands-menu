@@ -562,25 +562,26 @@ function MenuItemCard(props) {
                         <Grid item xs={10}>
                             <div style={{
                                 display: 'flex',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                flexWrap: 'wrap'
                             }}>
                                 {props.properties.extra ? (<AddIcon style={{ marginRight: "2px" }}/>) : (null)}
-                                <h6 style={{ fontSize: "1em" }}>
+                                <h6 style={{ fontSize: "1em", marginRight: "10px" }}>
                                     {props.properties.title}
 
                                     {props.properties.new ? (<img style={{  float: 'right', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
                                     {/* {props.properties.vegan ? (<p><img style={{  float: 'left', marginLeft: "5px" }} alt="new" src="../../images/vegan2.png" height="18" /><i> Vegan </i> </p>) : (null)} */}
 
                                 </h6>
-                                {props.properties.vegan ? (<span style={{ fontSize: "1em", marginLeft: "10px" }} >
+                                {props.properties.vegan ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
                                 <i>Vegan</i>
                                 <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegan.png" height="18" />
                             </span>) : (null)}
-                            {!props.properties.vegan && props.properties.vegetarian ? (<span style={{ fontSize: "1em", marginLeft: "10px" }} >
+                            {!props.properties.vegan && props.properties.vegetarian ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
                                 <i>Vegetarian</i>
                                 <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegetarian.png" height="18" />
                             </span>) : (null)}
-                            {props.properties.glutenfree ? (<span style={{ fontSize: "1em", marginLeft: "10px" }} >
+                            {props.properties.glutenfree ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
                                 <i>Gluten-Free</i>
                                 <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="18" />
                             </span>) : (null)}

@@ -58,6 +58,10 @@ const BeerSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  glutenfree: {
+    type: Boolean,
+    default: false
+  },
   size: {
     type: String,
     default: ''
