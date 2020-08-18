@@ -102,15 +102,15 @@ export default function Wines(props) {
             setItemDescription(item.description)
         if (item.type != null)
             setItemType(item.type)
-            if (item.region != null)
+        if (item.region != null)
             setItemRegion(item.region)
-            if (item.grapes != null)
+        if (item.grapes != null)
             setItemGrapes(item.grapes)
-            if (item.year != null)
+        if (item.year != null)
             setItemYear(item.year)
         if (item.stock != null)
             setItemStock(item.stock)
-            if (item.house != null)
+        if (item.house != null)
             setItemHouse(item.house)
         if (item.new != null)
             setItemNew(item.new)
@@ -259,12 +259,12 @@ export default function Wines(props) {
                             id="type"
                             label="Type"
                             variant="outlined"
-                            >{['Red', 'White', 'Rose','Sparkling', 'Dessert'].map((location) => (
-                                <MenuItem key={location} value={location}>
-                                    {location}
-                                </MenuItem>
-                            ))}
-                            </TextField>
+                        >{['Red', 'White', 'Rose', 'Sparkling', 'Dessert'].map((location) => (
+                            <MenuItem key={location} value={location}>
+                                {location}
+                            </MenuItem>
+                        ))}
+                        </TextField>
                     </Grid>
                     <Grid item sm={6} xs={6}>
                         <TextField
@@ -521,7 +521,7 @@ export default function Wines(props) {
                         </DialogActions>
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    
+
                         <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Red
     </h6>
@@ -529,14 +529,14 @@ export default function Wines(props) {
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            {currentRows.filter(row => (row.type === "Red" && !row.house))
+                        {currentRows.filter(row => (row.type === "Red" && !row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            
-                            </Paper>
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    {/* <Alert variant="filled" severity="info">
+
+                    </Paper>
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -546,13 +546,13 @@ export default function Wines(props) {
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            {currentRows.filter(row => (row.type === "White" && !row.house))
+                        {currentRows.filter(row => (row.type === "White" && !row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            </Paper>
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    {/* <Alert variant="filled" severity="info">
+                    </Paper>
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -562,14 +562,14 @@ export default function Wines(props) {
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            {currentRows.filter(row => (row.type === "Rose" && !row.house))
+                        {currentRows.filter(row => (row.type === "Rose" && !row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            </Paper>
+                    </Paper>
 
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    {/* <Alert variant="filled" severity="info">
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -579,14 +579,14 @@ export default function Wines(props) {
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            {currentRows.filter(row => (row.type === "White" && !row.house))
+                        {currentRows.filter(row => (row.type === "Sparkling" && !row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            </Paper>
+                    </Paper>
 
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    {/* <Alert variant="filled" severity="info">
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
                         <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -596,16 +596,16 @@ export default function Wines(props) {
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            {currentRows.filter(row => (row.type === "Dessert" && !row.house))
+                        {currentRows.filter(row => (row.type === "Dessert" && !row.house))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}
-                            </Paper>
+                    </Paper>
 
 
                     {/* <Alert variant="filled" severity="info">
                         Choose to buy the bottle or a glass of the wine.</Alert> */}
-                    
+
 
 
 
@@ -622,6 +622,7 @@ function MenuItemCard(props) {
     const theme = useTheme();
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const xs = useMediaQuery(theme.breakpoints.up('xs'));
+    const [imageExists, setItemImageExists] = React.useState(false);
     const classes = useStyles();
     const admin = React.useContext(AdminContext)
     const [showText, setText] = React.useState(false);
@@ -634,6 +635,14 @@ function MenuItemCard(props) {
 
     };
     React.useEffect(() => {
+        checkImageExists(props.properties.image, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
         if (props.properties.country === "England")
             setFlag("../../images/flags/gb-eng.png")
         else if (props.properties.country === "Scotland")
@@ -659,66 +668,74 @@ function MenuItemCard(props) {
                         {/* <Grid item xs={1}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
                             </Grid> */}
-                        <Grid item xs={10}>
-                        <div style={{
-                                display: 'flex',
-                                alignItems: 'center'
-                            }}>
-                            <h6 style={{ fontSize: "1em" }} display="inline">
-                                {props.properties.title} 
-                                {/* {props.properties.house ? <span style={{ fontSize: "0.9em" }}><i> House Wine</i></span> : (null)} */}
-                                {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                        {/* <Grid  item xs={1}>
+                            {imageExists ? (<img style={{ maxWidth: '90%', height: 'auto', maxHeight: '85px', paddingTop: "2px" }} src={props.properties.image} alt="logo" />) : (null)}
+                        </Grid> */}
+                        {/* <Grid item xs={11}>
+                            <Grid container > */}
+                                <Grid  item xs={10}>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <h6 style={{ fontSize: "1em" }} display="inline">
+                                            {props.properties.title}
+                                            {/* {props.properties.house ? <span style={{ fontSize: "0.9em" }}><i> House Wine</i></span> : (null)} */}
+                                            {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
-                            </h6>
-                            {props.properties.house ? (<span style={{ fontSize: "0.9em", marginLeft: "10px" }} >
-                                <i>House Wine</i>
-                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/housewine.png" height="18" />
-                            </span>) : (null)}
-                            </div>
-                            <p style={{ fontSize: "0.9em" }} display="block">
-                            {props.properties.brewery} - {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
-                                </p>
-                            <p style={{ fontSize: "0.8em" }} display="block">
-                            {props.properties.grapes} - {props.properties.alcohol}%
+                                        </h6>
+                                        {props.properties.house ? (<span style={{ fontSize: "0.9em", marginLeft: "10px" }} >
+                                            <i>House Wine</i>
+                                            <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/housewine.png" height="18" />
+                                        </span>) : (null)}
+                                    </div>
+                                    <p style={{ fontSize: "0.9em" }} display="block">
+                                        {props.properties.brewery} - {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                                    </p>
+                                    <p style={{ fontSize: "0.8em" }} display="block">
+                                        {props.properties.grapes} - {props.properties.alcohol}%
                                 </p>
                                 </Grid>
-                        <Grid style={{ textAlign: "center" }} item xs={2} >
-                        {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
-                            return (<p style={{ fontSize: "0.8em" }} display="block">
-                                {size} ml
+                                <Grid style={{ textAlign: "center" }} item xs={2} >
+                                    {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                                        return (<p style={{ fontSize: "0.8em" }} display="block">
+                                            {size} ml
                             </p>)
-                        })) : null}
+                                    })) : null}
 
 
-                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                        <h6 style={{ fontSize: "0.8em" }} display="block">
-                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                        </h6>
+                                    {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                                    <h6 style={{ fontSize: "0.8em" }} display="block">
+                                        {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                                    </h6>
 
-                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                    </Grid>
-                            {showText ? (
+                                    {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                                </Grid>
+                                {showText ? (
 
-                                <p style={{ fontSize: "0.7em" }}>
-                                    {props.properties.description}
+                                    <p style={{ fontSize: "0.7em" }}>
+                                        {props.properties.description}
+                                        <Link color="inherit" onClick={handleTextButton}>
+                                            [Show less]
+</Link>
+                                    </p>
+                                ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+
+
+                                    {sm ? (props.properties.description.substring(0, 70) + '...') : null}
+                                    {xs && !sm ? (props.properties.description.substring(0, 40) + '...') : null}
                                     <Link color="inherit" onClick={handleTextButton}>
-                                        [Show less]
-</Link>
-                                </p>
-                            ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
-
-
-                                {sm ? (props.properties.description.substring(0, 90) + '...') : null}
-                                {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
-                                <Link color="inherit" onClick={handleTextButton}>
-                                    [Show more]
+                                        [Show more]
 </Link>
 
 
-                            </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+                                </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
-                            }</div>)}
-                            {/* {showText ? (
+                                }</div>)}
+
+                            {/* </Grid>
+                        </Grid> */}
+                        {/* {showText ? (
 
 <p style={{ fontSize: "0.7em" }}>
     {props.properties.description}
@@ -734,13 +751,13 @@ function MenuItemCard(props) {
     </Link></p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
 }</div>)} */}
-                            {/* <p style={{ fontSize: "0.7em" }} display="block">
+                        {/* <p style={{ fontSize: "0.7em" }} display="block">
                                 {props.properties.description}
                             </p> */}
-                        
+
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                             <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
