@@ -824,7 +824,7 @@ function MenuItemCard(props) {
                         }</div>)} */}
                         </Grid>
                         <Grid style={{ textAlign: "right" }} item xs={1} >
-                            <a href={props.properties.untappd}><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
+                            <a href={props.properties.untappd} target="_blank"><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>

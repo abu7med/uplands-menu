@@ -613,7 +613,7 @@ export default function Beers(props) {
         setItemType(beer.beer.beer_style);
         setItemAlcohol(beer.beer.beer_abv);
         setItemIBU(beer.beer.beer_ibu);
-        setItemRating(beer.beer.weighted_rating_score);
+        // setItemRating(beer.beer.weighted_rating_score);
         setItemDescription(beer.beer.beer_description);
         setItemImage(beer.beer.beer_label);
         setItemCountry(beer.brewery.country_name);
@@ -1894,7 +1894,7 @@ function MenuItemCard(props) {
                                     }}>
                         <p style={{ marginLeft: "15px", fontSize: "0.8em", marginRight: "10px" }} display="block">
                             {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
-                            {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} 
+                            {props.properties.type} - {props.properties.alcohol} %
 
                         </p>
                         {props.properties.glutenfree ? (<span style={{ fontSize: "0.8em" }} >
@@ -1953,7 +1953,7 @@ function MenuItemCard(props) {
                         }</div>)}
                     </Grid>
                     <Grid style={{ textAlign: "right" }} item xs={1} >
-                        <a href={props.properties.untappd}><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
+                        <a href={props.properties.untappd } target="_blank"><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
                     </Grid>
 
 
