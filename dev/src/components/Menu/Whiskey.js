@@ -438,7 +438,7 @@ export default function Whiskey(props) {
                     <Alert variant="filled" severity="info">
                         All items are priced per Cl.</Alert>
                         <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Rum
     </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("rum"))
@@ -446,7 +446,7 @@ export default function Whiskey(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Cognac
     </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("cognac"))
@@ -454,7 +454,7 @@ export default function Whiskey(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Whiskey
     </h3>
                         {currentRows.filter(row => !row.type.toLowerCase().includes("rum") && !row.type.toLowerCase().includes("cognac"))

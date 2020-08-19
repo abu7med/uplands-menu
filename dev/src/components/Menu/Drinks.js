@@ -416,7 +416,7 @@ export default function Drink(props) {
                     {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Specials
     </h6>
                         {currentRows.filter(row => row.type === "Special")
@@ -424,7 +424,7 @@ export default function Drink(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Regular
     </h6>
                         {currentRows.filter(row => row.type === "Regular")

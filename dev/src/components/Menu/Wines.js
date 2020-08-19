@@ -522,7 +522,7 @@ export default function Wines(props) {
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Red
     </h6>
                         {currentRows.filter(row => (row.type === "Red" && row.house))
@@ -539,7 +539,7 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             White
     </h6>
                         {currentRows.filter(row => (row.type === "White" && row.house))
@@ -555,7 +555,7 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Rosé
     </h6>
                         {currentRows.filter(row => (row.type === "Rose" && row.house))
@@ -572,7 +572,7 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Sparkling
     </h6>
                         {currentRows.filter(row => (row.type === "Sparkling" && row.house))
@@ -589,7 +589,7 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Dessert
     </h6>
                         {currentRows.filter(row => (row.type === "Dessert" && row.house))
@@ -673,69 +673,75 @@ function MenuItemCard(props) {
                         </Grid> */}
                         {/* <Grid item xs={11}>
                             <Grid container > */}
-                                <Grid  item xs={10}>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        flexWrap: 'wrap'
-                                        
-                                    }}>
-                                        <h6 style={{ fontSize: "1em", marginRight: "10px" }} display="inline">
-                                            {props.properties.title}
-                                            {/* {props.properties.house ? <span style={{ fontSize: "0.9em" }}><i> House Wine</i></span> : (null)} */}
-                                            {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
-
-                                        </h6>
-                                        {props.properties.house ? (<span style={{ fontSize: "0.9em" }} >
-                                            <i>House Wine</i>
-                                            <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/housewine.png" height="18" />
-                                        </span>) : (null)}
-                                    </div>
-                                    <p style={{ fontSize: "0.9em" }} display="block">
-                                        {props.properties.brewery} - {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
-                                    </p>
-                                    <p style={{ fontSize: "0.8em" }} display="block">
-                                        {props.properties.grapes} - {props.properties.alcohol}%
-                                </p>
-                                </Grid>
-                                <Grid style={{ textAlign: "center" }} item xs={2} >
-                                    {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
-                                        return (<p style={{ fontSize: "0.8em" }} display="block">
-                                            {size} ml
+<div style={{ width: "100%" }}>
+                            <div style={{ float: "left", height: "100%", marginRight: "10px", width: '5%', textAlign: "center" }}>
+                                <img style={{ maxWidth: '100%', height: 'auto', maxHeight: '80px' }} src={props.properties.image} alt="logo" />
+                            </div>
+                            <div style={{ textAlign: "center", float: "right" }}>
+                            {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                                return (<p style={{ fontSize: "0.8em" }} display="block">
+                                    {size} ml
                             </p>)
-                                    })) : null}
+                            })) : null}
 
 
-                                    {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                                    <h6 style={{ fontSize: "0.8em" }} display="block">
-                                        {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                                    </h6>
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
+                            </div>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                flexWrap: 'wrap'
 
-                                    {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                                </Grid>
-                                {showText ? (
+                            }}>
+                                <h6 style={{ fontSize: "1em", marginRight: "10px" , marginBottom: "0px"}} display="inline">
+                                    {props.properties.title}
+                                    {/* {props.properties.house ? <span style={{ fontSize: "0.9em" }}><i> House Wine</i></span> : (null)} */}
+                                    {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
-                                    <p style={{ fontSize: "0.7em" }}>
-                                        {props.properties.description}
-                                        <Link color="inherit" onClick={handleTextButton}>
-                                            [Show less]
-</Link>
-                                    </p>
-                                ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+                                </h6>
+                                {props.properties.house ? (<span style={{ fontSize: "0.9em" }} >
+                                    <i>House Wine</i>
+                                    <img style={{ float: 'left', marginRight: "2px"}} alt="new" src="../../images/housewine.png" height="18" />
+                                </span>) : (null)}
+                            </div>
+                            <p style={{ fontSize: "0.9em" ,
+}} display="block">
+                                {props.properties.brewery} - {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                            </p>
+                            <p style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.grapes} - {props.properties.alcohol}%
+                                </p>
+                            {showText ? (
 
-
-                                    {sm ? (props.properties.description.substring(0, 90) + '...') : null}
-                                    {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                                <p style={{ fontSize: "0.7em" }}>
+                                    {props.properties.description}
                                     <Link color="inherit" onClick={handleTextButton}>
-                                        [Show more]
+                                        [Show less]
+</Link>
+                                </p>
+                            ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+
+
+                                {sm ? (props.properties.description.substring(0, 70) + '...') : null}
+                                {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                                <Link color="inherit" onClick={handleTextButton}>
+                                    [Show more]
 </Link>
 
 
-                                </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+                            </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
-                                }</div>)}
+                            }</div>)}
 
-                            {/* </Grid>
+                            </div>
+
+                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+
+
+
+                        {/* </Grid>
                         </Grid> */}
                         {/* {showText ? (
 

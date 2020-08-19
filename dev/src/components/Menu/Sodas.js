@@ -400,7 +400,7 @@ export default function Sodas(props) {
                     {/* <Alert variant="filled" severity="info">
                         10 kr per 330 ml bottle. Served in both bars.</Alert> */}
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle
     </h6>
                         {currentRows.map(function (row) {

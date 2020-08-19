@@ -671,7 +671,7 @@ export default function Ciders(props) {
                         {currentRows.length} ciders found
     </h4> */}
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On tap
     </h6>
                         {currentRows.filter(row => row.form === "Tap")
@@ -679,7 +679,7 @@ export default function Ciders(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle
     </h6>
                         {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
@@ -691,7 +691,7 @@ export default function Ciders(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle, Alcohol free
     </h6>
                         {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)

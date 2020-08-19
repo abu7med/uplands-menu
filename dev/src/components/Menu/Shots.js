@@ -439,7 +439,7 @@ export default function Shots(props) {
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
     
 
-                        <h6 style={{ color: 'white', marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white' , marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                            Tequila
     </h6>
                         {currentRows.filter(row => row.type.toLowerCase().includes("tequila"))
@@ -448,7 +448,7 @@ export default function Shots(props) {
                             })}</Paper>
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
 
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             Vodka
     </h6>
                         {currentRows.filter(row => row.type.toLowerCase().includes("vodka"))
@@ -458,7 +458,7 @@ export default function Shots(props) {
                             <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
 
 
-                        <h6 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                         Liqueur 
     </h6>
                         {currentRows.filter(row => !row.type.toLowerCase().includes("tequila") && !row.type.toLowerCase().includes("vodka"))
