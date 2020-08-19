@@ -518,7 +518,7 @@ export default function Food(props) {
                             })}</Paper >
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                         <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
-                            Snacks (18:00-30 min before closing)
+                            Snacks
     </h3>
                         {currentRows.filter(row => row.type === "Snacks")
                             .map(function (row) {
@@ -526,7 +526,7 @@ export default function Food(props) {
                             })}</Paper >
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                         <h3 style={{ color: 'white', marginTop: "15px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
-                            Dessert (18:00-30 min before closing)
+                            Desserts
     </h3>
                         {currentRows.filter(row => row.type === "Dessert")
                             .map(function (row) {

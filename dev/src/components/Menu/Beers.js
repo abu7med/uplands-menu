@@ -1408,7 +1408,7 @@ export default function Beers(props) {
                         }
                         label={"Gluten Free (" + rows.filter(row => (row.type.includes("Gluten-Free") || row.glutenfree)).length + ")"}
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         control={
                             <Checkbox
                                 checked={filter.checkedVegan}
@@ -1418,7 +1418,7 @@ export default function Beers(props) {
                             />
                         }
                         label={"Vegan (" + rows.filter(row => row.type.includes("Vegan")).length + ")"}
-                    />
+                    /> */}
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -1876,15 +1876,24 @@ function MenuItemCard(props) {
 
                     {/* <ThemeProvider theme={fontTheme}> */}
 
-                    <Grid item xs={1} style={{ textAlign: "right" }} >
-                        <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                    </Grid>
-                    <Grid item xs={9} >
-                        <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
+                    <Grid item xs={10} >
+                    {/* <img style={{float: "left", maxWidth: '12%',  height: 'auto', maxHeight: '60px', marginRight: "5px"}} className={classes.img} src={props.properties.image} alt="logo" /> */}
+                    <div  style={{float: "left", height: "55px", marginRight: "10px", maxWidth: '11%'}}>
+                        <img style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
+                        </div>
+                    <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                flexWrap: 'wrap'
+                            }}>
+                        <h6 style={{ fontSize: "1em", marginRight: "5px", marginBottom: "0px"  }} display="block">
                             {props.properties.title}
-                            {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                            
                         </h6>
-                        <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
+                        {props.properties.new ? (<img style={{ float: "right"}} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                        
+                        </div>
+                        <p style={{ fontSize: "0.9em", marginTop: "3px", marginBottom: "0px" }} display="block">
                             {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                         </p>
                         <div style={{
@@ -1892,9 +1901,9 @@ function MenuItemCard(props) {
                                         alignItems: 'center',
                                         flexWrap: 'wrap'
                                     }}>
-                        <p style={{ marginLeft: "15px", fontSize: "0.8em", marginRight: "10px" }} display="block">
+                        <p style={{ fontSize: "0.8em", marginRight: "10px", marginTop: "3px" }} display="block">
                             {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
-                            {props.properties.type} - {props.properties.alcohol} %
+                            {props.properties.type} - {props.properties.alcohol}%
 
                         </p>
                         {props.properties.glutenfree ? (<span style={{ fontSize: "0.8em" }} >
@@ -1913,7 +1922,8 @@ function MenuItemCard(props) {
                                     {props.properties.location} bar: {props.properties.form}
                                 </Typography> */}
                         {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                    </Grid>
+                   
+                        </Grid>
                     <Grid style={{ textAlign: "center" }} item xs={2} >
                         {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
                             return (<p style={{ fontSize: "0.8em" }} display="block">

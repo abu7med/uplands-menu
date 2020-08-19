@@ -752,21 +752,32 @@ function MenuItemCard(props) {
                 <div className={classes.content}>
                     <Grid container >
                         {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
-                        <Grid item xs={1} style={{ textAlign: "right" }}>
-                            <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                        </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={10} >
+                        <div  style={{float: "left", height: "55px", marginRight: "10px", maxWidth: '11%'}}>
+                        <img style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
+                        </div>
+                    <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                flexWrap: 'wrap'
+                            }}>
+                        <h6 style={{ fontSize: "1em", marginRight: "5px", marginBottom: "0px"  }} display="block">
+                            {props.properties.title}
+                            
+                        </h6>
+                        {props.properties.new ? (<img style={{ float: "right"}} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                        
+                        </div>
+                        <p style={{ fontSize: "0.9em", marginTop: "3px", marginBottom: "0px" }} display="block">
+                            {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                        </p>
+                        <p style={{ fontSize: "0.8em", marginRight: "10px", marginTop: "3px" }} display="block">
+                            {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
+                            {props.properties.type} - {props.properties.alcohol}%
 
-                            <h6 style={{ marginLeft: "15px", fontSize: "1em" }} display="block">
-                                {props.properties.title}
-                                {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
-                            </h6>
-                            <p style={{ marginLeft: "15px", fontSize: "0.9em" }} display="inline">
-                                {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
-                            </p>
-                            <p style={{ marginLeft: "15px", fontSize: "0.8em" }} display="block">
-                                {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")}
-                            </p>
+                        </p>
+                        
+
 
                             {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                         </Grid>
