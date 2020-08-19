@@ -1878,21 +1878,17 @@ function MenuItemCard(props) {
 
                     <Grid item xs={10} >
                     {/* <img style={{float: "left", maxWidth: '12%',  height: 'auto', maxHeight: '60px', marginRight: "5px"}} className={classes.img} src={props.properties.image} alt="logo" /> */}
-                    <div  style={{float: "left", height: "55px", marginRight: "10px", maxWidth: '11%'}}>
+                    <div  style={{float: "left", height: "100%", marginRight: "10px", maxWidth: '11%'}}>
                         <img style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
                         </div>
-                    <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                flexWrap: 'wrap'
-                            }}>
-                        <h6 style={{ fontSize: "1em", marginRight: "5px", marginBottom: "0px"  }} display="block">
+
+                        <h6 style={{ fontSize: "1em", marginBottom: "0px"  }} display="inline">
                             {props.properties.title}
+                            {props.properties.new ? (<img style={{ position: "absolute", marginLeft: "5px"  }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+
                             
                         </h6>
-                        {props.properties.new ? (<img style={{ float: "right"}} alt="new" src="../../images/new2.png" height="18" />) : (null)}
-                        
-                        </div>
+
                         <p style={{ fontSize: "0.9em", marginTop: "3px", marginBottom: "0px" }} display="block">
                             {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                         </p>
