@@ -661,7 +661,7 @@ function MenuItemCard(props) {
 
             <Card className={classes.card}>
                 <div className={classes.content}>
-                    <Grid container >
+                    <Grid container style={{ height: "100%" }} >
                         {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="45" />) : (null)}
 
 
@@ -671,24 +671,12 @@ function MenuItemCard(props) {
                         {/* <Grid  item xs={1}>
                             {imageExists ? (<img style={{ maxWidth: '90%', height: 'auto', maxHeight: '85px', paddingTop: "2px" }} src={props.properties.image} alt="logo" />) : (null)}
                         </Grid> */}
-                        {/* <Grid item xs={11}>
-                            <Grid container > */}
-<div style={{ width: "100%" }}>
-                            <div style={{ float: "left", height: "100%", marginRight: "10px", width: '5%', textAlign: "center" }}>
+                        <Grid item xs={10}>
+
+                            <div style={{ float: "left", height: "100%", marginRight: "8px", width: '7%', textAlign: "center" }}>
                                 <img style={{ maxWidth: '100%', height: 'auto', maxHeight: '80px' }} src={props.properties.image} alt="logo" />
                             </div>
-                            <div style={{ textAlign: "center", float: "right" }}>
-                            {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
-                                return (<p style={{ fontSize: "0.8em" }} display="block">
-                                    {size} ml
-                            </p>)
-                            })) : null}
-
-
-                            <h6 style={{ fontSize: "0.8em" }} display="block">
-                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                            </h6>
-                            </div>
+                            
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -706,13 +694,29 @@ function MenuItemCard(props) {
                                     <img style={{ float: 'left', marginRight: "2px"}} alt="new" src="../../images/housewine.png" height="18" />
                                 </span>) : (null)}
                             </div>
-                            <p style={{ fontSize: "0.9em" ,
-}} display="block">
-                                {props.properties.brewery} - {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+
+                            <p style={{ fontSize: "0.9em" }} display="block">
+                            <i> <b>{props.properties.brewery} </b></i>
+                            </p>
+                            <p style={{ fontSize: "0.9em" }} display="block">
+                                {props.properties.region} - {props.properties.country}  <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                             </p>
                             <p style={{ fontSize: "0.8em" }} display="block">
                                 {props.properties.grapes} - {props.properties.alcohol}%
                                 </p>
+                                </Grid>
+                                <Grid item xs={2} style={{ textAlign: "center"}}>
+                            {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                                return (<p style={{ fontSize: "0.8em" }} display="block">
+                                    {size} ml
+                            </p>)
+                            })) : null}
+
+
+                            <h6 style={{ fontSize: "0.8em" }} display="block">
+                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                            </h6>
+                            </Grid>
                             {showText ? (
 
                                 <p style={{ fontSize: "0.7em" }}>
@@ -735,7 +739,6 @@ function MenuItemCard(props) {
 
                             }</div>)}
 
-                            </div>
 
                             {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
 
