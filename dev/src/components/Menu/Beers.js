@@ -47,7 +47,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import './Menu.css';
 import Footer from '../Footer/Footer';
-import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
+import { PersonalAppBar, Background, checkImageExists, Sorter, isUserInside, pubCoordinates } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import { useHistory } from "react-router-dom";
 
@@ -184,6 +184,7 @@ export default function Beers(props) {
     const [itemCountry, setItemCountry] = React.useState("");
     const [itemLocation, setItemLocation] = React.useState("Inside");
     const [imageExists, setItemImageExists] = React.useState(false);
+    const [displayPrices, setDisplayPrices] = React.useState(false);
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
     //
@@ -237,17 +238,17 @@ export default function Beers(props) {
     const handleSearchOpen = (event) => {
         setAnchorEl(event.currentTarget);
         axios.get("https://api.untappd.com/v4/search/beer?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&limit=6&q=" + searchString)
-        .then(function (response) {
-            setSearchResults(response.data.response.beers.items)
-            
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
-        });
+            .then(function (response) {
+                setSearchResults(response.data.response.beers.items)
+
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
     };
     // const handleImportInfo = () => {
     //     // const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -307,7 +308,7 @@ export default function Beers(props) {
             setItemTitle(item.title)
         if (item.brewery != null)
             setItemBrewery(item.brewery)
-            if (item.glutenfree != null)
+        if (item.glutenfree != null)
             setItemGlutenfree(item.glutenfree)
         if (item.description != null)
             setItemDescription(item.description)
@@ -515,7 +516,7 @@ export default function Beers(props) {
                     setOtherBeers([...otherBeers])
                 }
                 if (wheatBeers.indexOf(oldItem) > -1) {
-                   wheatBeers[wheatBeers.indexOf(oldItem)] = modifiedItem
+                    wheatBeers[wheatBeers.indexOf(oldItem)] = modifiedItem
                     setWheatBeers([...wheatBeers])
                 }
                 if (alcoholFreeBeers.indexOf(oldItem) > -1) {
@@ -608,7 +609,7 @@ export default function Beers(props) {
     };
     const handleSearchImportInfo = (beer) => {
         setItemTitle(beer.beer.beer_name);
-        setItemURL("https://untappd.com/b/beer/"+ beer.beer.bid);
+        setItemURL("https://untappd.com/b/beer/" + beer.beer.bid);
         setItemBrewery(beer.brewery.brewery_name);
         setItemType(beer.beer.beer_style);
         setItemAlcohol(beer.beer.beer_abv);
@@ -694,23 +695,23 @@ export default function Beers(props) {
                                 horizontal: 'right',
                             }}
                         >
-                        <div style={{ width: '300px' }}>
-                            {searchResults.map(result => 
-                                (<Paper style={{ paddingTop: '6px', paddingBottom: '6px', paddingRight: '6px' }} elevation={2} ><Grid container>
-                                <Grid style={{ textAlign: 'center' }} item xs={2}>
-                                <img style={{ marginTop: '2px' }} src={result.beer.beer_label} alt="logo" width="35" height="35" />
- 
-                                </Grid >
-                                <Grid item xs={7}><p style={{fontSize: "0.9em"}} display="block">{result.beer.beer_name}</p>
-                                <p style={{fontSize: "0.8em"}} display="block">{result.brewery.brewery_name}</p> 
-                                </Grid >
-                                <Grid item xs={3}><Button fullWidth
-                            onClick={() => (handleSearchImportInfo(result))}
-                            variant="contained">
-                            Import</Button>
-                                </Grid >
-                                </Grid >
-                                </Paper>))}</div>
+                            <div style={{ width: '300px' }}>
+                                {searchResults.map(result =>
+                                    (<Paper style={{ paddingTop: '6px', paddingBottom: '6px', paddingRight: '6px' }} elevation={2} ><Grid container>
+                                        <Grid style={{ textAlign: 'center' }} item xs={2}>
+                                            <img style={{ marginTop: '2px' }} src={result.beer.beer_label} alt="logo" width="35" height="35" />
+
+                                        </Grid >
+                                        <Grid item xs={7}><p style={{ fontSize: "0.9em" }} display="block">{result.beer.beer_name}</p>
+                                            <p style={{ fontSize: "0.8em" }} display="block">{result.brewery.brewery_name}</p>
+                                        </Grid >
+                                        <Grid item xs={3}><Button fullWidth
+                                            onClick={() => (handleSearchImportInfo(result))}
+                                            variant="contained">
+                                            Import</Button>
+                                        </Grid >
+                                    </Grid >
+                                    </Paper>))}</div>
                         </Popover>
                     </Grid>
 
@@ -811,17 +812,7 @@ export default function Beers(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemPrice}
-                            onChange={(e) => setItemPrice(e.target.value)}
-                            margin="dense"
-                            id="price"
-                            label="Price"
-                            variant="outlined"
-                        />
-                    </Grid>
+
                     <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
@@ -881,6 +872,21 @@ export default function Beers(props) {
                         ))}
                         </TextField>
                     </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemPrice}
+                            onChange={(e) => setItemPrice(e.target.value)}
+                            margin="dense"
+                            id="price"
+                            label="Prices"
+                            variant="outlined"
+                            helperText="Ex: 29 or 29/35/115"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Kr</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
                     <Grid item sm={4} xs={12}>
                         <TextField
                             fullWidth
@@ -890,7 +896,7 @@ export default function Beers(props) {
                             id="size"
                             label="Sizes"
                             variant="outlined"
-                            helperText="Ex: 400 or 400,500,Pitcher"
+                            helperText="Ex: 400 or 400/500/Pitcher"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
                             }}
@@ -971,7 +977,7 @@ export default function Beers(props) {
     const handleFilterChange = (event) => {
 
         let temparray = ({ ...filter, [event.target.name]: event.target.checked });
-        if (!event.target.name.includes("checkedAllBeers") && temparray[event.target.name]){
+        if (!event.target.name.includes("checkedAllBeers") && temparray[event.target.name]) {
             temparray = ({ ...temparray, ["checkedAllBeers"]: false });
         }
 
@@ -1023,7 +1029,7 @@ export default function Beers(props) {
         // }
         let originalRows = [...rows];
 
-        
+
         for (var key in temparray) {
             if (key === "checkedAlcoholFree" && temparray[key]) {
                 tempRows = tempRows.concat(originalRows.filter(row => row.alcohol <= 2.25))
@@ -1245,6 +1251,15 @@ export default function Beers(props) {
 
     };
     React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setDisplayPrices(
+                    isUserInside([position.coords.latitude, position.coords.longitude],
+                        pubCoordinates
+                    )
+                )
+            });
+        }
         axios.get("/api/get/beers")
             .then(function (response) {
                 // handle success
@@ -1371,7 +1386,7 @@ export default function Beers(props) {
                     {/* <h6 style={{ margin: "6px", textAlign: "center", fontSize: "1.2em" }} >
                         Filter by
     </h6> */}
-    <FormControlLabel
+                    <FormControlLabel
                         control={
                             <Checkbox style={{ margin: "0px", fontSize: '1em' }}
                                 checked={filter.checkedAllBeers}
@@ -1384,7 +1399,7 @@ export default function Beers(props) {
                     />
                     <Divider />
                     <h6 style={{ marginTop: "10px", marginBottom: "3px", fontSize: "1.1em" }}>Categories</h6>
-                    
+
                     <FormControlLabel
                         control={
                             <Checkbox style={{ margin: "0px", fontSize: '1em' }}
@@ -1661,11 +1676,11 @@ export default function Beers(props) {
                                     {/* {currentRows.filter(row => row.form === "Tap").length} on tap: */}
                                     On tap ({tapBeers.length})
     </h6></AccordionSummary>{tapBeers.filter(beer => (beer.new)).map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
 
                             {tapBeers.filter(beer => (!beer.new)).map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                         </Accordion> : null}
                     {/* {currentRows.filter(row => row.form === "Tap")
@@ -1685,10 +1700,10 @@ export default function Beers(props) {
                                 On bottle, Pale Ale ({paleAleBeers.length})
     </h6></AccordionSummary>
                         {paleAleBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {paleAleBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                     </Accordion> : null}
 
@@ -1702,10 +1717,10 @@ export default function Beers(props) {
                                 On bottle, Lager ({lagerBeers.length})
     </h6> </AccordionSummary>
                         {lagerBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {lagerBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
 
                     {stoutBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
@@ -1718,10 +1733,10 @@ export default function Beers(props) {
                                 On bottle, Stout ({stoutBeers.length})
     </h6> </AccordionSummary>
                         {stoutBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {stoutBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
 
                     {sourBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
@@ -1734,10 +1749,10 @@ export default function Beers(props) {
                                 On bottle, Sour ({sourBeers.length})
     </h6> </AccordionSummary>
                         {sourBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {sourBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
 
 
@@ -1751,10 +1766,10 @@ export default function Beers(props) {
                                 On bottle, Ale ({aleBeers.length})
     </h6> </AccordionSummary>
                         {aleBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {aleBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
 
                     {belgianBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
@@ -1767,12 +1782,12 @@ export default function Beers(props) {
                                 On bottle, Belgian ({belgianBeers.length})
     </h6> </AccordionSummary>
                         {belgianBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {belgianBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
-                                            {wheatBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
+                    {wheatBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1782,10 +1797,10 @@ export default function Beers(props) {
                                 On bottle, Wheat Beer ({wheatBeers.length})
     </h6> </AccordionSummary>
                         {wheatBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {wheatBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
 
                     {otherBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
@@ -1798,10 +1813,10 @@ export default function Beers(props) {
                                 On bottle, Other ({otherBeers.length})
     </h6> </AccordionSummary>
                         {otherBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {otherBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
 
                     {alcoholFreeBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
@@ -1814,17 +1829,17 @@ export default function Beers(props) {
                                 On bottle, Alcohol Free ({alcoholFreeBeers.length})
     </h6> </AccordionSummary>
                         {alcoholFreeBeers.filter(beer => (beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}
                         {alcoholFreeBeers.filter(beer => (!beer.new)).map(function (row) {
-                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                            return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                         })}</Accordion> : null}
                     {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
                     <Footer />
-                    <div style={{ textAlign: 'center', marginBottom: "10px"  }}>
-                    <img src='../../images/pbu_40_white.png'  alt="Untappd logo"/>
+                    <div style={{ textAlign: 'center', marginBottom: "10px" }}>
+                        <img src='../../images/pbu_40_white.png' alt="Untappd logo" />
                     </div>
                 </div>
                 )}
@@ -1871,44 +1886,83 @@ function MenuItemCard(props) {
             <div className={classes.content}>
                 {/* {!props.properties.stock ? (<img style={{ position: 'relative', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)} */}
                 <div style={{ textAlign: "center", height: "0px" }}>
-                {!props.properties.stock ? (<img style={{ position: 'relative',  textAlign: "center", height:"50px" }} alt="new" src="../../images/soldout.png" />) : (null)}
+                    {!props.properties.stock ? (<img style={{ position: 'relative', textAlign: "center", height: "50px" }} alt="new" src="../../images/soldout.png" />) : (null)}
                 </div>
 
                 <Grid container >
 
                     {/* <ThemeProvider theme={fontTheme}> */}
 
-                    <Grid item xs={10} >
-                    {/* <img style={{float: "left", maxWidth: '12%',  height: 'auto', maxHeight: '60px', marginRight: "5px"}} className={classes.img} src={props.properties.image} alt="logo" /> */}
-                    <div  style={{float: "left", height: "100%", marginRight: "10px", maxWidth: '11%'}}>
-                        <img style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
+                    <Grid item xs={12} >
+                        {/* <img style={{float: "left", maxWidth: '12%',  height: 'auto', maxHeight: '60px', marginRight: "5px"}} className={classes.img} src={props.properties.image} alt="logo" /> */}
+                        <div style={{ float: "left", height: "100%", marginRight: "10px", maxWidth: '9.5%' }}>
+                            <img style={{ width: '100%', height: 'auto' }} className={classes.img} src={props.properties.image} alt="logo" />
                         </div>
+                        <div style={{ float: "right", textAlign: "right" }}  >
+                        {props.displayPrices || admin ? (
 
-                        <h6 style={{ fontSize: "1em", marginBottom: "0px"  }} display="inline">
+                            <h6 style={{ fontSize: "0.9em" }} display="block">
+                                {props.properties.price} kr
+        </h6>
+                        ) : (null)}
+
+                        {props.properties.form === "Tap" ? (
+                            <p style={{ fontSize: "0.8em" }} >
+
+                                {props.properties.size.split('/').map(function (size) {
+                                    if (size.toLowerCase().includes("pitcher")) {
+                                        return ("Pitcher")
+                                    }
+                                    else if (props.properties.size.split('/').length > 1){
+                                        return (parseFloat(size) / 1000 + "l/")
+                                    }
+                                    else {
+                                        return (parseFloat(size) / 1000 + "l")
+                                    }
+
+                                })}
+
+                            </p>
+
+                        ) : (
+                                <p style={{ fontSize: "0.8em" }} >
+                                    {props.properties.size} ml
+        </p>
+                            )}
+
+                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                        <h6 style={{ fontSize: "0.8em" }} display="block">
+                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                        </h6>
+
+                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                    </div>
+
+                        <h6 style={{ fontSize: "1em", marginBottom: "0px" }} display="inline">
                             {props.properties.title}
-                            {props.properties.new ? (<img style={{ position: "absolute", marginLeft: "5px"  }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                            {props.properties.new ? (<img style={{ position: "absolute", marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
-                            
+
                         </h6>
 
                         <p style={{ fontSize: "0.9em", marginTop: "3px", marginBottom: "0px" }} display="block">
                             {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                         </p>
                         <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        flexWrap: 'wrap'
-                                    }}>
-                        <p style={{ fontSize: "0.8em", marginRight: "10px", marginTop: "3px" }} display="block">
-                            {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
-                            {props.properties.type} - {props.properties.alcohol}%
-
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexWrap: 'wrap'
+                        }}>
+                            <p style={{ fontSize: "0.8em", marginRight: "10px", marginTop: "3px" }} display="block">
+                                {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
+                                {props.properties.type} - {props.properties.alcohol}%
+    
                         </p>
-                        {props.properties.glutenfree ? (<span style={{ fontSize: "0.8em" }} >
+                            {props.properties.glutenfree ? (<span style={{ fontSize: "0.8em" }} >
                                 <i>Gluten-Free</i>
-                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="15" />
+                                <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="15" />
                             </span>) : (null)}
-                            </div>
+                        </div>
                         {/* <Typography style={{ marginLeft: "15px" }} variant="subtitle2" >
                                     {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")}
                                 </Typography> */}
@@ -1920,23 +1974,9 @@ function MenuItemCard(props) {
                                     {props.properties.location} bar: {props.properties.form}
                                 </Typography> */}
                         {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                   
-                        </Grid>
-                    <Grid style={{ textAlign: "center" }} item xs={2} >
-                        {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
-                            return (<p style={{ fontSize: "0.8em" }} display="block">
-                                {size} {size.includes("Pitcher") ? (null) : ("ml")}
-                            </p>)
-                        })) : null}
 
-
-                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                        <h6 style={{ fontSize: "0.8em" }} display="block">
-                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                        </h6>
-
-                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
                     </Grid>
+
                     <Grid item xs={11} >
                         {showText ? (
 
@@ -1961,16 +2001,16 @@ function MenuItemCard(props) {
                         }</div>)}
                     </Grid>
                     <Grid style={{ textAlign: "right" }} item xs={1} >
-                        <a href={props.properties.untappd } target="_blank"><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
+                        <a href={props.properties.untappd} target="_blank"><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
                     </Grid>
 
 
                     {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                     {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                        <Button  style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                        <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                     </Grid>) : (null)}
                     {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                        <Button  style={{ color: 'white' }}  size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                        <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                     </Grid>) : (null)}
                     {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                         <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">

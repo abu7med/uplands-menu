@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { useHistory } from "react-router-dom";
-
+const moment = require('moment')
 const useStyles = makeStyles((theme) => ({
 
   appbar: {
@@ -30,12 +30,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 // export const Background = 'url("images/uplandsblur50.jpg") no-repeat center fixed'
 export const Background = ''
+export const pubCoordinates = 
+[[59.860278869486905,17.629380555858567],
+[59.85990985382229,17.628766329994157],
+[59.85995295075336,17.630260320415452],
+[59.8596135609098,17.62947979759212],]
 
 export function PersonalAppBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [timeLeft, setTimeLeft] = React.useState("");
   const history = useHistory();
   const handleClickClock = (event) => {
+    let currentday = moment().day()
+    console.log(moment().day())
+    console.log(moment().isBetween('2020-08-20 03:00', '2020-08-20 03:30'))
+    console.log(moment().isBetween('2020-08-20 03:00', '2020-08-20 03:30'))
+    // setTimeLeft(moment( {hours:'12', minutes:'00'}).isBetween({hours:'9', minutes:'00'}, {hours:'15', minutes:'00'}))
     setAnchorEl(event.currentTarget);
     // console.log(document.getElementById('tap-beers').style.top)
     // window.scrollTo(0, 500);
@@ -104,7 +115,7 @@ const id = open ? 'simple-popover' : undefined;
         )
         : (
           <Grid item xs={4} style={{ textAlign: 'right' }} >
-          <IconButton style={{ paddingTop: '9px', marginRight: '2vw' }} color="inherit" aria-describedby={id} onClick={handleClickClock}>
+          {/* <IconButton style={{ paddingTop: '9px', marginRight: '2vw' }} color="inherit" aria-describedby={id} onClick={handleClickClock}>
             <ScheduleIcon />
           </IconButton>
           <Popover
@@ -121,11 +132,11 @@ const id = open ? 'simple-popover' : undefined;
               horizontal: 'center',
             }}
           >
-            <p style={{ textAlign: "center", paddingTop: "10px" }} >Opening hours</p>
-            <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
+            <p style={{ textAlign: "center", padding: "10px" }} >{timeLeft} </p> */}
+            {/* <p style={{ textAlign: "center", paddingTop: "4px" }} >Mon-Thu: 18:00-01:00</p>
             <p style={{ textAlign: "center", paddingTop: "4px" }} >Fri-Sat: 18:00-02:00</p>
-            <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p>
-          </Popover>
+            <p style={{ textAlign: "center", paddingTop: "4px", paddingBottom: "10px", paddingLeft: "10px", paddingRight: "10px" }} >Last order 30 min before closing!</p> */}
+          {/* </Popover> */}
           
         </Grid>
         )
@@ -136,6 +147,25 @@ const id = open ? 'simple-popover' : undefined;
 
   );
 }
+export function isUserInside(point, vs) {
+  // ray-casting algorithm based on
+  // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
+  
+  var x = point[0], y = point[1];
+  
+  var inside = false;
+  for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+      var xi = vs[i][0], yi = vs[i][1];
+      var xj = vs[j][0], yj = vs[j][1];
+      
+      var intersect = ((yi > y) != (yj > y))
+          && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+  }
+  
+  return inside;
+};
+
 export function checkImageExists(imageUrl, callBack) {
   var imageData = new Image();
   imageData.onload = function () {

@@ -34,8 +34,8 @@ const WhiskeySchema = new mongoose.Schema({
   },
 
   price: {
-    type: Number,
-    default: 0
+    type: String,
+    default: ''
   },
 
   description: {

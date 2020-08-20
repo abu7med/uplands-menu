@@ -29,8 +29,8 @@ const CiderSchema = new mongoose.Schema({
     default: 0
   },
   price: {
-    type: Number,
-    default: 0
+    type: String,
+    default: ''
   },
   alcohol: {
     type: Number,

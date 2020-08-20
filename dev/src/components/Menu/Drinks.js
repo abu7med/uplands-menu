@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { makeStyles, useTheme  } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -25,7 +25,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Link from '@material-ui/core/Link';
 import Footer from '../Footer/Footer';
-import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
+import { PersonalAppBar, Background, checkImageExists, Sorter, isUserInside, pubCoordinates } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 // import Box from '@material-ui/core/Box';
 // import Chip from '@material-ui/core/Chip';
@@ -72,6 +72,8 @@ export default function Drink(props) {
     document.title = "Svantes menu - Drinks"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
+    const [displayPrices, setDisplayPrices] = React.useState(false);
+
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
@@ -95,9 +97,9 @@ export default function Drink(props) {
             setItemID(item._id)
         if (item.title != null)
             setItemTitle(item.title)
-            if (item.location != null)
+        if (item.location != null)
             setItemLocation(item.location)
-            if (item.size != null)
+        if (item.size != null)
             setItemSize(item.size)
         if (item.description != null)
             setItemDescription(item.description)
@@ -105,6 +107,8 @@ export default function Drink(props) {
             setItemIngredients(item.ingredients)
         if (item.type != null)
             setItemType(item.type)
+        if (item.price != null)
+            setItemPrice(item.price)
         if (item.stock != null)
             setItemStock(item.stock)
         if (item.image != null)
@@ -209,7 +213,7 @@ export default function Drink(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
-                    <Grid item sm={6} xs={6}>
+                    <Grid item sm={4} xs={12}>
                         <TextField
                             fullWidth
                             value={itemTitle}
@@ -220,7 +224,7 @@ export default function Drink(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={6} xs={6}>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             select
@@ -237,7 +241,7 @@ export default function Drink(props) {
                         ))}
                         </TextField>
                     </Grid>
-                    <Grid item sm={6} xs={6}>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             select
@@ -254,6 +258,7 @@ export default function Drink(props) {
                         ))}
                         </TextField>
                     </Grid>
+
                     <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
@@ -263,9 +268,24 @@ export default function Drink(props) {
                             id="size"
                             label="Alcohol sizes"
                             variant="outlined"
-                            helperText="Ex: 4 or 4,6"
+                            helperText="Ex: 4 or 4/6"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">Cl</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemPrice}
+                            onChange={(e) => setItemPrice(e.target.value)}
+                            margin="dense"
+                            id="prices"
+                            label="Prices"
+                            variant="outlined"
+                            helperText="Ex: 54 or 54/76"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Kr</InputAdornment>,
                             }}
                         />
                     </Grid>
@@ -344,6 +364,15 @@ export default function Drink(props) {
 
 
     React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setDisplayPrices(
+                    isUserInside([position.coords.latitude, position.coords.longitude],
+                        pubCoordinates
+                    )
+                )
+            });
+        }
         axios.get("/api/get/drinks")
             .then(function (response) {
                 // handle success
@@ -414,7 +443,7 @@ export default function Drink(props) {
                         </DialogActions>
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                    {/* <Alert variant="filled" severity="info">
+                        {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
                         <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -422,7 +451,7 @@ export default function Drink(props) {
     </h6>
                         {currentRows.filter(row => row.type === "Special")
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}</Paper>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                         <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -430,7 +459,7 @@ export default function Drink(props) {
     </h6>
                         {currentRows.filter(row => row.type === "Regular")
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}</Paper>
 
                     {/* {currentRows.map(function (row) {
@@ -438,7 +467,7 @@ export default function Drink(props) {
                     })} */}
 
 
-<Footer />
+                    <Footer />
                 </div>
                 )}
 
@@ -512,12 +541,20 @@ function MenuItemCard(props) {
                             }</div>)}
                         </Grid>
                         <Grid style={{ textAlign: "center" }} item xs={2} >
-                            {props.properties.size.split(',').map(function (size) {
+                            {/* {props.properties.size.split('/').map(function (size) {
                                 return (<p style={{ fontSize: "0.8em" }} display="block">
                                     {size.length > 0 ? (size + " cl") : (null)} 
                                 </p>)
-                            })}
+                            })} */}
+                            {props.displayPrices || admin ? (
 
+                                <h6 style={{ fontSize: "0.9em" }} display="block">
+                                    {props.properties.price} kr
+                                </h6>
+                            ) : (null)}
+                            <p style={{ fontSize: "0.9em" }} display="block">
+                                {props.properties.size} cl
+                                </p>
 
                             {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
                             <h6 style={{ fontSize: "0.8em" }} display="block">
@@ -527,10 +564,10 @@ function MenuItemCard(props) {
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }}  size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }}  size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                             <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">

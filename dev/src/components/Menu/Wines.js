@@ -26,7 +26,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Link from '@material-ui/core/Link';
 import Backdrop from '@material-ui/core/Backdrop';
 import Footer from '../Footer/Footer';
-import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
+import { PersonalAppBar, Background, checkImageExists, Sorter, isUserInside, pubCoordinates } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
 
@@ -60,6 +60,7 @@ export default function Wines(props) {
     document.title = "Svantes menu - Wine"
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
+    const [displayPrices, setDisplayPrices] = React.useState(false);
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
@@ -96,6 +97,8 @@ export default function Wines(props) {
             setItemDescription(item.description)
         if (item.type != null)
             setItemType(item.type)
+        if (item.price != null)
+            setItemPrice(item.price)
         if (item.region != null)
             setItemRegion(item.region)
         if (item.grapes != null)
@@ -134,6 +137,7 @@ export default function Wines(props) {
         setItemDescription("")
         setItemType("Red")
         setItemYear("")
+        setItemPrice("")
         setItemRegion("")
         setItemGrapes("")
         setItemCountry("")
@@ -154,6 +158,7 @@ export default function Wines(props) {
             wineStock: itemStock,
             wineNew: itemNew,
             wineYear: itemYear,
+            winePrice: itemPrice,
             wineHouse: itemHouse,
             wineRegion: itemRegion,
             wineGrapes: itemGrapes,
@@ -186,6 +191,7 @@ export default function Wines(props) {
             wineType: itemType,
             wineStock: itemStock,
             wineYear: itemYear,
+            winePrice: itemPrice,
             wineRegion: itemRegion,
             wineHouse: itemHouse,
             wineGrapes: itemGrapes,
@@ -318,6 +324,21 @@ export default function Wines(props) {
                     <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
+                            value={itemPrice}
+                            onChange={(e) => setItemPrice(e.target.value)}
+                            margin="dense"
+                            id="price"
+                            label="Prices"
+                            helperText="Glass/Bottle (35/160) or Bottle (160)"
+                            variant="outlined"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">kr</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item sm={4} xs={6}>
+                        <TextField
+                            fullWidth
                             value={itemAlcohol}
                             onChange={(e) => setItemAlcohol(e.target.value)}
                             margin="dense"
@@ -444,6 +465,15 @@ export default function Wines(props) {
     };
 
     React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setDisplayPrices(
+                    isUserInside([position.coords.latitude, position.coords.longitude],
+                        pubCoordinates
+                    )
+                )
+            });
+        }
         axios.get("/api/get/wines")
             .then(function (response) {
                 // handle success
@@ -516,16 +546,16 @@ export default function Wines(props) {
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
 
-                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center"}} >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Red
     </h3>
                         {currentRows.filter(row => (row.type === "Red" && row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                         {currentRows.filter(row => (row.type === "Red" && !row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
 
                     </Paper>
@@ -533,16 +563,16 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center"}} >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             White
     </h3>
                         {currentRows.filter(row => (row.type === "White" && row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                         {currentRows.filter(row => (row.type === "White" && !row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                     </Paper>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
@@ -554,11 +584,11 @@ export default function Wines(props) {
     </h3>
                         {currentRows.filter(row => (row.type === "Rose" && row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                         {currentRows.filter(row => (row.type === "Rose" && !row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                     </Paper>
 
@@ -566,16 +596,16 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h3 style={{ color: 'white', marginTop: "10px", paddingTop: "10px", paddingBottom: "10px", textAlign: "center"}} >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingTop: "10px", paddingBottom: "10px", textAlign: "center" }} >
                             Sparkling
     </h3>
                         {currentRows.filter(row => (row.type === "Sparkling" && row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                         {currentRows.filter(row => (row.type === "Sparkling" && !row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                     </Paper>
 
@@ -583,16 +613,16 @@ export default function Wines(props) {
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}
 
-                        <h3 style={{ color: 'white', marginTop: "10px",marginBottom: "10px", paddingTop: "10px",paddingBottom: "10px", textAlign: "center"}} >
+                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", paddingBottom: "10px", textAlign: "center" }} >
                             Dessert
     </h3>
                         {currentRows.filter(row => (row.type === "Dessert" && row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                         {currentRows.filter(row => (row.type === "Dessert" && !row.house))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
                     </Paper>
 
@@ -601,7 +631,7 @@ export default function Wines(props) {
                         Choose to buy the bottle or a glass of the wine.</Alert> */}
 
 
-<Footer />
+                    <Footer />
 
                 </div>
                 )}
@@ -631,10 +661,10 @@ function MenuItemCard(props) {
     };
     const openPicture = () => {
         setPictureOpen(!pictureOpen);
-      };
-      const closePicture = () => {
+    };
+    const closePicture = () => {
         setPictureOpen(false);
-      };
+    };
     React.useEffect(() => {
         checkImageExists(props.properties.image, function (existsImage) {
             if (existsImage === true) {
@@ -660,19 +690,30 @@ function MenuItemCard(props) {
         <Card className={classes.card}>
             <Grid container  >
                 {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="45" />) : (null)}
-                <Backdrop style={{ zIndex: 5}} open={pictureOpen} onClick={closePicture}>
-                <img style={{ maxWidth: '75%', height: 'auto', maxHeight: '70vh' }} src={props.properties.image} alt="logo" />
-      </Backdrop>
+                <Backdrop style={{ zIndex: 5 }} open={pictureOpen} onClick={closePicture}>
+                    <img style={{ maxWidth: '75%', height: 'auto', maxHeight: '70vh' }} src={props.properties.image} alt="logo" />
+                </Backdrop>
                 <Grid style={{ display: 'flex', alignItems: 'center', justifyContent: "center", maxHeight: '80px' }} item xs={1}>
                     <img onClick={openPicture} style={{ maxWidth: '100%', height: 'auto', maxHeight: '80px' }} src={props.properties.image} alt="logo" />
                 </Grid>
                 <Grid item xs={11}>
-                    <div style={{ float: "right", textAlign: "center" }}>
-                        {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
+                    <div style={{ float: "right", textAlign: "right" }}>
+                        {/* {props.properties.size != null ? (props.properties.size.split(',').map(function (size) {
                             return (<p style={{ fontSize: "0.8em" }} display="block">
                                 {size} ml
                             </p>)
-                        })) : null}
+                        })) : null} */}
+                        {props.displayPrices || admin ? (
+    //                         props.properties.price.split('/').map(function (size) {
+    //                             return (<h6 style={{ fontSize: "0.9em" }} display="block">
+    //                                 {size} 
+    // </h6>)
+    //                         })
+
+                            <h6 style={{ fontSize: "0.9em" }} display="block">
+                                {props.properties.price} kr
+                                </h6>
+                        ) : (null)}
 
 
                         <h6 style={{ fontSize: "0.8em" }} display="block">

@@ -26,7 +26,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Link from '@material-ui/core/Link';
 import Backdrop from '@material-ui/core/Backdrop';
 import Footer from '../Footer/Footer';
-import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
+import { PersonalAppBar, Background, checkImageExists, Sorter, isUserInside, pubCoordinates } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
 
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Whiskey(props) {
     document.body.style.background = Background
     document.body.style.backgroundSize = 'cover'
-    document.title = "Svantes menu - Whiskey"
+    document.title = "Svantes menu - Whiskey/Rum"
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
@@ -74,7 +74,7 @@ export default function Whiskey(props) {
     const [imageExists, setItemImageExists] = React.useState(false);
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
-
+    const [displayPrices, setDisplayPrices] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
 
@@ -101,6 +101,8 @@ export default function Whiskey(props) {
             setItemType(item.type)
         if (item.stock != null)
             setItemStock(item.stock)
+            if (item.price != null)
+            setItemPrice(item.price)
         if (item.new != null)
             setItemNew(item.new)
         if (item.country != null)
@@ -128,6 +130,7 @@ export default function Whiskey(props) {
         setItemCountry("")
         setItemAlcohol("")
         setItemImage("")
+        setItemPrice("")
 
         setItemImageExists(false)
         setCreateWindow(false)
@@ -141,6 +144,7 @@ export default function Whiskey(props) {
             whiskeyLocation: itemLocation,
             whiskeyType: itemType,
             whiskeyStock: itemStock,
+            whiskeyPrice: itemPrice,
             whiskeyNew: itemNew,
             whiskeyCountry: itemCountry,
             whiskeyAlcohol: itemAlcohol,
@@ -169,6 +173,7 @@ export default function Whiskey(props) {
             whiskeyLocation: itemLocation,
             whiskeyType: itemType,
             whiskeyStock: itemStock,
+            whiskeyPrice: itemPrice,
             whiskeyNew: itemNew,
             whiskeyCountry: itemCountry,
             whiskeyAlcohol: itemAlcohol,
@@ -210,7 +215,7 @@ export default function Whiskey(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
-                    <Grid item sm={4} xs={6}>
+                    <Grid item sm={4} xs={12}>
                         <TextField
                             fullWidth
                             value={itemTitle}
@@ -243,7 +248,7 @@ export default function Whiskey(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={4} xs={6}>
+                    <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
                             value={itemCountry}
@@ -254,7 +259,7 @@ export default function Whiskey(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={4} xs={6}>
+                    <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
                             value={itemAlcohol}
@@ -268,7 +273,21 @@ export default function Whiskey(props) {
                             }}
                         />
                     </Grid>
-                    <Grid item sm={4} xs={6}>
+                    <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemPrice}
+                            onChange={(e) => setItemPrice(e.target.value)}
+                            margin="dense"
+                            id="price"
+                            label="Price"
+                            variant="outlined"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">kr/cl</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item sm={6} xs={6}>
                         <TextField
                             fullWidth
                             select
@@ -357,6 +376,15 @@ export default function Whiskey(props) {
     };
 
     React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setDisplayPrices(
+                    isUserInside([position.coords.latitude, position.coords.longitude],
+                        pubCoordinates
+                    )
+                )
+            });
+        }
         axios.get("/api/get/whiskeys")
             .then(function (response) {
                 // handle success
@@ -435,7 +463,7 @@ export default function Whiskey(props) {
     </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("rum"))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices}  />)
                             })}</Paper >
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                         <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
@@ -443,7 +471,7 @@ export default function Whiskey(props) {
     </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("cognac"))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices}  />)
                             })}</Paper >
                     <Paper elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
                         <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
@@ -451,7 +479,7 @@ export default function Whiskey(props) {
     </h3>
                         {currentRows.filter(row => !row.type.toLowerCase().includes("rum") && !row.type.toLowerCase().includes("cognac"))
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}</Paper >
                     {/* {currentRows.map(function (row) {
                         return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
@@ -528,7 +556,11 @@ function MenuItemCard(props) {
                 </Grid>
                 <Grid item xs={11}>
                 
-                    <div style={{ float: "right", textAlign: "center" }}>
+                    <div style={{ float: "right", textAlign: "right" }}>
+                    {props.displayPrices || admin ? (
+                            <h6 style={{ fontSize: "0.9em" }} display="block">
+                                {props.properties.price} kr/cl
+                                </h6>) : (null)}
 
                         {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
                         <h6 style={{ fontSize: "0.8em" }} display="block">

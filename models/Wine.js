@@ -38,8 +38,8 @@ const WineSchema = new mongoose.Schema({
   },
 
   price: {
-    type: Number,
-    default: 0
+    type: String,
+    default: ''
   },
   size: {
     type: String,

@@ -26,7 +26,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Popover from '@material-ui/core/Popover';
 import './Menu.css';
 import Footer from '../Footer/Footer';
-import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
+import { PersonalAppBar, Background, checkImageExists, Sorter, isUserInside, pubCoordinates } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 
 const moment = require('moment')
@@ -87,7 +87,7 @@ export default function Ciders(props) {
     const [imageExists, setItemImageExists] = React.useState(false);
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
-
+    const [displayPrices, setDisplayPrices] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -101,23 +101,32 @@ export default function Ciders(props) {
     const handleSearchOpen = (event) => {
         setAnchorEl(event.currentTarget);
         axios.get("https://api.untappd.com/v4/search/beer?client_id=00C637D891758676D4988D6A67AB581C07F2B2AF&client_secret=453BE6625A63443A627189178B9DC6E4265C2B47&limit=6&q=" + searchString)
-        .then(function (response) {
-            setSearchResults(response.data.response.beers.items)
-            
-            
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .then(function () {
-            
-            // always executed
-        });
+            .then(function (response) {
+                setSearchResults(response.data.response.beers.items)
+
+
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+
+                // always executed
+            });
     };
 
 
     React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setDisplayPrices(
+                    isUserInside([position.coords.latitude, position.coords.longitude],
+                        pubCoordinates
+                    )
+                )
+            });
+        }
         axios.get("/api/get/ciders")
             .then(function (response) {
                 // handle success
@@ -291,7 +300,7 @@ export default function Ciders(props) {
     };
     const handleSearchImportInfo = (item) => {
         setItemTitle(item.beer.beer_name);
-        setItemURL("https://untappd.com/b/cider/"+ item.beer.bid);
+        setItemURL("https://untappd.com/b/cider/" + item.beer.bid);
         setItemBrewery(item.brewery.brewery_name);
         setItemType(item.beer.beer_style);
         setItemAlcohol(item.beer.beer_abv);
@@ -351,7 +360,7 @@ export default function Ciders(props) {
         return (<DialogContent>
             <div >
                 <Grid container spacing={1}>
-                <Grid item xs={9}>
+                    <Grid item xs={9}>
                         <TextField
                             fullWidth
                             value={searchString}
@@ -375,23 +384,23 @@ export default function Ciders(props) {
                                 horizontal: 'right',
                             }}
                         >
-                        <div style={{ width: '300px' }}>
-                            {searchResults.map(result => 
-                                (<Paper style={{ paddingTop: '6px', paddingBottom: '6px', paddingRight: '6px' }} elevation={2} ><Grid container>
-                                <Grid style={{ textAlign: 'center' }} item xs={2}>
-                                <img style={{ marginTop: '2px' }} src={result.beer.beer_label} alt="logo" width="35" height="35" />
- 
-                                </Grid >
-                                <Grid item xs={7}><p style={{fontSize: "0.9em"}} display="block">{result.beer.beer_name}</p>
-                                <p style={{fontSize: "0.8em"}} display="block">{result.brewery.brewery_name}</p> 
-                                </Grid >
-                                <Grid item xs={3}><Button fullWidth
-                            onClick={() => (handleSearchImportInfo(result))}
-                            variant="contained">
-                            Import</Button>
-                                </Grid >
-                                </Grid >
-                                </Paper>))}</div>
+                            <div style={{ width: '300px' }}>
+                                {searchResults.map(result =>
+                                    (<Paper style={{ paddingTop: '6px', paddingBottom: '6px', paddingRight: '6px' }} elevation={2} ><Grid container>
+                                        <Grid style={{ textAlign: 'center' }} item xs={2}>
+                                            <img style={{ marginTop: '2px' }} src={result.beer.beer_label} alt="logo" width="35" height="35" />
+
+                                        </Grid >
+                                        <Grid item xs={7}><p style={{ fontSize: "0.9em" }} display="block">{result.beer.beer_name}</p>
+                                            <p style={{ fontSize: "0.8em" }} display="block">{result.brewery.brewery_name}</p>
+                                        </Grid >
+                                        <Grid item xs={3}><Button fullWidth
+                                            onClick={() => (handleSearchImportInfo(result))}
+                                            variant="contained">
+                                            Import</Button>
+                                        </Grid >
+                                    </Grid >
+                                    </Paper>))}</div>
                         </Popover>
                     </Grid>
 
@@ -491,17 +500,7 @@ export default function Ciders(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemPrice}
-                            onChange={(e) => setItemPrice(e.target.value)}
-                            margin="dense"
-                            id="price"
-                            label="Price"
-                            variant="outlined"
-                        />
-                    </Grid>
+
                     <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
@@ -533,7 +532,7 @@ export default function Ciders(props) {
                         ))}
                         </TextField>
                     </Grid>
-                    <Grid item sm={6} xs={6}>
+                    <Grid item sm={4} xs={6}>
                         <TextField
                             fullWidth
                             select
@@ -550,6 +549,21 @@ export default function Ciders(props) {
                         ))}
                         </TextField>
                     </Grid>
+                    <Grid item sm={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            value={itemPrice}
+                            onChange={(e) => setItemPrice(e.target.value)}
+                            margin="dense"
+                            id="price"
+                            label="Prices"
+                            variant="outlined"
+                            helperText="Ex: 29 or 29/35/115"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Kr</InputAdornment>,
+                            }}
+                        />
+                    </Grid>
                     <Grid item sm={6} xs={12}>
                         <TextField
                             fullWidth
@@ -559,7 +573,7 @@ export default function Ciders(props) {
                             id="size"
                             label="Sizes"
                             variant="outlined"
-                            helperText="Ex: 400 or 400,500,Pitcher"
+                            helperText="Ex: 400 or 400/500/Pitcher"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">Ml</InputAdornment>,
                             }}
@@ -672,7 +686,7 @@ export default function Ciders(props) {
     </h6>
                         {currentRows.filter(row => row.form === "Tap")
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}</Paper>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                         <h6 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
@@ -680,30 +694,30 @@ export default function Ciders(props) {
     </h6>
                         {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
-                            {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
+                        {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}</Paper>
-                            <Paper elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
+                    <Paper elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
                         <h6 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle, Alcohol free
     </h6>
                         {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}
-                            {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)
+                        {currentRows.filter(cider => (!cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)
                             .map(function (row) {
-                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
                             })}</Paper>
                     {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
                     <Footer />
-                    <div style={{ textAlign: 'center', marginBottom: "10px"  }}>
-                    <img src='../../images/pbu_40_white.png'  alt="Untappd logo"/>
+                    <div style={{ textAlign: 'center', marginBottom: "10px" }}>
+                        <img src='../../images/pbu_40_white.png' alt="Untappd logo" />
                     </div>
                 </div>
                 )}
@@ -744,71 +758,98 @@ function MenuItemCard(props) {
 
     return (
 
-            <Card className={classes.card}>
-
-       
-                    <Grid container >
-                        {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
-                        <Grid item xs={10} >
-                        <div  style={{float: "left", height: "100%", marginRight: "10px", maxWidth: '11%'}}>
-                        <img  style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
-                        </div>
-
-                        <h6 style={{ fontSize: "1em", marginRight: "5px", marginBottom: "0px"  }} display="block">
-                            {props.properties.title}
-                            {props.properties.new ? (<img style={{ position: "absolute", marginLeft: "5px"}} alt="new" src="../../images/new2.png" height="18" />) : (null)} 
-                        </h6>
-
-                        <p style={{ fontSize: "0.9em", marginTop: "3px", marginBottom: "0px" }} display="block">
-                            {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
-                        </p>
-                        <p style={{ fontSize: "0.8em", marginRight: "10px", marginTop: "3px" }} display="block">
-                            {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
-                            {props.properties.type} - {props.properties.alcohol}%
-
-                        </p>
-                        
+        <Card className={classes.card}>
 
 
-                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                        </Grid>
-                        <Grid style={{ textAlign: "center" }} item xs={2} >
-                            {props.properties.size.split(',').map(function (size) {
-                                return (<p style={{ fontSize: "0.8em" }} display="block">
-                                    {size} {size.includes("Pitcher") ? (null) : ("ml") }
-                                </p>)
+            <Grid container >
+                {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
+                <Grid item xs={12} >
+                    <div style={{ float: "left", height: "100%", marginRight: "10px", maxWidth: '9.5%' }}>
+                        <img style={{ width: '100%', height: 'auto' }} className={classes.img} src={props.properties.image} alt="logo" />
+                    </div>
+                    <div style={{ float: "right", textAlign: "right" }}  >
+                    {props.displayPrices || admin ? (
+
+                        <h6 style={{ fontSize: "0.9em" }} display="block">
+                            {props.properties.price} kr
+                                </h6>
+                    ) : (null)}
+
+                    {props.properties.form === "Tap" ? (
+                        <p style={{ fontSize: "0.8em" }} >
+
+                            {props.properties.size.split('/').map(function (size) {
+                                if (size.toLowerCase().includes("pitcher")) {
+                                    return ("Pitcher")
+                                }
+                                else {
+                                    return (parseFloat(size) / 1000 + "l/")
+                                }
+
                             })}
 
+                        </p>
 
-                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                            <h6 style={{ fontSize: "0.8em" }} display="block">
-                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                            </h6>
-
-                        </Grid>
-                        <Grid item xs={11} >
-                            {showText ? (
-
-                                <p style={{ fontSize: "0.7em" }}>
-                                    {props.properties.description}
-                                    <Link color="inherit" onClick={handleTextButton}>
-                                        [Show less]
-         </Link>
+                    ) : (
+                            <p style={{ fontSize: "0.8em" }} >
+                                {props.properties.size} ml
                                 </p>
-                            ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+                        )}
+                    {/* {props.properties.size.split('/').map(function (size) {
+                        return (<span style={{ fontSize: "0.8em" }} >
+                            {size} {size.includes("Pitcher") ? (null) : ("ml")}
+                        </span>)
+                    })} */}
 
 
-                                {sm ? (props.properties.description.substring(0, 90) + '...') : null}
-                                {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
-                                <Link color="inherit" onClick={handleTextButton}>
-                                    [Show more]
+                    {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                    <h6 style={{ fontSize: "0.8em" }} display="block">
+                        {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                    </h6>
+
+                </div>
+                    <h6 style={{ fontSize: "1em", marginRight: "5px", marginBottom: "0px" }} display="block">
+                        {props.properties.title}
+                        {props.properties.new ? (<img style={{ position: "absolute", marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                    </h6>
+
+                    <p style={{ fontSize: "0.9em", marginTop: "3px", marginBottom: "0px" }} display="block">
+                        {props.properties.brewery} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                    </p>
+                    <p style={{ fontSize: "0.8em", marginRight: "10px", marginTop: "3px" }} display="block">
+                        {/* {props.properties.type} - {props.properties.alcohol === 0.0 ? ("Alcohol Free") : (props.properties.alcohol + "%")} - {props.properties.ibu === 0 ? ("No IBU") : (props.properties.ibu + " IBU")} */}
+                        {props.properties.type} - {props.properties.alcohol}%
+
+                        </p>
+
+
+
+                    {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                </Grid>
+
+                <Grid item xs={11} >
+                    {showText ? (
+
+                        <p style={{ fontSize: "0.7em" }}>
+                            {props.properties.description}
+                            <Link color="inherit" onClick={handleTextButton}>
+                                [Show less]
+         </Link>
+                        </p>
+                    ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+
+
+                        {sm ? (props.properties.description.substring(0, 90) + '...') : null}
+                        {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                        <Link color="inherit" onClick={handleTextButton}>
+                            [Show more]
          </Link>
 
 
-                            </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+                    </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
-                            }</div>)}
-                            {/* {showText ? (
+                    }</div>)}
+                    {/* {showText ? (
 
                             <p style={{ fontSize: "0.7em" }}>
                                 {props.properties.description}
@@ -824,26 +865,26 @@ function MenuItemCard(props) {
                                 </Link></p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
 
                         }</div>)} */}
-                        </Grid>
-                        <Grid style={{ textAlign: "right" }} item xs={1} >
-                            <a href={props.properties.untappd} target="_blank"><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
-                        </Grid>
-                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
-                                Created: {moment(props.properties.created).format('YYYY-MM-DD')}
-                            </p>
-                        </Grid>) : (null)}
+                </Grid>
+                <Grid style={{ textAlign: "right" }} item xs={1} >
+                    <a href={props.properties.untappd} target="_blank"><img alt="untappd" src="../../images/untappd.png" height="18" /></a>
+                </Grid>
+                {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
+                        Created: {moment(props.properties.created).format('YYYY-MM-DD')}
+                    </p>
+                </Grid>) : (null)}
 
-                    </Grid >
+            </Grid >
 
-            </Card>
+        </Card>
 
 
     );

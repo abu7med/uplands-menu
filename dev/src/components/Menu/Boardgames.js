@@ -321,6 +321,7 @@ export default function Boardgames(props) {
 
 
     React.useEffect(() => {
+
         axios.get("/api/get/boardgames")
             .then(function (response) {
                 // handle success
