@@ -91,6 +91,7 @@ export default function Shots(props) {
                 )
             });
         }
+
         axios.get("/api/get/shots")
             .then(function (response) {
                 // handle success

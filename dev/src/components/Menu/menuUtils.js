@@ -31,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
 // export const Background = 'url("images/uplandsblur50.jpg") no-repeat center fixed'
 export const Background = ''
 export const pubCoordinates = 
-[[59.860278869486905,17.629380555858567],
-[59.85990985382229,17.628766329994157],
-[59.85995295075336,17.630260320415452],
-[59.8596135609098,17.62947979759212],]
+[[59.86030849830436,17.629383238067582],
+[59.859890998897406,17.628677817096666],
+[59.85956238277583,17.629466386547044],
+[59.85997180564316,17.6304132063293],]
 
 export function PersonalAppBar(props) {
   const classes = useStyles();
