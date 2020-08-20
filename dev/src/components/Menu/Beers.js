@@ -1914,10 +1914,10 @@ function MenuItemCard(props) {
                                         return ("Pitcher")
                                     }
                                     else if (props.properties.size.split('/').length > 1){
-                                        return (parseFloat(size) / 1000 + "l/")
+                                        return (parseFloat(size) / 1000 + " l/")
                                     }
                                     else {
-                                        return (parseFloat(size) / 1000 + "l")
+                                        return (parseFloat(size) / 1000 + " l")
                                     }
 
                                 })}

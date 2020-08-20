@@ -783,7 +783,7 @@ function MenuItemCard(props) {
                                     return ("Pitcher")
                                 }
                                 else {
-                                    return (parseFloat(size) / 1000 + "l/")
+                                    return (parseFloat(size) / 1000 + " l/")
                                 }
 
                             })}

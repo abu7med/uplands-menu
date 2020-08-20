@@ -1,10 +1,15 @@
+
 const express = require('express');
+const express_enforces_ssl = require('express-enforces-ssl');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.enable('trust proxy');
+ 
+app.use(express_enforces_ssl());
 // var whitelist = ['localhost']
 // var corsOptions = {
 //   origin: function (origin, callback) {
