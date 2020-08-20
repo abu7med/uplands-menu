@@ -24,7 +24,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Popover from '@material-ui/core/Popover';
-
 import './Menu.css';
 import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
@@ -40,13 +39,6 @@ const country = require('country-data').lookup
 const useStyles = makeStyles((theme) => ({
 
 
-    content: {
-        marginTop: '5px',
-        marginBottom: '5px',
-        marginLeft: '10px',
-        marginRight: '10px',
-    },
-
     img: {
         marginTop: '4px',
         border: '1px ',
@@ -59,7 +51,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#49515F',
         marginTop: '2px',
         marginBottom: '2px',
-        height: '10%'
+        height: '10%',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
 
 
     },
@@ -671,7 +667,7 @@ export default function Ciders(props) {
                         {currentRows.length} ciders found
     </h4> */}
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On tap
     </h6>
                         {currentRows.filter(row => row.form === "Tap")
@@ -679,7 +675,7 @@ export default function Ciders(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h6 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle
     </h6>
                         {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol > 2.25)
@@ -690,8 +686,8 @@ export default function Ciders(props) {
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                            <Paper elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
+                        <h6 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
                             On bottle, Alcohol free
     </h6>
                         {currentRows.filter(cider => (cider.new)).filter(row => row.form === "Bottle" && row.alcohol <= 2.25)
@@ -705,8 +701,10 @@ export default function Ciders(props) {
                     {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
-                    <Divider />
                     <Footer />
+                    <div style={{ textAlign: 'center', marginBottom: "10px"  }}>
+                    <img src='../../images/pbu_40_white.png'  alt="Untappd logo"/>
+                    </div>
                 </div>
                 )}
 
@@ -740,21 +738,20 @@ function MenuItemCard(props) {
             setFlag("../../images/flags/gb-nir.png")
         else if (props.properties.country === "Wales")
             setFlag("../../images/flags/gb-wls.png")
-        else if (props.properties.country.length > 0)
+        else if (props.properties.country.length > 0 && country.countries({ name: props.properties.country })[0])
             setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
     }, [props.properties.country]);
 
     return (
-        <div>
-
 
             <Card className={classes.card}>
-                <div className={classes.content}>
+
+       
                     <Grid container >
                         {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "5px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
                         <Grid item xs={10} >
                         <div  style={{float: "left", height: "100%", marginRight: "10px", maxWidth: '11%'}}>
-                        <img style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
+                        <img  style={{width: '100%',  height: 'auto'}} className={classes.img} src={props.properties.image} alt="logo" />
                         </div>
 
                         <h6 style={{ fontSize: "1em", marginRight: "5px", marginBottom: "0px"  }} display="block">
@@ -845,9 +842,8 @@ function MenuItemCard(props) {
                         </Grid>) : (null)}
 
                     </Grid >
-                </div>
+
             </Card>
-        </div>
 
 
     );

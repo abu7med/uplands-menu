@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -19,6 +19,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Link from '@material-ui/core/Link';
+import Backdrop from '@material-ui/core/Backdrop';
+import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
@@ -28,12 +32,6 @@ const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
 
-    content: {
-        marginTop: '5px',
-        marginBottom: '5px',
-        marginLeft: '10px',
-        marginRight: '10px',
-    },
 
     img: {
         marginTop: '4px',
@@ -47,7 +45,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#49515F',
         marginTop: '2px',
         marginBottom: '2px',
-        height: '10%'
+        height: '10%',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
 
 
     },
@@ -192,116 +194,116 @@ export default function Boardgames(props) {
 
     const createDialogContent = () => {
         return (<DialogContent>
-                <Grid container spacing={1}>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemTitle}
-                            onChange={(e) => setItemTitle(e.target.value)}
-                            margin="dense"
-                            id="title"
-                            label="Title"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemType}
-                            onChange={(e) => setItemType(e.target.value)}
-                            margin="dense"
-                            id="type"
-                            label="Type"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemPlayers}
-                            onChange={(e) => setItemPlayers(e.target.value)}
-                            margin="dense"
-                            id="players"
-                            label="Players"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemPlayingtime}
-                            onChange={(e) => setItemPlayingtime(e.target.value)}
-                            margin="dense"
-                            id="playingtime"
-                            label="Playing time"
-                            variant="outlined"
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">min</InputAdornment>,
-                              }}
-                        />
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            select
-                            value={itemLanguage}
-                            onChange={(e) => setItemLanguage(e.target.value)}
-                            margin="dense"
-                            id="language"
-                            label="Language"
-                            variant="outlined"
-                            >        {['Swedish','English'].map((language) => (
-                                <MenuItem key={language} value={language}>
-                                {language}
-                                </MenuItem>
-                              ))}
-                              </TextField>
-                    </Grid>
-                    <Grid item sm={4} xs={6}>
-                        <TextField
-                            fullWidth
-                            value={itemRank}
-                            onChange={(e) => setItemRank(e.target.value)}
-                            margin="dense"
-                            id="rank"
-                            label="BGG rank"
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            value={itemDescription}
-                            onChange={(e) => setItemDescription(e.target.value)}
-                            margin="dense"
-                            id="description"
-                            label="Description"
-                            multiline
-                            rows={3}
-                            variant="outlined"
-                        />
-                    </Grid>
-
-                    <Grid container justify="center" item xs={12}>
-
-                        {imageExists ? (
-                            <img src={itemImage} alt="Board game" width="100" height="100" />
-                        ) : (
-                                <Skeleton variant="rect" width={100} height={100} />
-                            )}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            value={itemImage}
-                            onChange={handleImageChange}
-                            margin="dense"
-                            id="imageURL"
-                            label="Image URL"
-                            variant="outlined"
-                        />
-                    </Grid>
+            <Grid container spacing={1}>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemTitle}
+                        onChange={(e) => setItemTitle(e.target.value)}
+                        margin="dense"
+                        id="title"
+                        label="Title"
+                        variant="outlined"
+                    />
                 </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemType}
+                        onChange={(e) => setItemType(e.target.value)}
+                        margin="dense"
+                        id="type"
+                        label="Type"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemPlayers}
+                        onChange={(e) => setItemPlayers(e.target.value)}
+                        margin="dense"
+                        id="players"
+                        label="Players"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemPlayingtime}
+                        onChange={(e) => setItemPlayingtime(e.target.value)}
+                        margin="dense"
+                        id="playingtime"
+                        label="Playing time"
+                        variant="outlined"
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">min</InputAdornment>,
+                        }}
+                    />
+                </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        select
+                        value={itemLanguage}
+                        onChange={(e) => setItemLanguage(e.target.value)}
+                        margin="dense"
+                        id="language"
+                        label="Language"
+                        variant="outlined"
+                    >        {['Swedish', 'English'].map((language) => (
+                        <MenuItem key={language} value={language}>
+                            {language}
+                        </MenuItem>
+                    ))}
+                    </TextField>
+                </Grid>
+                <Grid item sm={4} xs={6}>
+                    <TextField
+                        fullWidth
+                        value={itemRank}
+                        onChange={(e) => setItemRank(e.target.value)}
+                        margin="dense"
+                        id="rank"
+                        label="BGG rank"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        value={itemDescription}
+                        onChange={(e) => setItemDescription(e.target.value)}
+                        margin="dense"
+                        id="description"
+                        label="Description"
+                        multiline
+                        rows={3}
+                        variant="outlined"
+                    />
+                </Grid>
+
+                <Grid container justify="center" item xs={12}>
+
+                    {imageExists ? (
+                        <img src={itemImage} alt="Board game" width="100" height="100" />
+                    ) : (
+                            <Skeleton variant="rect" width={100} height={100} />
+                        )}
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        value={itemImage}
+                        onChange={handleImageChange}
+                        margin="dense"
+                        id="imageURL"
+                        label="Image URL"
+                        variant="outlined"
+                    />
+                </Grid>
+            </Grid>
         </DialogContent>)
     }
     const handleImageChange = (event) => {
@@ -393,7 +395,7 @@ export default function Boardgames(props) {
                         return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                     })}
 
-
+ <Footer />
 
                 </div>
                 )}
@@ -405,51 +407,97 @@ export default function Boardgames(props) {
 }
 
 function MenuItemCard(props) {
+    const theme = useTheme();
     const classes = useStyles();
+    const [imageExists, setItemImageExists] = React.useState(false);
+    const sm = useMediaQuery(theme.breakpoints.up('sm'));
+    const xs = useMediaQuery(theme.breakpoints.up('xs'));
     const admin = React.useContext(AdminContext)
+    const [showText, setText] = React.useState(false);
+    const [pictureOpen, setPictureOpen] = React.useState(false);
+    const openPicture = () => {
+        setPictureOpen(!pictureOpen);
+      };
+      const closePicture = () => {
+        setPictureOpen(false);
+      };
+    const handleTextButton = () => {
+        if (showText === true)
+            setText(false)
+        else
+            setText(true)
+
+    };
+    React.useEffect(() => {
+        checkImageExists(props.properties.image, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
+
+    }, []);
+
 
 
     return (
-        <div>
+        <Card className={classes.card}>
+            <Grid container >
+            <Backdrop style={{ zIndex: 5}} open={pictureOpen} onClick={closePicture}>
+                <img style={{ maxWidth: '75%', height: 'auto', maxHeight: '70vh' }} src={props.properties.image} alt="logo" />
+      </Backdrop>
+                <Grid style={{ display: 'flex', alignItems: 'center', justifyContent: "center", maxHeight: '60px' }} item xs={1}>
+                    <img onClick={openPicture} style={{ maxWidth: '100%', height: 'auto', maxHeight: '60px' }} src={props.properties.image} alt="logo" />
 
+                </Grid >
+                <Grid item xs={11}>
 
-            <Card className={classes.card}>
-                <div className={classes.content}>
-                    <Grid container >
-
-                        {/* <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid> */}
-                        <Grid item xs={12}>
-                            <h6 style={{ fontSize: "1em" }} display="block">
-                                {props.properties.title} {props.properties.language.length > 0 ? ("(" + props.properties.language + ")") : null}
-                            </h6>
-                            <p style={{ fontSize: "0.9em" }} display="block">
-                                {props.properties.type} - {props.properties.playingtime} min - {props.properties.players} players
+                    <h6 style={{ fontSize: "1em", marginLeft: '10px' }} display="block">
+                        {props.properties.title} {props.properties.language.length > 0 ? ("(" + props.properties.language + ")") : null}
+                    </h6>
+                    <p style={{ fontSize: "0.9em", marginLeft: '10px' }} display="block">
+                        {props.properties.type} - {props.properties.playingtime} min - {props.properties.players} players
                                 </p>
-                            <p style={{ fontSize: "0.7em" }} display="block">
-                                {props.properties.description}
-                            </p>
-                        </Grid>
-                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
-                                Created: {moment(props.properties.created).format('YYYY-MM-DD')}
-                            </p>
-                        </Grid>) : (null)}
+                    {showText ? (
 
-                    </Grid >
-                </div>
-            </Card>
-        </div>
+                        <p style={{ overflow: "visible", fontSize: "0.7em", marginLeft: '10px' }}>
+                            {props.properties.description}
+                            <Link color="inherit" onClick={handleTextButton}>
+                                [Show less]
+</Link>
+                        </p>
+                    ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em", marginLeft: '10px' }} >
 
 
+                        {sm ? (props.properties.description.substring(0, 80) + '...') : null}
+                        {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                        <Link color="inherit" onClick={handleTextButton}>
+                            [Show more]
+</Link>
+
+
+                    </p>) : (<p style={{ fontSize: "0.7em", marginLeft: '10px' }} >{props.properties.description}</p>)
+
+                    }</div>)}
+                </Grid >
+
+                {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
+                        Created: {moment(props.properties.created).format('YYYY-MM-DD')}
+                    </p>
+                </Grid>) : (null)}
+
+            </Grid >
+        </Card>
     );
 }
 

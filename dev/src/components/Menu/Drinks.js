@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Link from '@material-ui/core/Link';
+import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 // import Box from '@material-ui/core/Box';
@@ -437,7 +438,7 @@ export default function Drink(props) {
                     })} */}
 
 
-
+<Footer />
                 </div>
                 )}
 

@@ -1804,7 +1804,7 @@ export default function Beers(props) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                         })}</Accordion> : null}
 
-                    {alcoholFreeBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842' }}>
+                    {alcoholFreeBeers.length > 0 ? <Accordion elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
@@ -1822,8 +1822,10 @@ export default function Beers(props) {
                     {/* {currentRows.map(function (row) {
                         return (<MenuItem key={row._id} properties={row} />)
                     })} */}
-                    <Divider />
                     <Footer />
+                    <div style={{ textAlign: 'center', marginBottom: "10px"  }}>
+                    <img src='../../images/pbu_40_white.png'  alt="Untappd logo"/>
+                    </div>
                 </div>
                 )}
 
@@ -1858,7 +1860,7 @@ function MenuItemCard(props) {
             setFlag("../../images/flags/gb-nir.png")
         else if (props.properties.country === "Wales")
             setFlag("../../images/flags/gb-wls.png")
-        else if (props.properties.country.length > 0)
+        else if (props.properties.country.length > 0 && country.countries({ name: props.properties.country })[0])
             setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
 
     }, [props.properties.country]);

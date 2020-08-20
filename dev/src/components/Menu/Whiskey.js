@@ -24,6 +24,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Link from '@material-ui/core/Link';
+import Backdrop from '@material-ui/core/Backdrop';
+import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
@@ -35,27 +37,17 @@ const country = require('country-data').lookup
 
 const useStyles = makeStyles((theme) => ({
 
-
-    content: {
-        marginTop: '5px',
-        marginBottom: '5px',
-        marginLeft: '10px',
-        marginRight: '10px',
-    },
-
-    img: {
-        marginTop: '4px',
-        border: '1px ',
-        borderStyle: 'outset',
-        borderRadius: '8px',
-    },
     card: {
         color: 'white',
         // background: 'rgba(0, 0, 0, 0)'
         backgroundColor: '#49515F',
         marginTop: '2px',
         marginBottom: '2px',
-        height: '10%'
+        height: '10%',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
 
 
     },
@@ -101,7 +93,7 @@ export default function Whiskey(props) {
             setItemTitle(item.title)
         if (item.brewery != null)
             setItemBrewery(item.brewery)
-            if (item.location != null)
+        if (item.location != null)
             setItemLocation(item.location)
         if (item.description != null)
             setItemDescription(item.description)
@@ -437,24 +429,24 @@ export default function Whiskey(props) {
                     </Dialog>
                     <Alert variant="filled" severity="info">
                         All items are priced per Cl.</Alert>
-                        <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Rum
     </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("rum"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Cognac
     </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("cognac"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Whiskey
     </h3>
                         {currentRows.filter(row => !row.type.toLowerCase().includes("rum") && !row.type.toLowerCase().includes("cognac"))
@@ -466,7 +458,7 @@ export default function Whiskey(props) {
                     })} */}
 
 
-
+<Footer />
                 </div>
                 )}
 
@@ -481,6 +473,7 @@ function MenuItemCard(props) {
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const xs = useMediaQuery(theme.breakpoints.up('xs'));
     const [imageExists, setItemImageExists] = React.useState(false);
+    const [pictureOpen, setPictureOpen] = React.useState(false);
     const classes = useStyles();
     const admin = React.useContext(AdminContext)
     const [showText, setText] = React.useState(false);
@@ -492,6 +485,12 @@ function MenuItemCard(props) {
             setText(true)
 
     };
+    const openPicture = () => {
+        setPictureOpen(!pictureOpen);
+      };
+      const closePicture = () => {
+        setPictureOpen(false);
+      };
     React.useEffect(() => {
         checkImageExists(props.properties.image, function (existsImage) {
             if (existsImage === true) {
@@ -502,6 +501,7 @@ function MenuItemCard(props) {
             }
         });
 
+
         if (props.properties.country === "England")
             setFlag("../../images/flags/gb-eng.png")
         else if (props.properties.country === "Scotland")
@@ -510,84 +510,81 @@ function MenuItemCard(props) {
             setFlag("../../images/flags/gb-nir.png")
         else if (props.properties.country === "Wales")
             setFlag("../../images/flags/gb-wls.png")
-        else if (props.properties.country.length > 0)
+        else if (props.properties.country.length > 0 && country.countries({ name: props.properties.country })[0])
             setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
     }, [props.properties.country]);
 
     return (
-        <div>
 
+        <Card className={classes.card}>
+            <Grid container >
+            <Backdrop style={{ zIndex: 5}} open={pictureOpen} onClick={closePicture}>
+                <img style={{ maxWidth: '75%', height: 'auto', maxHeight: '70vh' }} src={props.properties.image} alt="logo" />
+      </Backdrop>
+                {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
+                <Grid style={{ display: 'flex', alignItems: 'center', justifyContent: "center", maxHeight: '60px' }} item xs={1}>
 
-            <Card className={classes.card}>
-                <div className={classes.content}>
-                    <Grid container >
-                        {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
+                    <img onClick={openPicture} style={{ maxWidth: '100%', height: 'auto', maxHeight: '60px' }} src={props.properties.image} alt="logo" />
+                </Grid>
+                <Grid item xs={11}>
+                
+                    <div style={{ float: "right", textAlign: "center" }}>
 
+                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                        <h6 style={{ fontSize: "0.8em" }} display="block">
+                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                        </h6>
 
-                        {/* <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid> */}
-                            {/* <Grid style={{ textAlign: "center" }} item xs={2}>
-                               {imageExists ? ( <img style={{ maxWidth: '90%',  height: 'auto', maxHeight: '40px', paddingTop: "2px" }}  src={props.properties.image} alt="logo" />) : (null)}
-                            </Grid> */}
-                        <Grid item xs={10}>
-                            <h6 style={{ fontSize: "1em" }} display="inline">
-                                {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
-                                {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
-                            </h6>
+                        {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                    </div>
 
-                            <p style={{ fontSize: "0.9em" }} display="block">
-                                {props.properties.type} - {props.properties.alcohol}%
+                    <h6 style={{ fontSize: "1em", marginLeft: '10px' }} display="inline">
+                        {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
+                        {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                    </h6>
+
+                    <p style={{ fontSize: "0.9em", marginLeft: '10px' }} display="block">
+                        {props.properties.type} - {props.properties.alcohol}%
                                 </p>
 
-                            {showText ? (
+                    {showText ? (
 
-                                <p style={{ fontSize: "0.7em" }}>
-                                    {props.properties.description}
-                                    <Link color="inherit" onClick={handleTextButton}>
-                                        [Show less]
+                        <p style={{ fontSize: "0.7em", marginLeft: '10px' }}>
+                            {props.properties.description}
+                            <Link color="inherit" onClick={handleTextButton}>
+                                [Show less]
 </Link>
-                                </p>
-                            ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+                        </p>
+                    ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em", marginLeft: '10px' }} >
 
 
-                                {sm ? (props.properties.description.substring(0, 90) + '...') : null}
-                                {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
-                                <Link color="inherit" onClick={handleTextButton}>
-                                    [Show more]
+                        {sm ? (props.properties.description.substring(0, 80) + '...') : null}
+                        {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                        <Link color="inherit" onClick={handleTextButton}>
+                            [Show more]
 </Link>
 
 
-                            </p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+                    </p>) : (<p style={{ fontSize: "0.7em", marginLeft: '10px' }} >{props.properties.description}</p>)
 
-                            }</div>)}
-                        </Grid>
-                        <Grid style={{ textAlign: "center" }} item xs={2} >
- 
+                    }</div>)}
+                </Grid>
 
-                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                            <h6 style={{ fontSize: "0.8em" }} display="block">
-                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                            </h6>
+                {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
+                        Created: {moment(props.properties.created).format('YYYY-MM-DD')}
+                    </p>
+                </Grid>) : (null)}
 
-                        </Grid>
-                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
-                                Created: {moment(props.properties.created).format('YYYY-MM-DD')}
-                            </p>
-                        </Grid>) : (null)}
-
-                    </Grid >
-                </div>
-            </Card>
-        </div>
+            </Grid >
+        </Card>
 
 
     );

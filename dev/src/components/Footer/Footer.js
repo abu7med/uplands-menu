@@ -1,7 +1,8 @@
 import React from 'react';
 // import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-// import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+ import Link from '@material-ui/core/Link';
 const useStyles = makeStyles((theme) => ({
 
   text: {
@@ -15,9 +16,21 @@ const useStyles = makeStyles((theme) => ({
 export default function Footer() {
   const classes = useStyles();
   return (
-    <footer className={classes.text}>
-    <img  src='../../images/pbu_40_white.png'  alt="Untappd logo"/>
-    {/* <div>Flag icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */}
+    <footer style={{ textAlign: "center",  color: '#dcdcdc', marginTop: "20px", marginBottom: "20px" }} className={classes.text}>
+
+      <h6 style={{ fontSize: "0.7em" }}>Svantes Pub</h6>
+      <p style={{ fontSize: "0.7em"}}>S:t Larsgatan 11</p>
+      <p style={{ fontSize: "0.7em", marginBottom: "10px"}}>753 11 Uppsala</p>
+      <h6 style={{ fontSize: "0.7em" }}>Opening Hours</h6>
+      <p style={{ fontSize: "0.7em"}}>Monday - Thursday: 18-01</p>
+      <p style={{ fontSize: "0.7em"}}>Friday - Saturday: 18-02</p>
+      <p style={{ fontSize: "0.7em", marginBottom: "10px"}}>Sunday: Closed</p>
+      <p style={{ fontSize: "0.7em"}}
+      >Do you want to work at the pub? Check out our <Link style={{ color: "#9999ff"}} target="_blank" href="https://www.facebook.com/groups/121349511405785" >
+      Facebook group
+   </Link>.</p>
+
+      {/* <div>Flag icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */}
       {/* <Typography  variant="h6">
         Contact us:
         <Link color="inherit" display="block" href="#" >

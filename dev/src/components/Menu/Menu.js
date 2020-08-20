@@ -15,6 +15,7 @@ import Shots from './Shots';
 import Wines from './Wines';
 import Whiskey from './Whiskey';
 import Boardgames from './Boardgames';
+import Footer from '../Footer/Footer';
 import {
     Route,
     Switch
@@ -243,6 +244,7 @@ admin={props.admin}
             ))}
         </div>
                 </Box >
+                <Footer />
                
             </Container>
         </div>

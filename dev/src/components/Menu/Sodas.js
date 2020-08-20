@@ -22,7 +22,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
+import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
@@ -34,28 +34,17 @@ const moment = require('moment')
 
 const useStyles = makeStyles((theme) => ({
 
-
-    content: {
-        marginTop: '5px',
-        marginBottom: '5px',
-        marginLeft: '10px',
-        marginRight: '10px',
-    },
-
-    img: {
-        marginTop: '4px',
-        border: '1px ',
-        borderStyle: 'outset',
-        borderRadius: '8px',
-    },
     card: {
         color: 'white',
         // background: 'rgba(0, 0, 0, 0)'
         backgroundColor: '#49515F',
         marginTop: '2px',
         marginBottom: '2px',
-        height: '10%'
-
+        height: '10%',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
 
     },
 
@@ -406,7 +395,7 @@ export default function Sodas(props) {
                         {currentRows.map(function (row) {
                             return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                         })}</Paper>
-
+<Footer />
                 </div>
                 )}
 
@@ -422,65 +411,57 @@ function MenuItemCard(props) {
 
 
     return (
-        <div>
 
+        <Card className={classes.card}>
+            <Grid container >
+                {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="25" />) : (null)}
+                {/* <Grid style={{ display: 'flex', alignItems: 'center', justifyContent: "center", maxHeight: '60px' }} item xs={1}>
 
-            <Card className={classes.card}>
-                <div className={classes.content}>
-                    <Grid container >
-                        {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="25" />) : (null)}
-
-                        {/* <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid> */}
-                            {/* <Grid item xs={2}>
-                                <img style={{ maxWidth: '90%',  height: 'auto', maxHeight: '50px', padding: "5px" }}  src={props.properties.image} alt="logo" sty />
-                            </Grid> */}
-                        <Grid item xs={10}>
-                            {/* <h6 style={{ marginLeft: "15px", marginTop: "12px", fontSize: "1em" }} variant="h6" display="block">
-                                    {props.properties.title}
-                                </h6> */}
-                            <h6 style={{ fontSize: "1em" }} variant="h6" display="block">
-                                {props.properties.title}
-                            </h6>
-
-                        </Grid>
-                        <Grid style={{ textAlign: "center" }} item xs={2} >
+                    <img style={{ maxWidth: '100%', height: 'auto', maxHeight: '60px' }} src={props.properties.image} alt="logo" />
+                </Grid> */}
+                <Grid item xs={12}>
+                    <div style={{ float: "right", textAlign: "center" }}>
                         <h6 style={{ fontSize: "1em" }} variant="h6" display="block">
-                                {props.properties.price} kr
+                            {props.properties.price} kr
                             </h6>
 
-                            {props.properties.size.split(',').map(function (size) {
-                                return (<p style={{ fontSize: "0.8em" }} display="block">
-                                    {size} ml
+                        {props.properties.size.split(',').map(function (size) {
+                            return (<p style={{ fontSize: "0.8em" }} display="block">
+                                {size} ml
                                 </p>)
-                            })}
+                        })}
 
 
-                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                            <h6 style={{ fontSize: "0.8em" }} display="block">
-                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                            </h6>
+                        {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                        <h6 style={{ fontSize: "0.8em" }} display="block">
+                            {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                        </h6>
 
-                        </Grid>
-                        {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
-                        </Grid>) : (null)}
-                        {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
-                                Created: {moment(props.properties.created).format('YYYY-MM-DD')}
-                            </p>
-                        </Grid>) : (null)}
+                    </div>
+                    <h6 style={{ fontSize: "1em" }} display="block">
+                        {props.properties.title}
+                    </h6>
+
+                </Grid>
 
 
-                    </Grid >
-                </div>
-            </Card>
-        </div>
+                {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                </Grid>) : (null)}
+                {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
+                    <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
+                        Created: {moment(props.properties.created).format('YYYY-MM-DD')}
+                    </p>
+                </Grid>) : (null)}
+
+
+            </Grid >
+
+        </Card>
 
 
     );

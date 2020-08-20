@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { makeStyles, useTheme  } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -24,6 +24,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Link from '@material-ui/core/Link';
+import Backdrop from '@material-ui/core/Backdrop';
+import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
@@ -31,34 +33,23 @@ import './Menu.css';
 
 const axios = require('axios');
 const moment = require('moment')
-const country        = require('country-data').lookup
+const country = require('country-data').lookup
 
 
 
 const useStyles = makeStyles((theme) => ({
 
-
-    content: {
-        marginTop: '5px',
-        marginBottom: '5px',
-        marginLeft: '10px',
-        marginRight: '10px',
-    },
-
-    img: {
-        marginTop: '4px',
-        border: '1px ',
-        borderStyle: 'outset',
-        borderRadius: '8px',
-    },
     card: {
         color: 'white',
         // background: 'rgba(0, 0, 0, 0)'
         backgroundColor: '#49515F',
         marginTop: '2px',
         marginBottom: '2px',
-        height: '10%'
-
+        height: '10%',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
 
     },
 
@@ -317,7 +308,7 @@ export default function Shots(props) {
                         ))}
                         </TextField>
                     </Grid>
-                    
+
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
@@ -331,9 +322,9 @@ export default function Shots(props) {
                             variant="outlined"
                         />
                     </Grid>
-                    
-                    
-                             
+
+
+
                     <Grid item xs={6} style={{ textAlign: 'center' }}>
                         <FormControlLabel
                             control={<Checkbox color="primary" checked={itemNew}
@@ -400,8 +391,8 @@ export default function Shots(props) {
                     <PersonalAppBar
                         category="Shots"
                         logout={props.logout}
-  admin={props.admin}
-  create={makeCreateWindowVisible}
+                        admin={props.admin}
+                        create={makeCreateWindowVisible}
                     />
 
 
@@ -437,37 +428,37 @@ export default function Shots(props) {
                     {/* <Alert variant="filled" severity="info">
                         All shots are served in 4 cl cups.</Alert> */}
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-    
 
-                        <h6 style={{ color: 'white' , marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
-                           Tequila
-    </h6>
+
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                            Tequila
+    </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("tequila"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
 
-                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Vodka
-    </h6>
+    </h3>
                         {currentRows.filter(row => row.type.toLowerCase().includes("vodka"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
-                            <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                    <Paper elevation={4} style={{ marginBottom: "10px", backgroundColor: '#333842' }}>
 
 
-                        <h6 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center", fontSize: "1em" }} >
-                        Liqueur 
-    </h6>
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingTop: "10px",paddingBottom: "10px", textAlign: "center"}} >
+                            Liqueur
+    </h3>
                         {currentRows.filter(row => !row.type.toLowerCase().includes("tequila") && !row.type.toLowerCase().includes("vodka"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper>
 
 
-
+<Footer />
                 </div>
                 )}
 
@@ -481,10 +472,18 @@ function MenuItemCard(props) {
     const theme = useTheme();
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const xs = useMediaQuery(theme.breakpoints.up('xs'));
+    const [imageExists, setItemImageExists] = React.useState(false);
     const classes = useStyles();
     const admin = React.useContext(AdminContext)
     const [showText, setText] = React.useState(false);
     const [countryFlag, setFlag] = React.useState("");
+    const [pictureOpen, setPictureOpen] = React.useState(false);
+    const openPicture = () => {
+        setPictureOpen(!pictureOpen);
+      };
+      const closePicture = () => {
+        setPictureOpen(false);
+      };
     const handleTextButton = () => {
         if (showText === true)
             setText(false)
@@ -493,79 +492,89 @@ function MenuItemCard(props) {
 
     };
     React.useEffect(() => {
+        checkImageExists(props.properties.image, function (existsImage) {
+            if (existsImage === true) {
+                setItemImageExists(true)
+            }
+            else {
+                setItemImageExists(false)
+            }
+        });
         if (props.properties.country === "England")
-        setFlag("../../images/flags/gb-eng.png")
-    else if (props.properties.country === "Scotland")
-        setFlag("../../images/flags/gb-sct.png")
-    else if (props.properties.country === "Northern Ireland")
-        setFlag("../../images/flags/gb-nir.png")
-    else if (props.properties.country === "Wales")
-        setFlag("../../images/flags/gb-wls.png")
-    else if (props.properties.country.length > 0)
-        setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
+            setFlag("../../images/flags/gb-eng.png")
+        else if (props.properties.country === "Scotland")
+            setFlag("../../images/flags/gb-sct.png")
+        else if (props.properties.country === "Northern Ireland")
+            setFlag("../../images/flags/gb-nir.png")
+        else if (props.properties.country === "Wales")
+            setFlag("../../images/flags/gb-wls.png")
+        else if (props.properties.country.length > 0 && country.countries({ name: props.properties.country })[0])
+            setFlag('../../images/flags/' + country.countries({ name: props.properties.country })[0].alpha2.toLowerCase() + ".png")
     }, [props.properties.country]);
 
 
     return (
-        <div>
 
 
             <Card className={classes.card}>
-                <div className={classes.content}>
                     <Grid container >
-                    {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="45" />) : (null)}
+                    <Backdrop style={{ zIndex: 5}} open={pictureOpen} onClick={closePicture}>
+                <img style={{ maxWidth: '75%', height: 'auto', maxHeight: '70vh' }} src={props.properties.image} alt="logo" />
+      </Backdrop>
+                        {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="45" />) : (null)}
+                        <Grid onClick={openPicture} style={{ display: 'flex', alignItems: 'center', justifyContent: "center", maxHeight: '60px' }} item xs={1}>
 
+                                <img style={{ maxWidth: '100%', height: 'auto', maxHeight: '60px' }} src={props.properties.image} alt="logo" />
+                            </Grid>
+                            <Grid item xs={11}>
+                            <div style={{ float: "right", textAlign: "center" }}>
 
-                        {/* <Grid item xs={1}>
-                                <img className={classes.img} src={props.properties.image} alt="logo" width="35" height="35" />
-                            </Grid> */}
-                        <Grid item xs={9}>
-                            <h6 style={{ fontSize: "1em" }} display="block">
+                                {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
+                                <h6 style={{ fontSize: "0.8em" }} display="block">
+                                    {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
+                                </h6>
+
+                                {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
+                            </div>
+                            <h6 style={{ fontSize: "1em", marginLeft: '10px' }} display="block">
                                 {props.properties.title} <img style={{ marginLeft: "3px", marginBottom: "-1px" }} alt={props.properties.country} src={countryFlag} height="12" />
                                 {props.properties.new ? (<img style={{ position: 'absolute', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
 
                             </h6>
-                            <p style={{ fontSize: "0.9em" }} display="block">
-                            {props.properties.type} - {props.properties.alcohol}%
+                            <p style={{ fontSize: "0.9em", marginLeft: '10px' }} display="block">
+                                {props.properties.type} - {props.properties.alcohol}%
                                 </p>
 
                             {showText ? (
 
-<p style={{ fontSize: "0.7em" }}>
-    {props.properties.description}
-    <Link color="inherit" onClick={handleTextButton}>
-        [Show less]
+                                <p style={{ fontSize: "0.7em", marginLeft: '10px' }}>
+                                    {props.properties.description}
+                                    <Link color="inherit" onClick={handleTextButton}>
+                                        [Show less]
 </Link>
-</p>
-) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
+                                </p>
+                            ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em", marginLeft: '10px' }} >
 
 
-{sm ? (props.properties.description.substring(0, 90) + '...') : null}
-{xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
-<Link color="inherit" onClick={handleTextButton}>
-    [Show more]
+                                {sm ? (props.properties.description.substring(0, 80) + '...') : null}
+                                {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                                <Link color="inherit" onClick={handleTextButton}>
+                                    [Show more]
 </Link>
 
 
-</p>) : (<p style={{ fontSize: "0.7em" }} >{props.properties.description}</p>)
+                            </p>) : (<p style={{ fontSize: "0.7em", marginLeft: '10px' }} >{props.properties.description}</p>)
 
-}</div>)}
-                        </Grid>
-                        <Grid style={{ textAlign: "center" }} item xs={3} >
+                            }</div>)}
+                            </Grid>
 
-                            {/* <Divider style={{ background: "white", marginTop: "2px", marginBottom: "2px" }} variant='middle'/> */}
-                            <h6 style={{ fontSize: "0.8em" }} display="block">
-                                {props.properties.location === "Inside/Outside" ? ("Both bars") : (props.properties.location + " bar")}
-                            </h6>
 
-                            {/* <Rating name="read-onsly" value={props.properties.rating} readOnly display="block" /> */}
-                        </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button style={{ color: 'white' }}  size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                             <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
@@ -573,9 +582,8 @@ function MenuItemCard(props) {
                             </p>
                         </Grid>) : (null)}
                     </Grid >
-                </div>
             </Card>
-        </div>
+
 
 
     );

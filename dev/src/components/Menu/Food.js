@@ -494,7 +494,7 @@ export default function Food(props) {
                         </DialogActions>
                     </Dialog>
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
                             Burgers (18:00-22:00)
     </h3>
                         <Alert variant="filled" severity="info">
@@ -509,7 +509,7 @@ export default function Food(props) {
                             })}
                     </Paper >
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
                             Salads (18:00-22:00)
     </h3>
                         {currentRows.filter(row => row.type === "Salad")
@@ -517,15 +517,15 @@ export default function Food(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
                             Snacks
     </h3>
                         {currentRows.filter(row => row.type === "Snacks")
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
-                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
-                        <h3 style={{ color: 'white', marginTop: "10px", marginBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
+                    <Paper elevation={4} style={{ backgroundColor: '#333842', marginBottom: "10px" }}>
+                        <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
                             Desserts
     </h3>
                         {currentRows.filter(row => row.type === "Dessert")
