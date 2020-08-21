@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Popover from '@material-ui/core/Popover';
+import Alert from '@material-ui/lab/Alert';
 import './Menu.css';
 import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter, isUserInside, pubCoordinates } from './menuUtils';
@@ -88,9 +89,36 @@ export default function Ciders(props) {
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
     const [displayPrices, setDisplayPrices] = React.useState(false);
+    const [warningNotInside, setWarningNotInside] = React.useState(false);
+    const [warningLocationNotEnabled, setWarningLocationNotEnabled] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
+                    pubCoordinates
+                )
+                setDisplayPrices(
+                    userInside
+                )
+                if (!userInside){
+                    setWarningNotInside(true)
+                    setWarningLocationNotEnabled(false)
+                }
+                else {
+                    setWarningNotInside(false)
+                    setWarningLocationNotEnabled(false)
+                }
+            });
+        }
+        else {
+            setWarningLocationNotEnabled(true)
+            setWarningNotInside(false)
+          }
+
+    });
 
     const handleSearchClose = () => {
         setAnchorEl(null);
@@ -118,15 +146,7 @@ export default function Ciders(props) {
 
 
     React.useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setDisplayPrices(
-                    isUserInside([position.coords.latitude, position.coords.longitude],
-                        pubCoordinates
-                    )
-                )
-            });
-        }
+
         axios.get("/api/get/ciders")
             .then(function (response) {
                 // handle success
@@ -677,6 +697,14 @@ export default function Ciders(props) {
           </Button>
                         </DialogActions>
                     </Dialog>
+                    
+    {warningNotInside ? (<Alert variant="filled" severity="warning">
+  You are not currently within the serving area of Uplands so we can 
+  unfortunately not show you the prices of alcohol.
+</Alert>) : (null)}
+{warningLocationNotEnabled ? (<Alert variant="filled" severity="error">
+Please enable location sharing if you want to see the prices of alcohol.
+</Alert>) : (null)}
                     {/* <h4 style={{ color: 'white', margin: "5px" }} >
                         {currentRows.length} ciders found
     </h4> */}

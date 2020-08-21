@@ -63,7 +63,6 @@ export default function Shots(props) {
     document.title = "Svantes menu - Shots"
     const [loading, setLoading] = React.useState(true);
     const [displayPrices, setDisplayPrices] = React.useState(false);
-    const [coordinates, setcoordinates] = React.useState("");
     const [warningNotInside, setWarningNotInside] = React.useState(false);
     const [warningLocationNotEnabled, setWarningLocationNotEnabled] = React.useState(false);
     const [currentRows, setCurrentRows] = React.useState([]);
@@ -88,7 +87,6 @@ export default function Shots(props) {
                 let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
                     pubCoordinates
                 )
-                setcoordinates(position.coords.latitude)
                 setDisplayPrices(
                     userInside
                 )
@@ -476,9 +474,8 @@ export default function Shots(props) {
                     </Dialog>
 
     {warningNotInside ? (<Alert variant="filled" severity="warning">
-  You are not currently within the serving area of Uplands and can thus 
+  You are not currently within the serving area of Uplands so we can 
   unfortunately not show you the prices of alcohol.
-  {coordinates}
 </Alert>) : (null)}
 {warningLocationNotEnabled ? (<Alert variant="filled" severity="error">
 Please enable location sharing if you want to see the prices of alcohol.

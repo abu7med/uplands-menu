@@ -73,7 +73,8 @@ export default function Drink(props) {
     const [loading, setLoading] = React.useState(true);
     const [currentRows, setCurrentRows] = React.useState([]);
     const [displayPrices, setDisplayPrices] = React.useState(false);
-
+    const [warningNotInside, setWarningNotInside] = React.useState(false);
+    const [warningLocationNotEnabled, setWarningLocationNotEnabled] = React.useState(false);
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
     const [itemStock, setItemStock] = React.useState(true);
@@ -88,6 +89,31 @@ export default function Drink(props) {
     const [imageExists, setItemImageExists] = React.useState(false);
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
+    React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
+                    pubCoordinates
+                )
+                setDisplayPrices(
+                    userInside
+                )
+                if (!userInside){
+                    setWarningNotInside(true)
+                    setWarningLocationNotEnabled(false)
+                }
+                else {
+                    setWarningNotInside(false)
+                    setWarningLocationNotEnabled(false)
+                }
+            });
+        }
+        else {
+            setWarningLocationNotEnabled(true)
+            setWarningNotInside(false)
+          }
+
+    });
 
     const makeCreateWindowVisible = () => {
         setCreateWindow(true);
@@ -364,15 +390,7 @@ export default function Drink(props) {
 
 
     React.useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setDisplayPrices(
-                    isUserInside([position.coords.latitude, position.coords.longitude],
-                        pubCoordinates
-                    )
-                )
-            });
-        }
+
         axios.get("/api/get/drinks")
             .then(function (response) {
                 // handle success
@@ -442,6 +460,14 @@ export default function Drink(props) {
           </Button>
                         </DialogActions>
                     </Dialog>
+                                        
+    {warningNotInside ? (<Alert variant="filled" severity="warning">
+  You are not currently within the serving area of Uplands so we can 
+  unfortunately not show you the prices of alcohol.
+</Alert>) : (null)}
+{warningLocationNotEnabled ? (<Alert variant="filled" severity="error">
+Please enable location sharing if you want to see the prices of alcohol.
+</Alert>) : (null)}
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
                         {/* <Alert variant="filled" severity="info">
                             All drinks are served in the inside bar. Choose between 4 cl or 6 cl alcohol.</Alert> */}

@@ -30,7 +30,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Popover from '@material-ui/core/Popover';
-
+import Alert from '@material-ui/lab/Alert';
 // import Radio from '@material-ui/core/Radio';
 // import RadioGroup from '@material-ui/core/RadioGroup';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -185,6 +185,8 @@ export default function Beers(props) {
     const [itemLocation, setItemLocation] = React.useState("Inside");
     const [imageExists, setItemImageExists] = React.useState(false);
     const [displayPrices, setDisplayPrices] = React.useState(false);
+    const [warningNotInside, setWarningNotInside] = React.useState(false);
+    const [warningLocationNotEnabled, setWarningLocationNotEnabled] = React.useState(false);
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
     //
@@ -234,6 +236,31 @@ export default function Beers(props) {
 
     const [searchValue, setSearchValue] = React.useState('');
     const [anchorEl, setAnchorEl] = React.useState(null);
+    React.useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
+                    pubCoordinates
+                )
+                setDisplayPrices(
+                    userInside
+                )
+                if (!userInside){
+                    setWarningNotInside(true)
+                    setWarningLocationNotEnabled(false)
+                }
+                else {
+                    setWarningNotInside(false)
+                    setWarningLocationNotEnabled(false)
+                }
+            });
+        }
+        else {
+            setWarningLocationNotEnabled(true)
+            setWarningNotInside(false)
+          }
+
+    });
 
     const handleSearchOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -1251,15 +1278,6 @@ export default function Beers(props) {
 
     };
     React.useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setDisplayPrices(
-                    isUserInside([position.coords.latitude, position.coords.longitude],
-                        pubCoordinates
-                    )
-                )
-            });
-        }
         axios.get("/api/get/beers")
             .then(function (response) {
                 // handle success
@@ -1658,6 +1676,13 @@ export default function Beers(props) {
           </Button>
                         </DialogActions>
                     </Dialog>
+                    {warningNotInside ? (<Alert variant="filled" severity="warning">
+  You are not currently within the serving area of Uplands so we can 
+  unfortunately not show you the prices of alcohol.
+</Alert>) : (null)}
+{warningLocationNotEnabled ? (<Alert variant="filled" severity="error">
+Please enable location sharing if you want to see the prices of alcohol.
+</Alert>) : (null)}
                     <h4 style={{ color: 'white', margin: "5px", textAlign: "center" }} >
                         {currentRows.length} beers found
     </h4>
