@@ -44,7 +44,7 @@ export function PersonalAppBar(props) {
   const handleClickClock = (event) => {
     let currentday = moment().day()
     console.log(moment().day())
-    console.log(moment().isBetween('2020-08-20 03:00', '2020-08-20 03:30'))
+    console.log(moment().isBetween({ hour:2, minute:10 },{ hour:2, minute:30 }))
     console.log(moment().isBetween('2020-08-20 03:00', '2020-08-20 03:30'))
     // setTimeLeft(moment( {hours:'12', minutes:'00'}).isBetween({hours:'9', minutes:'00'}, {hours:'15', minutes:'00'}))
     setAnchorEl(event.currentTarget);

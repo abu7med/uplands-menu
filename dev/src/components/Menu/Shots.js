@@ -63,6 +63,9 @@ export default function Shots(props) {
     document.title = "Svantes menu - Shots"
     const [loading, setLoading] = React.useState(true);
     const [displayPrices, setDisplayPrices] = React.useState(false);
+    const [coordinates, setcoordinates] = React.useState("");
+    const [warningNotInside, setWarningNotInside] = React.useState(false);
+    const [warningLocationNotEnabled, setWarningLocationNotEnabled] = React.useState(false);
     const [currentRows, setCurrentRows] = React.useState([]);
     const [itemID, setItemID] = React.useState();
     const [itemTitle, setItemTitle] = React.useState("");
@@ -79,18 +82,35 @@ export default function Shots(props) {
     const [imageExists, setItemImageExists] = React.useState(false);
     const [createWindow, setCreateWindow] = React.useState(false);
     const [editWindow, setEditWindow] = React.useState(false);
-
-
     React.useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                setDisplayPrices(
-                    isUserInside([position.coords.latitude, position.coords.longitude],
-                        pubCoordinates
-                    )
+                let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
+                    pubCoordinates
                 )
+                setcoordinates(position.coords.latitude)
+                setDisplayPrices(
+                    userInside
+                )
+                if (!userInside){
+                    setWarningNotInside(true)
+                    setWarningLocationNotEnabled(false)
+                }
+                else {
+                    setWarningNotInside(false)
+                    setWarningLocationNotEnabled(false)
+                }
             });
         }
+        else {
+            setWarningLocationNotEnabled(true)
+            setWarningNotInside(false)
+          }
+
+    });
+
+    React.useEffect(() => {
+
 
         axios.get("/api/get/shots")
             .then(function (response) {
@@ -455,6 +475,14 @@ export default function Shots(props) {
                         </DialogActions>
                     </Dialog>
 
+    {warningNotInside ? (<Alert variant="filled" severity="warning">
+  You are not currently within the serving area of Uplands and can thus 
+  unfortunately not show you the prices of alcohol.
+  {coordinates}
+</Alert>) : (null)}
+{warningLocationNotEnabled ? (<Alert variant="filled" severity="error">
+Please enable location sharing if you want to see the prices of alcohol.
+</Alert>) : (null)}
                     {/* <Alert variant="filled" severity="info">
                         All shots are served in 4 cl cups.</Alert> */}
                     <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
