@@ -96,29 +96,33 @@ export default function Ciders(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     React.useEffect(() => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
-                    pubCoordinates
-                )
-                setDisplayPrices(
-                    userInside
-                )
-                if (!userInside){
-                    setWarningNotInside(true)
-                    setWarningLocationNotEnabled(false)
-                }
-                else {
-                    setWarningNotInside(false)
-                    setWarningLocationNotEnabled(false)
-                }
-            });
+            navigator.geolocation.getCurrentPosition(locationSuccess,locationError
+            );
         }
-        else {
-            setWarningLocationNotEnabled(true)
-            setWarningNotInside(false)
-          }
 
     });
+
+    const locationSuccess = (position) => {
+        let userInside = isUserInside([position.coords.latitude, position.coords.longitude],
+            pubCoordinates
+        )
+        setDisplayPrices(
+            userInside
+        )
+        if (!userInside){
+            setWarningNotInside(true)
+            setWarningLocationNotEnabled(false)
+        }
+        else {
+            setWarningNotInside(false)
+            setWarningLocationNotEnabled(false)
+        }
+      }
+      
+      const locationError = (error) => {
+        setWarningNotInside(false)
+        setWarningLocationNotEnabled(true)
+      }
 
     const handleSearchClose = () => {
         setAnchorEl(null);
