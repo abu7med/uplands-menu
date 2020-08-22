@@ -24,6 +24,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 // import Chip from '@material-ui/core/Chip';
+import Footer from '../Footer/Footer';
 import { PersonalAppBar, Background, checkImageExists, Sorter } from './menuUtils';
 import { AdminContext } from '../Admin/Admin';
 import './Menu.css';
@@ -533,7 +534,7 @@ export default function Food(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
 
-
+<Footer />
                 </div>
                 )}
 

@@ -1625,6 +1625,11 @@ export default function Beers(props) {
                                     placeholder="Search Beers and Breweries..."
                                     onChange={handleSearchChange}
                                     value={searchValue}
+                                    onKeyPress={(ev) => {
+                                        if (ev.key === 'Enter') { // here was the mistake
+                                            ev.preventDefault();
+                                        }
+                                      }}
                                 />
 
                                 {/* <React.Fragment key="sort">
