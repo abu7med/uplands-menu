@@ -486,7 +486,10 @@ Please enable location sharing if you want to see the prices of alcohol.
 </Alert>) : (null)}
                     {/* <Alert variant="filled" severity="info">
                         All shots are served in 4 cl cups.</Alert> */}
-                    <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
+                        {currentRows.map(function (row) {
+                                return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
+                            })}
+                    {/* <Paper elevation={4} style={{ backgroundColor: '#333842' }}>
 
 
                         <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }} >
@@ -514,7 +517,7 @@ Please enable location sharing if you want to see the prices of alcohol.
                         {currentRows.filter(row => !row.type.toLowerCase().includes("tequila") && !row.type.toLowerCase().includes("vodka"))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} displayPrices={displayPrices} />)
-                            })}</Paper>
+                            })}</Paper> */}
 
 
                     <Footer />

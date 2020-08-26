@@ -26,7 +26,7 @@ export default function Footer() {
       <p style={{ fontSize: "0.7em"}}>Friday - Saturday: 18-02</p>
       <p style={{ fontSize: "0.7em", marginBottom: "10px"}}>Sunday: Closed</p>
       <p style={{ fontSize: "0.7em"}}
-      >Do you want to work at the pub? Check out our <Link style={{ color: "#9999ff"}} target="_blank" href="https://www.facebook.com/groups/121349511405785" >
+      >Do you want to work at the pub? Join our <Link style={{ color: "#9999ff"}} target="_blank" href="https://www.facebook.com/groups/121349511405785" >
       Facebook group
    </Link>.</p>
 

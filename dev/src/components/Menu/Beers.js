@@ -1557,7 +1557,7 @@ export default function Beers(props) {
                         }
                         label={"Belgian (" + rows.filter(row => (row.type.includes("Belgian") || row.type.includes("Lambic") || row.type.includes("Flanders"))).length + ")"}
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         control={
                             <Checkbox
                                 checked={filter.checkedOther}
@@ -1567,7 +1567,7 @@ export default function Beers(props) {
                             />
                         }
                         label={"Other (" + rows.filter(row => row.type.includes("Rauchbier")).length + ")"}
-                    />
+                    /> */}
 
                     <h6 style={{ marginTop: "10px", marginBottom: "3px", fontSize: "1.1em" }}>Origins</h6>
                     {countries.map(function (country) {

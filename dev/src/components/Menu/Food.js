@@ -534,7 +534,7 @@ export default function Food(props) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
                             })}</Paper >
 
-<Footer />
+                    <Footer />
                 </div>
                 )}
 
@@ -554,40 +554,44 @@ function MenuItemCard(props) {
 
             <Card className={classes.card}>
                 <div className={classes.content}>
-                    <Grid container >
+                    <Grid container style={{ width: "100%" }}>
                         {!props.properties.stock ? (<img style={{ position: 'absolute', marginLeft: 'auto', marginRight: 'auto', left: "0", right: "0", marginTop: "0px", textAlign: "center" }} alt="new" src="../../images/soldout.png" height="50" />) : (null)}
 
                         {/* <Grid item xs={2}>
                                 <img className={classes.img} src={props.properties.image} alt="logo" width="50" height="50" />
                             </Grid> */}
-                        <Grid item xs={10}>
+                        <Grid item xs={12}>
+                        <h6 style={{ float: "right", fontSize: "1em" }} >
+                                {props.properties.price} kr
+                                </h6>
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 flexWrap: 'wrap'
                             }}>
-                                {props.properties.extra ? (<AddIcon style={{ marginRight: "2px" }}/>) : (null)}
+                                {props.properties.extra ? (<AddIcon style={{ marginRight: "2px" }} />) : (null)}
                                 <h6 style={{ fontSize: "1em", marginRight: "10px" }}>
                                     {props.properties.title}
 
-                                    {props.properties.new ? (<img style={{  float: 'right', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
+                                    {props.properties.new ? (<img style={{ float: 'right', marginLeft: "5px" }} alt="new" src="../../images/new2.png" height="18" />) : (null)}
                                     {/* {props.properties.vegan ? (<p><img style={{  float: 'left', marginLeft: "5px" }} alt="new" src="../../images/vegan2.png" height="18" /><i> Vegan </i> </p>) : (null)} */}
 
                                 </h6>
-                                {props.properties.vegan ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
-                                <i>Vegan</i>
-                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegan.png" height="18" />
-                            </span>) : (null)}
-                            {!props.properties.vegan && props.properties.vegetarian ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
-                                <i>Vegetarian</i>
-                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegetarian.png" height="18" />
-                            </span>) : (null)}
-                            {props.properties.glutenfree ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
-                                <i>Gluten-Free</i>
-                                <img style={{  float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="18" />
-                            </span>) : (null)}
-                            </div>
 
+                                {props.properties.vegan ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
+                                    <i>Vegan</i>
+                                    <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegan.png" height="18" />
+                                </span>) : (null)}
+                                {!props.properties.vegan && props.properties.vegetarian ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
+                                    <i>Vegetarian</i>
+                                    <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/vegetarian.png" height="18" />
+                                </span>) : (null)}
+                                {props.properties.glutenfree ? (<span style={{ fontSize: "0.9em", marginRight: "10px" }} >
+                                    <i>Gluten-Free</i>
+                                    <img style={{ float: 'left', marginRight: "2px" }} alt="new" src="../../images/glutenfree.png" height="18" />
+                                </span>) : (null)}
+                            </div>
+                            
                             {/* <h6 style={{fontSize: "1em" }}>
                             <AddIcon style={{ margin: "0px" }}   />
                                 {props.properties.title}
@@ -597,36 +601,32 @@ function MenuItemCard(props) {
                             {/* {props.properties.ingredients.split(',').map(function (ingredient) {
                                     return (<Chip  size="small" style={{ marginRight: "3px", marginTop: "3px"}} label={ingredient} />)
                                 })} */}
-                                
-                                {/* {props.properties.vegan ? (<p><img style={{  marginRight: "2px"}} alt="vegan" src="../../images/vegan.png"  height="15"/ ><span style={{ fontSize: "0.8em", marginRight: "5px"}}  ><i> Vegan</i></span></p>) : (null)}
+
+                            {/* {props.properties.vegan ? (<p><img style={{  marginRight: "2px"}} alt="vegan" src="../../images/vegan.png"  height="15"/ ><span style={{ fontSize: "0.8em", marginRight: "5px"}}  ><i> Vegan</i></span></p>) : (null)}
                              */}
                             <p style={{ fontSize: "0.9em" }} display="block">
                                 {props.properties.description}
                             </p>
                             {props.properties.vegandescription.length > 0 ? <p style={{ fontSize: "0.9em" }} display="block">
-                            <img style={{  float: 'left', marginRight: "4px" }} alt="new" src="../../images/vegan.png" height="18" />
+                                <img style={{ float: 'left', marginRight: "4px" }} alt="new" src="../../images/vegan.png" height="18" />
                                 <b>Vegan option: </b>{props.properties.vegandescription}
                             </p> : (null)}
                             {props.properties.glutenfreedescription.length > 0 ? <p style={{ fontSize: "0.9em" }} display="block">
-                            <img style={{  float: 'left', marginRight: "4px" }} alt="new" src="../../images/glutenfree.png" height="18" />
-                            <b>Gluten free option: </b>{props.properties.glutenfreedescription}
+                                <img style={{ float: 'left', marginRight: "4px" }} alt="new" src="../../images/glutenfree.png" height="18" />
+                                <b>Gluten free option: </b>{props.properties.glutenfreedescription}
                             </p> : (null)}
                             {/* <p style={{ fontSize: "0.8em" }} display="block">
                                 {props.properties.description}
                             </p> */}
-                        </Grid>
-                        <Grid item xs={2}>
-                            <h6 style={{ textAlign: "center", fontSize: "1em" }} display="block">
-                                {props.properties.price} kr
-                                </h6>
+
 
                         </Grid>
                         {admin ? (<Grid item xs={12}><hr style={{ color: 'black', backgroundColor: 'black', borderTop: '0.5px solid' }} /> </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }}  size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.delete(props.properties)} startIcon={<DeleteIcon />}>Delete</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
-                            <Button  style={{ color: 'white' }}  size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
+                            <Button style={{ color: 'white' }} size="small" onClick={() => props.edit(props.properties)} startIcon={<EditIcon />}>Edit</Button>
                         </Grid>) : (null)}
                         {admin ? (<Grid style={{ textAlign: "center" }} item xs={4}>
                             <p style={{ fontSize: "0.9em", color: "white", paddingTop: "3px" }} display="inline">
