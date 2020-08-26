@@ -1930,7 +1930,7 @@ function MenuItemCard(props) {
                     <Grid item xs={12} >
                         {/* <img style={{float: "left", maxWidth: '12%',  height: 'auto', maxHeight: '60px', marginRight: "5px"}} className={classes.img} src={props.properties.image} alt="logo" /> */}
                         <div style={{ float: "left", height: "100%", marginRight: "10px", maxWidth: '9.5%' }}>
-                            <img style={{ width: '100%', height: 'auto' }} className={classes.img} src={props.properties.image} alt="logo" />
+                            <img style={{ width: '100%', height: 'auto', backgroundColor: "white" }} className={classes.img} src={props.properties.image} alt="logo" />
                         </div>
                         <div style={{ float: "right", textAlign: "right" }}  >
                         {props.displayPrices || admin ? (

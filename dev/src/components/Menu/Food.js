@@ -498,8 +498,8 @@ export default function Food(props) {
                         <h3 style={{ color: 'white', marginTop: "10px", paddingBottom: "10px", paddingTop: "10px", textAlign: "center" }}  >
                             Burgers (18:00-22:00)
     </h3>
-                        <Alert variant="filled" severity="info">
-                            All burgers are served on a brioche bun with a side of pommes or salad. </Alert>
+                        {/* <Alert variant="filled" severity="info">
+                            All burgers are served on a brioche bun with a side of pommes or salad. </Alert> */}
                         {currentRows.filter(row => (row.type === "Burger" && !row.extra))
                             .map(function (row) {
                                 return (<MenuItemCard key={row._id} properties={row} delete={deleteItem} edit={makeEditWindowVisible} />)
