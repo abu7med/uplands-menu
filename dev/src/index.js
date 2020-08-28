@@ -19,6 +19,9 @@ import Wines from './components/Menu/Wines';
 import Whiskey from './components/Menu/Whiskey';
 import Boardgames from './components/Menu/Boardgames';
 import Admin from './components/Admin/Admin';
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-176725373-1'); // add your tracking id here.
+ReactGA.pageview(window.location.pathname + window.location.search);
 // import 'fontsource-roboto';
 
 render((
