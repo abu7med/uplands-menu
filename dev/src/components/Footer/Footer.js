@@ -3,6 +3,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
  import Link from '@material-ui/core/Link';
+ import ReactGA from 'react-ga';
+ReactGA.initialize('UA-176725373-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 const useStyles = makeStyles((theme) => ({
 
   text: {
@@ -17,6 +20,7 @@ export default function Footer() {
   const classes = useStyles();
   return (
     <footer style={{ textAlign: "center",  color: '#dcdcdc', marginTop: "20px", marginBottom: "20px" }} className={classes.text}>
+
 
       <h6 style={{ fontSize: "0.7em" }}>Svantes Pub</h6>
       <p style={{ fontSize: "0.7em"}}>S:t Larsgatan 11</p>

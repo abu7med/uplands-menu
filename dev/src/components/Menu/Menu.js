@@ -191,6 +191,7 @@ export default function Menu(props) {
     const [activePage, setActivePage] = React.useState('menu')
     document.body.style.background = Background
     document.body.style.backgroundSize = 'cover'
+    document.title = "Svantes menu"
     // document.body.style.filter = 'blur(8px)'
     // document.body.style.WebkitFilter = 'blur(8px)'
 
