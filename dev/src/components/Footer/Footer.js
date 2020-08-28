@@ -3,9 +3,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
  import Link from '@material-ui/core/Link';
- import ReactGA from 'react-ga';
-ReactGA.initialize('UA-176725373-1');
-ReactGA.pageview(window.location.pathname + window.location.search);
+//  import ReactGA from 'react-ga';
+// ReactGA.initialize('UA-176725373-1');
+// ReactGA.pageview(window.location.pathname + window.location.search);
 const useStyles = makeStyles((theme) => ({
 
   text: {
