@@ -2023,8 +2023,8 @@ function MenuItemCard(props) {
                         ) : (<div>{(props.properties.description.length > 60) ? (<p style={{ fontSize: "0.7em" }} >
 
 
-                            {sm ? (props.properties.description.substring(0, 90) + '...') : null}
-                            {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                            {sm ? (props.properties.description.substring(0, 80) + '...') : null}
+                            {xs && !sm ? (props.properties.description.substring(0, 40) + '...') : null}
                             <Link color="inherit" onClick={handleTextButton}>
                                 [Show more]
                                      </Link>

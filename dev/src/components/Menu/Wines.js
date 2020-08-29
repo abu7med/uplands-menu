@@ -793,7 +793,7 @@ function MenuItemCard(props) {
 
 
                         {sm ? (props.properties.description.substring(0, 70) + '...') : null}
-                        {xs && !sm ? (props.properties.description.substring(0, 50) + '...') : null}
+                        {xs && !sm ? (props.properties.description.substring(0, 40) + '...') : null}
                         <Link color="inherit" onClick={handleTextButton}>
                             [Show more]
 </Link>
